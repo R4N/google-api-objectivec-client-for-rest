@@ -2,9 +2,9 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Play Developer API (androidpublisher/v2)
+//   Google Play Developer API (androidpublisher/v3)
 // Description:
-//   Lets Android application developers access their Google Play accounts.
+//   Accesses Android application developers' Google Play accounts.
 // Documentation:
 //   https://developers.google.com/android-publisher
 
@@ -27,34 +27,6 @@
 
 @implementation GTLRAndroidPublisher_ApkBinary
 @dynamic sha1, sha256;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRAndroidPublisher_ApkListing
-//
-
-@implementation GTLRAndroidPublisher_ApkListing
-@dynamic language, recentChanges;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRAndroidPublisher_ApkListingsListResponse
-//
-
-@implementation GTLRAndroidPublisher_ApkListingsListResponse
-@dynamic kind, listings;
-
-+ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
-  NSDictionary<NSString *, Class> *map = @{
-    @"listings" : [GTLRAndroidPublisher_ApkListing class]
-  };
-  return map;
-}
-
 @end
 
 
@@ -123,6 +95,34 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRAndroidPublisher_Bundle
+//
+
+@implementation GTLRAndroidPublisher_Bundle
+@dynamic sha1, sha256, versionCode;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidPublisher_BundlesListResponse
+//
+
+@implementation GTLRAndroidPublisher_BundlesListResponse
+@dynamic bundles, kind;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"bundles" : [GTLRAndroidPublisher_Bundle class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRAndroidPublisher_Comment
 //
 
@@ -170,34 +170,6 @@
 @dynamic cpuMake, cpuModel, deviceClass, glEsVersion, manufacturer,
          nativePlatform, productName, ramMb, screenDensityDpi, screenHeightPx,
          screenWidthPx;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRAndroidPublisher_Entitlement
-//
-
-@implementation GTLRAndroidPublisher_Entitlement
-@dynamic kind, productId, productType, token;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRAndroidPublisher_EntitlementsListResponse
-//
-
-@implementation GTLRAndroidPublisher_EntitlementsListResponse
-@dynamic pageInfo, resources, tokenPagination;
-
-+ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
-  NSDictionary<NSString *, Class> *map = @{
-    @"resources" : [GTLRAndroidPublisher_Entitlement class]
-  };
-  return map;
-}
-
 @end
 
 
@@ -322,8 +294,9 @@
 //
 
 @implementation GTLRAndroidPublisher_InAppProduct
-@dynamic defaultLanguage, defaultPrice, listings, packageName, prices,
-         purchaseType, season, sku, status, subscriptionPeriod, trialPeriod;
+@dynamic defaultLanguage, defaultPrice, gracePeriod, listings, packageName,
+         prices, purchaseType, season, sku, status, subscriptionPeriod,
+         trialPeriod;
 @end
 
 
@@ -418,6 +391,16 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRAndroidPublisher_LocalizedText
+//
+
+@implementation GTLRAndroidPublisher_LocalizedText
+@dynamic language, text;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRAndroidPublisher_MonthDay
 //
 
@@ -453,7 +436,7 @@
 
 @implementation GTLRAndroidPublisher_ProductPurchase
 @dynamic consumptionState, developerPayload, kind, orderId, purchaseState,
-         purchaseTimeMillis;
+         purchaseTimeMillis, purchaseType;
 @end
 
 
@@ -553,6 +536,16 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRAndroidPublisher_SubscriptionCancelSurveyResult
+//
+
+@implementation GTLRAndroidPublisher_SubscriptionCancelSurveyResult
+@dynamic cancelSurveyReason, userInputCancelReason;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRAndroidPublisher_SubscriptionDeferralInfo
 //
 
@@ -563,13 +556,25 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRAndroidPublisher_SubscriptionPriceChange
+//
+
+@implementation GTLRAndroidPublisher_SubscriptionPriceChange
+@dynamic newPrice, state;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRAndroidPublisher_SubscriptionPurchase
 //
 
 @implementation GTLRAndroidPublisher_SubscriptionPurchase
-@dynamic autoRenewing, cancelReason, countryCode, developerPayload,
-         expiryTimeMillis, kind, orderId, paymentState, priceAmountMicros,
-         priceCurrencyCode, startTimeMillis, userCancellationTimeMillis;
+@dynamic autoRenewing, cancelReason, cancelSurveyResult, countryCode,
+         developerPayload, emailAddress, expiryTimeMillis, familyName,
+         givenName, kind, linkedPurchaseToken, orderId, paymentState,
+         priceAmountMicros, priceChange, priceCurrencyCode, profileId,
+         profileName, purchaseType, startTimeMillis, userCancellationTimeMillis;
 @end
 
 
@@ -638,10 +643,29 @@
 //
 
 @implementation GTLRAndroidPublisher_Track
-@dynamic track, userFraction, versionCodes;
+@dynamic releases, track;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
+    @"releases" : [GTLRAndroidPublisher_TrackRelease class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidPublisher_TrackRelease
+//
+
+@implementation GTLRAndroidPublisher_TrackRelease
+@dynamic name, releaseNotes, status, userFraction, versionCodes;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"releaseNotes" : [GTLRAndroidPublisher_LocalizedText class],
     @"versionCodes" : [NSNumber class]
   };
   return map;

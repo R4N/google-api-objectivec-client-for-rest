@@ -29,6 +29,7 @@
 @class GTLRClassroom_CourseMaterialSet;
 @class GTLRClassroom_CourseRosterChangesInfo;
 @class GTLRClassroom_CourseWork;
+@class GTLRClassroom_CourseWorkChangesInfo;
 @class GTLRClassroom_Date;
 @class GTLRClassroom_DriveFile;
 @class GTLRClassroom_DriveFolder;
@@ -297,6 +298,18 @@ GTLR_EXTERN NSString * const kGTLRClassroom_CourseWork_WorkType_ShortAnswerQuest
  *  Value: "COURSE_ROSTER_CHANGES"
  */
 GTLR_EXTERN NSString * const kGTLRClassroom_Feed_FeedType_CourseRosterChanges;
+/**
+ *  All course work activity for a particular course.
+ *  Notifications will be generated when a CourseWork or
+ *  StudentSubmission object is created or modified. No notification will be
+ *  generated when a StudentSubmission object is created in connection with
+ *  the creation or modification of its parent CourseWork object (but a
+ *  notification will be generated for that CourseWork object's creation or
+ *  modification).
+ *
+ *  Value: "COURSE_WORK_CHANGES"
+ */
+GTLR_EXTERN NSString * const kGTLRClassroom_Feed_FeedType_CourseWorkChanges;
 /**
  *  All roster changes for a particular domain.
  *  Notifications will be generated whenever a user joins or leaves a course.
@@ -1252,27 +1265,43 @@ GTLR_EXTERN NSString * const kGTLRClassroom_StudentSubmission_State_TurnedIn;
 
 
 /**
- *  Represents a whole calendar date, e.g. date of birth. The time of day and
- *  time zone are either specified elsewhere or are not significant. The date
- *  is relative to the Proleptic Gregorian Calendar. The day may be 0 to
- *  represent a year and month where the day is not significant, e.g. credit
- *  card
- *  expiration date. The year may be 0 to represent a month and day independent
- *  of year, e.g. anniversary date. Related types are google.type.TimeOfDay
- *  and `google.protobuf.Timestamp`.
+ *  Information about a `Feed` with a `feed_type` of `COURSE_WORK_CHANGES`.
+ */
+@interface GTLRClassroom_CourseWorkChangesInfo : GTLRObject
+
+/** The `course_id` of the course to subscribe to work changes for. */
+@property(nonatomic, copy, nullable) NSString *courseId;
+
+@end
+
+
+/**
+ *  Represents a whole or partial calendar date, e.g. a birthday. The time of
+ *  day
+ *  and time zone are either specified elsewhere or are not significant. The
+ *  date
+ *  is relative to the Proleptic Gregorian Calendar. This can represent:
+ *  * A full date, with non-zero year, month and day values
+ *  * A month and day value, with a zero year, e.g. an anniversary
+ *  * A year on its own, with zero month and day values
+ *  * A year and month value, with a zero day, e.g. a credit card expiration
+ *  date
+ *  Related types are google.type.TimeOfDay and `google.protobuf.Timestamp`.
  */
 @interface GTLRClassroom_Date : GTLRObject
 
 /**
  *  Day of month. Must be from 1 to 31 and valid for the year and month, or 0
- *  if specifying a year/month where the day is not significant.
+ *  if specifying a year by itself or a year and month where the day is not
+ *  significant.
  *
  *  Uses NSNumber of intValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *day;
 
 /**
- *  Month of year. Must be from 1 to 12.
+ *  Month of year. Must be from 1 to 12, or 0 if specifying a year without a
+ *  month and day.
  *
  *  Uses NSNumber of intValue.
  */
@@ -1375,6 +1404,12 @@ GTLR_EXTERN NSString * const kGTLRClassroom_StudentSubmission_State_TurnedIn;
 @property(nonatomic, strong, nullable) GTLRClassroom_CourseRosterChangesInfo *courseRosterChangesInfo;
 
 /**
+ *  Information about a `Feed` with a `feed_type` of `COURSE_WORK_CHANGES`.
+ *  This field must be specified if `feed_type` is `COURSE_WORK_CHANGES`.
+ */
+@property(nonatomic, strong, nullable) GTLRClassroom_CourseWorkChangesInfo *courseWorkChangesInfo;
+
+/**
  *  The type of feed.
  *
  *  Likely values:
@@ -1386,6 +1421,17 @@ GTLR_EXTERN NSString * const kGTLRClassroom_StudentSubmission_State_TurnedIn;
  *        deleted, but notifications will be generated when a user joins a
  *        course
  *        by accepting an invitation. (Value: "COURSE_ROSTER_CHANGES")
+ *    @arg @c kGTLRClassroom_Feed_FeedType_CourseWorkChanges All course work
+ *        activity for a particular course.
+ *        Notifications will be generated when a CourseWork or
+ *        StudentSubmission object is created or modified. No notification will
+ *        be
+ *        generated when a StudentSubmission object is created in connection
+ *        with
+ *        the creation or modification of its parent CourseWork object (but a
+ *        notification will be generated for that CourseWork object's creation
+ *        or
+ *        modification). (Value: "COURSE_WORK_CHANGES")
  *    @arg @c kGTLRClassroom_Feed_FeedType_DomainRosterChanges All roster
  *        changes for a particular domain.
  *        Notifications will be generated whenever a user joins or leaves a
@@ -2107,7 +2153,7 @@ GTLR_EXTERN NSString * const kGTLRClassroom_StudentSubmission_State_TurnedIn;
 
 /**
  *  An instruction to Classroom to send notifications from the `feed` to the
- *  provided `destination`.
+ *  provided destination.
  */
 @interface GTLRClassroom_Registration : GTLRObject
 
@@ -2122,7 +2168,7 @@ GTLR_EXTERN NSString * const kGTLRClassroom_StudentSubmission_State_TurnedIn;
 
 /**
  *  Specification for the class of notifications that Classroom should deliver
- *  to the `destination`.
+ *  to the destination.
  */
 @property(nonatomic, strong, nullable) GTLRClassroom_Feed *feed;
 

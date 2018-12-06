@@ -2,10 +2,10 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Cloud SQL Administration API (sqladmin/v1beta4)
+//   Cloud SQL Admin API (sqladmin/v1beta4)
 // Description:
-//   Creates and configures Cloud SQL instances, which provide fully-managed
-//   MySQL databases.
+//   Creates and manages Cloud SQL instances, which provide fully managed MySQL
+//   or PostgreSQL databases.
 // Documentation:
 //   https://cloud.google.com/sql/docs/reference/latest
 
@@ -20,6 +20,7 @@
 #endif
 
 @class GTLRSQLAdmin_AclEntry;
+@class GTLRSQLAdmin_ApiWarning;
 @class GTLRSQLAdmin_BackupConfiguration;
 @class GTLRSQLAdmin_BackupRun;
 @class GTLRSQLAdmin_BinLogCoordinates;
@@ -34,6 +35,7 @@
 @class GTLRSQLAdmin_ExportContext;
 @class GTLRSQLAdmin_ExportContext_CsvExportOptions;
 @class GTLRSQLAdmin_ExportContext_SqlExportOptions;
+@class GTLRSQLAdmin_ExportContext_SqlExportOptions_MysqlExportOptions;
 @class GTLRSQLAdmin_FailoverContext;
 @class GTLRSQLAdmin_Flag;
 @class GTLRSQLAdmin_ImportContext;
@@ -49,6 +51,7 @@
 @class GTLRSQLAdmin_OperationErrors;
 @class GTLRSQLAdmin_ReplicaConfiguration;
 @class GTLRSQLAdmin_RestoreBackupContext;
+@class GTLRSQLAdmin_RotateServerCaContext;
 @class GTLRSQLAdmin_Settings;
 @class GTLRSQLAdmin_Settings_UserLabels;
 @class GTLRSQLAdmin_SslCert;
@@ -88,6 +91,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
+ *  An Admin API warning message.
+ */
+@interface GTLRSQLAdmin_ApiWarning : GTLRObject
+
+/** Code to uniquely identify the warning type. */
+@property(nonatomic, copy, nullable) NSString *code;
+
+/** The warning message. */
+@property(nonatomic, copy, nullable) NSString *message;
+
+@end
+
+
+/**
  *  Database instance backup configuration.
  */
 @interface GTLRSQLAdmin_BackupConfiguration : GTLRObject
@@ -111,6 +128,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy, nullable) NSString *kind;
 
 /**
+ *  Reserved for future use.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *replicationLogArchivingEnabled;
+
+/**
  *  Start time for the daily backup configuration in UTC timezone in the 24 hour
  *  format - HH:MM.
  */
@@ -120,7 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- *  A database instance backup run resource.
+ *  A BackupRun resource.
  */
 @interface GTLRSQLAdmin_BackupRun : GTLRObject
 
@@ -150,8 +174,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_OperationError *error;
 
 /**
- *  A unique identifier for this backup run. Note that this is unique only
- *  within the scope of a particular Cloud SQL instance.
+ *  The identifier for this backup run. Unique only for a specific Cloud SQL
+ *  instance.
  *
  *  identifier property maps to 'id' in JSON (to avoid Objective C's 'id').
  *
@@ -246,9 +270,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GTLRSQLAdmin_CloneContext : GTLRObject
 
 /**
- *  Binary log coordinates, if specified, indentify the the position up to which
- *  the source instance should be cloned. If not specified, the source instance
- *  is cloned up to the most recent binary log coordintes.
+ *  Binary log coordinates, if specified, identify the position up to which the
+ *  source instance should be cloned. If not specified, the source instance is
+ *  cloned up to the most recent binary log coordinates.
  */
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_BinLogCoordinates *binLogCoordinates;
 
@@ -258,11 +282,18 @@ NS_ASSUME_NONNULL_BEGIN
 /** This is always sql#cloneContext. */
 @property(nonatomic, copy, nullable) NSString *kind;
 
+/**
+ *  Reserved for future use.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *pitrTimestampMs;
+
 @end
 
 
 /**
- *  A database resource inside a Cloud SQL instance.
+ *  Represents a SQL database on the Cloud SQL instance.
  */
 @interface GTLRSQLAdmin_Database : GTLRObject
 
@@ -272,7 +303,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** The MySQL collation value. */
 @property(nonatomic, copy, nullable) NSString *collation;
 
-/** HTTP 1.1 Entity tag for the resource. */
+/**
+ *  This field is deprecated and will be removed from a future version of the
+ *  API.
+ */
 @property(nonatomic, copy, nullable) NSString *ETag;
 
 /**
@@ -302,16 +336,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- *  MySQL flags for Cloud SQL instances.
+ *  Database flags for Cloud SQL instances.
  */
 @interface GTLRSQLAdmin_DatabaseFlags : GTLRObject
 
 /**
  *  The name of the flag. These flags are passed at instance startup, so include
- *  both MySQL server options and MySQL system variables. Flags should be
+ *  both server options and system variables for MySQL. Flags should be
  *  specified with underscores, not hyphens. For more information, see
- *  Configuring MySQL Flags in the Google Cloud SQL documentation, as well as
- *  the official MySQL documentation for server options and system variables.
+ *  Configuring Database Flags in the Cloud SQL documentation.
  */
 @property(nonatomic, copy, nullable) NSString *name;
 
@@ -330,9 +363,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GTLRSQLAdmin_DatabaseInstance : GTLRObject
 
 /**
- *  FIRST_GEN: Basic Cloud SQL instance that runs in a Google-managed container.
- *  SECOND_GEN: A newer Cloud SQL backend that runs in a Compute Engine VM.
- *  EXTERNAL: A MySQL server that is not managed by Google.
+ *  FIRST_GEN: First Generation instance. MySQL only.
+ *  SECOND_GEN: Second Generation instance or PostgreSQL instance.
+ *  EXTERNAL: A database server that is not managed by Google.
+ *  This property is read-only; use the tier property in the settings object to
+ *  determine the database type and Second or First Generation.
  */
 @property(nonatomic, copy, nullable) NSString *backendType;
 
@@ -343,9 +378,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The current disk usage of the instance in bytes. This property has been
  *  deprecated. Users should use the
  *  "cloudsql.googleapis.com/database/disk/bytes_used" metric in Cloud
- *  Monitoring API instead. Please see
- *  https://groups.google.com/d/msg/google-cloud-sql-announce/I_7-F9EBhT0/BtvFtdFeAgAJ
- *  for details.
+ *  Monitoring API instead. Please see this announcement for details.
  *
  *  Uses NSNumber of longLongValue.
  */
@@ -359,7 +392,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, copy, nullable) NSString *databaseVersion;
 
-/** HTTP 1.1 Entity tag for the resource. */
+/**
+ *  This field is deprecated and will be removed from a future version of the
+ *  API. Use the settings.settingsVersion field instead.
+ */
 @property(nonatomic, copy, nullable) NSString *ETag;
 
 /**
@@ -369,9 +405,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_DatabaseInstance_FailoverReplica *failoverReplica;
 
 /**
- *  The GCE zone that the instance is serving from. In case when the instance is
- *  failed over to standby zone, this value may be different with what user
- *  specified in the settings.
+ *  The Compute Engine zone that the instance is currently serving from. This
+ *  value could be different from the zone that was specified when the instance
+ *  was created if the instance has failed over to its secondary zone.
  */
 @property(nonatomic, copy, nullable) NSString *gceZone;
 
@@ -429,10 +465,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, copy, nullable) NSString *region;
 
-/**
- *  Configuration specific to read-replicas replicating from on-premises
- *  masters.
- */
+/** Configuration specific to failover replicas and read replicas. */
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_ReplicaConfiguration *replicaConfiguration;
 
 /** The replicas of the instance. */
@@ -560,6 +593,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_DemoteMasterConfiguration *replicaConfiguration;
 
+/**
+ *  Verify GTID consistency for demote operation. Default value: True. Second
+ *  Generation instances only. Setting this flag to false enables you to bypass
+ *  GTID consistency check between on-premises master and Cloud SQL instance
+ *  during the demotion operation but also exposes you to the risk of future
+ *  replication failures. Change the value only if you know the reason for the
+ *  GTID divergence and are confident that doing so will not cause any
+ *  replication issues.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *verifyGtidConsistency;
+
 @end
 
 
@@ -598,15 +644,22 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface GTLRSQLAdmin_ExportContext : GTLRObject
 
-/** Options for exporting data as CSV. */
+/**
+ *  Options for exporting data as CSV.
+ *  Exporting in CSV format using the Cloud SQL Admin API is not supported for
+ *  PostgreSQL instances.
+ */
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_ExportContext_CsvExportOptions *csvExportOptions;
 
 /**
- *  Databases (for example, guestbook) from which the export is made. If
- *  fileType is SQL and no database is specified, all databases are exported. If
- *  fileType is CSV, you can optionally specify at most one database to export.
- *  If csvExportOptions.selectQuery also specifies the database, this field will
- *  be ignored.
+ *  Databases to be exported.
+ *  MySQL instances: If fileType is SQL and no database is specified, all
+ *  databases are exported, except for the mysql system database. If fileType is
+ *  CSV, you can specify one database, either by using this property or by using
+ *  the csvExportOptions.selectQuery property, which takes precedence over this
+ *  property.
+ *  PostgreSQL instances: If fileType is SQL, you must specify one database to
+ *  be exported. A fileType of CSV is not supported for PostgreSQL instances.
  */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *databases;
 
@@ -614,6 +667,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The file type for the specified uri.
  *  SQL: The file contains SQL statements.
  *  CSV: The file contains CSV data.
+ *  CSV is not supported for PostgreSQL instances.
  */
 @property(nonatomic, copy, nullable) NSString *fileType;
 
@@ -626,8 +680,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The path to the file in Google Cloud Storage where the export will be
  *  stored. The URI is in the form gs://bucketName/fileName. If the file already
- *  exists, the operation fails. If fileType is SQL and the filename ends with
- *  .gz, the contents are compressed.
+ *  exists, the requests succeeds, but the operation fails. If fileType is SQL
+ *  and the filename ends with .gz, the contents are compressed.
  */
 @property(nonatomic, copy, nullable) NSString *uri;
 
@@ -636,6 +690,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Options for exporting data as CSV.
+ *  Exporting in CSV format using the Cloud SQL Admin API is not supported for
+ *  PostgreSQL instances.
  */
 @interface GTLRSQLAdmin_ExportContext_CsvExportOptions : GTLRObject
 
@@ -650,6 +706,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface GTLRSQLAdmin_ExportContext_SqlExportOptions : GTLRObject
 
+/** Options for exporting from MySQL. */
+@property(nonatomic, strong, nullable) GTLRSQLAdmin_ExportContext_SqlExportOptions_MysqlExportOptions *mysqlExportOptions;
+
 /**
  *  Export only schemas.
  *
@@ -659,9 +718,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Tables to export, or that were exported, from the specified database. If you
- *  specify tables, specify one and only one database.
+ *  specify tables, specify one and only one database. For PostgreSQL instances,
+ *  you can specify only one table.
  */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *tables;
+
+@end
+
+
+/**
+ *  Options for exporting from MySQL.
+ */
+@interface GTLRSQLAdmin_ExportContext_SqlExportOptions_MysqlExportOptions : GTLRObject
+
+/**
+ *  Option to include SQL statement required to set up replication. If set to 1,
+ *  the dump file includes a CHANGE MASTER TO statement with the binary log
+ *  coordinates. If set to 2, the CHANGE MASTER TO statement is written as a SQL
+ *  comment, and has no effect. All other values are ignored.
+ *
+ *  Uses NSNumber of intValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *masterData;
 
 @end
 
@@ -686,7 +764,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- *  A Google Cloud SQL service flag resource.
+ *  A flag resource.
  */
 @interface GTLRSQLAdmin_Flag : GTLRObject
 
@@ -767,14 +845,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface GTLRSQLAdmin_ImportContext : GTLRObject
 
-/** Options for importing data as CSV. */
+/**
+ *  Options for importing data as CSV.
+ *  Importing CSV data using the Cloud SQL Admin API is not supported for
+ *  PostgreSQL instances.
+ */
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_ImportContext_CsvImportOptions *csvImportOptions;
 
 /**
- *  The database (for example, guestbook) to which the import is made. If
- *  fileType is SQL and no database is specified, it is assumed that the
- *  database is specified in the file to be imported. If fileType is CSV, it
- *  must be specified.
+ *  The target database for the import. If fileType is SQL, this field is
+ *  required only if the import file does not specify a database, and is
+ *  overridden by any database specification in the import file. If fileType is
+ *  CSV, one database must be specified.
  */
 @property(nonatomic, copy, nullable) NSString *database;
 
@@ -782,12 +864,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  The file type for the specified uri.
  *  SQL: The file contains SQL statements.
  *  CSV: The file contains CSV data.
+ *  Importing CSV data using the Cloud SQL Admin API is not supported for
+ *  PostgreSQL instances.
  */
 @property(nonatomic, copy, nullable) NSString *fileType;
 
 /**
  *  The PostgreSQL user for this import operation. Defaults to
- *  cloudsqlsuperuser. Used only for PostgreSQL instances.
+ *  cloudsqlsuperuser. PostgreSQL instances only.
  */
 @property(nonatomic, copy, nullable) NSString *importUser;
 
@@ -795,9 +879,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy, nullable) NSString *kind;
 
 /**
- *  A path to the file in Google Cloud Storage from which the import is made.
- *  The URI is in the form gs://bucketName/fileName. Compressed gzip files (.gz)
- *  are supported when fileType is SQL.
+ *  Path to the import file in Cloud Storage, in the form
+ *  gs://bucketName/fileName. Compressed gzip files (.gz) are supported when
+ *  fileType is SQL. The instance must have write permissions to the bucket and
+ *  read access to the file.
  */
 @property(nonatomic, copy, nullable) NSString *uri;
 
@@ -806,6 +891,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Options for importing data as CSV.
+ *  Importing CSV data using the Cloud SQL Admin API is not supported for
+ *  PostgreSQL instances.
  */
 @interface GTLRSQLAdmin_ImportContext_CsvImportOptions : GTLRObject
 
@@ -903,6 +990,25 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, copy, nullable) NSString *nextPageToken;
 
+/** List of warnings that ocurred while handling the request. */
+@property(nonatomic, strong, nullable) NSArray<GTLRSQLAdmin_ApiWarning *> *warnings;
+
+@end
+
+
+/**
+ *  Instances ListServerCas response.
+ */
+@interface GTLRSQLAdmin_InstancesListServerCasResponse : GTLRObject
+
+@property(nonatomic, copy, nullable) NSString *activeVersion;
+
+/** List of server CA certificates for the instance. */
+@property(nonatomic, strong, nullable) NSArray<GTLRSQLAdmin_SslCert *> *certs;
+
+/** This is always sql#instancesListServerCas. */
+@property(nonatomic, copy, nullable) NSString *kind;
+
 @end
 
 
@@ -913,6 +1019,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Parameters required to perform the restore backup operation. */
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_RestoreBackupContext *restoreBackupContext;
+
+@end
+
+
+/**
+ *  Rotate Server CA request.
+ */
+@interface GTLRSQLAdmin_InstancesRotateServerCaRequest : GTLRObject
+
+/** Contains details about the rotate server CA operation. */
+@property(nonatomic, strong, nullable) GTLRSQLAdmin_RotateServerCaContext *rotateServerCaContext;
 
 @end
 
@@ -946,6 +1063,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  Uses NSNumber of boolValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *ipv4Enabled;
+
+/**
+ *  The resource link for the VPC network from which the Cloud SQL instance is
+ *  accessible for private IP. For example,
+ *  /projects/myProject/global/networks/default. This setting can be updated,
+ *  but it cannot be removed after it is set.
+ */
+@property(nonatomic, copy, nullable) NSString *privateNetwork;
 
 /**
  *  Whether SSL connections over IP should be enforced or not.
@@ -1001,7 +1126,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy, nullable) NSString *kind;
 
 /**
- *  The preferred Compute Engine zone (e.g. us-centra1-a, us-central1-b, etc.).
+ *  The preferred Compute Engine zone (e.g. us-central1-a, us-central1-b, etc.).
  *
  *  Remapped to 'zoneProperty' to avoid NSObject's 'zone'.
  */
@@ -1012,7 +1137,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Maintenance window. This specifies when a v2 Cloud SQL instance should
- *  preferably be restarted for system maintenance puruposes.
+ *  preferably be restarted for system maintenance purposes.
  */
 @interface GTLRSQLAdmin_MaintenanceWindow : GTLRObject
 
@@ -1033,6 +1158,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** This is always sql#maintenanceWindow. */
 @property(nonatomic, copy, nullable) NSString *kind;
 
+/**
+ *  Maintenance timing setting: canary (Earlier) or stable (Later).
+ *  Learn more.
+ */
 @property(nonatomic, copy, nullable) NSString *updateTrack;
 
 @end
@@ -1116,10 +1245,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- *  An Operations resource contains information about database instance
- *  operations such as create, delete, and restart. Operations resources are
- *  created in response to operations that were initiated; you never create them
- *  directly.
+ *  An Operation resource. For successful operations that return an Operation
+ *  resource, only the fields relevant to the operation are populated in the
+ *  resource.
  */
 @interface GTLRSQLAdmin_Operation : GTLRObject
 
@@ -1309,32 +1437,55 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
+ *  Instance rotate server CA context.
+ */
+@interface GTLRSQLAdmin_RotateServerCaContext : GTLRObject
+
+/** This is always sql#rotateServerCaContext. */
+@property(nonatomic, copy, nullable) NSString *kind;
+
+/**
+ *  The fingerprint of the next version to be rotated to. If left unspecified,
+ *  will be rotated to the most recently added server CA version.
+ */
+@property(nonatomic, copy, nullable) NSString *nextVersion;
+
+@end
+
+
+/**
  *  Database instance settings.
  */
 @interface GTLRSQLAdmin_Settings : GTLRObject
 
 /**
  *  The activation policy specifies when the instance is activated; it is
- *  applicable only when the instance state is RUNNABLE. The activation policy
- *  cannot be updated together with other settings for Second Generation
- *  instances. Valid values:
- *  ALWAYS: The instance is on; it is not deactivated by inactivity.
+ *  applicable only when the instance state is RUNNABLE. Valid values:
+ *  ALWAYS: The instance is on, and remains so even in the absence of connection
+ *  requests.
  *  NEVER: The instance is off; it is not activated, even if a connection
  *  request arrives.
- *  ON_DEMAND: The instance responds to incoming requests, and turns itself off
- *  when not in use. Instances with PER_USE pricing turn off after 15 minutes of
- *  inactivity. Instances with PER_PACKAGE pricing turn off after 12 hours of
- *  inactivity.
+ *  ON_DEMAND: First Generation instances only. The instance responds to
+ *  incoming requests, and turns itself off when not in use. Instances with
+ *  PER_USE pricing turn off after 15 minutes of inactivity. Instances with
+ *  PER_PACKAGE pricing turn off after 12 hours of inactivity.
  */
 @property(nonatomic, copy, nullable) NSString *activationPolicy;
 
 /**
- *  The App Engine app IDs that can access this instance. This property is only
- *  applicable to First Generation instances.
+ *  The App Engine app IDs that can access this instance. First Generation
+ *  instances only.
  */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *authorizedGaeApplications;
 
-/** Reserved for future use. */
+/**
+ *  Availability type (PostgreSQL instances only). Potential values:
+ *  ZONAL: The instance serves data from only one zone. Outages in that zone
+ *  affect data accessibility.
+ *  REGIONAL: The instance can serve data from more than one zone in a region
+ *  (it is highly available).
+ *  For more information, see Overview of the High Availability Configuration.
+ */
 @property(nonatomic, copy, nullable) NSString *availabilityType;
 
 /** The daily backup configuration for the instance. */
@@ -1361,16 +1512,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, nullable) NSNumber *databaseReplicationEnabled;
 
 /**
- *  The size of data disk, in GB. The data disk size minimum is 10GB. Applies
- *  only to Second Generation instances.
+ *  The size of data disk, in GB. The data disk size minimum is 10GB. Not used
+ *  for First Generation instances.
  *
  *  Uses NSNumber of longLongValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *dataDiskSizeGb;
 
 /**
- *  The type of data disk. Only supported for Second Generation instances. The
- *  default type is PD_SSD. Applies only to Second Generation instances.
+ *  The type of data disk: PD_SSD (default) or PD_HDD. Not used for First
+ *  Generation instances.
  */
 @property(nonatomic, copy, nullable) NSString *dataDiskType;
 
@@ -1386,15 +1537,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The location preference settings. This allows the instance to be located as
- *  near as possible to either an App Engine app or GCE zone for better
- *  performance. App Engine co-location is only applicable to First Generation
- *  instances.
+ *  near as possible to either an App Engine app or Compute Engine zone for
+ *  better performance. App Engine co-location is only applicable to First
+ *  Generation instances.
  */
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_LocationPreference *locationPreference;
 
 /**
  *  The maintenance window for this instance. This specifies when the instance
- *  may be restarted for maintenance purposes. Applies only to Second Generation
+ *  can be restarted for maintenance purposes. Not used for First Generation
  *  instances.
  */
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_MaintenanceWindow *maintenanceWindow;
@@ -1424,7 +1575,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Configuration to increase storage size automatically. The default value is
- *  true. Applies only to Second Generation instances.
+ *  true. Not used for First Generation instances.
  *
  *  Uses NSNumber of boolValue.
  */
@@ -1432,16 +1583,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The maximum size to which storage capacity can be automatically increased.
- *  The default value is 0, which specifies that there is no limit. Applies only
- *  to Second Generation instances.
+ *  The default value is 0, which specifies that there is no limit. Not used for
+ *  First Generation instances.
  *
  *  Uses NSNumber of longLongValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *storageAutoResizeLimit;
 
 /**
- *  The tier of service for this instance, for example D1, D2. For more
- *  information, see pricing.
+ *  The tier (or machine type) for this instance, for example db-n1-standard-1
+ *  (MySQL instances) or db-custom-1-3840 (PostgreSQL instances). For MySQL
+ *  instances, this property determines whether the instance is First or Second
+ *  Generation. For more information, see Instance Settings.
  */
 @property(nonatomic, copy, nullable) NSString *tier;
 
@@ -1543,8 +1696,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  User supplied name. Must be a distinct name from the other certificates for
- *  this instance. New certificates will not be usable until the instance is
- *  restarted.
+ *  this instance.
  */
 @property(nonatomic, copy, nullable) NSString *commonName;
 
@@ -1557,8 +1709,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GTLRSQLAdmin_SslCertsInsertResponse : GTLRObject
 
 /**
- *  The new client certificate and private key. The new certificate will not
- *  work until the instance is restarted for First Generation instances.
+ *  The new client certificate and private key. For First Generation instances,
+ *  the new certificate does not take effect until the instance is restarted.
  */
 @property(nonatomic, strong, nullable) GTLRSQLAdmin_SslCertDetail *clientCert;
 
@@ -1626,8 +1778,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, nullable) NSArray<NSString *> *region;
 
 /**
- *  An identifier for the service tier, for example D1, D2 etc. For related
- *  information, see Pricing.
+ *  An identifier for the machine type, for example, db-n1-standard-1. For
+ *  related information, see Pricing.
  */
 @property(nonatomic, copy, nullable) NSString *tier;
 
@@ -1678,7 +1830,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface GTLRSQLAdmin_User : GTLRObject
 
-/** HTTP 1.1 Entity tag for the resource. */
+/**
+ *  This field is deprecated and will be removed from a future version of the
+ *  API.
+ */
 @property(nonatomic, copy, nullable) NSString *ETag;
 
 /**
@@ -1699,7 +1854,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The name of the user in the Cloud SQL instance. Can be omitted for update
- *  since it is already specified on the URL.
+ *  since it is already specified in the URL.
  */
 @property(nonatomic, copy, nullable) NSString *name;
 

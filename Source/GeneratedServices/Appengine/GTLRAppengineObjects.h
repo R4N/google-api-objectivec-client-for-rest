@@ -2,10 +2,9 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google App Engine Admin API (appengine/v1)
+//   App Engine Admin API (appengine/v1)
 // Description:
-//   The App Engine Admin API enables developers to provision and manage their
-//   App Engine applications.
+//   Provisions and manages developers' App Engine applications.
 // Documentation:
 //   https://cloud.google.com/appengine/docs/admin-api/
 
@@ -26,13 +25,18 @@
 @class GTLRAppengine_AutomaticScaling;
 @class GTLRAppengine_BasicScaling;
 @class GTLRAppengine_CertificateRawData;
+@class GTLRAppengine_CloudBuildOptions;
 @class GTLRAppengine_ContainerInfo;
 @class GTLRAppengine_CpuUtilization;
+@class GTLRAppengine_CreateVersionMetadataV1;
+@class GTLRAppengine_CreateVersionMetadataV1Alpha;
+@class GTLRAppengine_CreateVersionMetadataV1Beta;
 @class GTLRAppengine_Deployment;
 @class GTLRAppengine_Deployment_Files;
 @class GTLRAppengine_DiskUtilization;
 @class GTLRAppengine_DomainMapping;
 @class GTLRAppengine_EndpointsApiService;
+@class GTLRAppengine_Entrypoint;
 @class GTLRAppengine_ErrorHandler;
 @class GTLRAppengine_FeatureSettings;
 @class GTLRAppengine_FileInfo;
@@ -45,6 +49,7 @@
 @class GTLRAppengine_Location;
 @class GTLRAppengine_Location_Labels;
 @class GTLRAppengine_Location_Metadata;
+@class GTLRAppengine_ManagedCertificate;
 @class GTLRAppengine_ManualScaling;
 @class GTLRAppengine_Network;
 @class GTLRAppengine_NetworkUtilization;
@@ -208,6 +213,29 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Application_ServingStatus_Unspecifie
 GTLR_EXTERN NSString * const kGTLRAppengine_Application_ServingStatus_UserDisabled;
 
 // ----------------------------------------------------------------------------
+// GTLRAppengine_EndpointsApiService.rolloutStrategy
+
+/**
+ *  Endpoints service configuration ID will be fixed to the configuration ID
+ *  specified by config_id.
+ *
+ *  Value: "FIXED"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_EndpointsApiService_RolloutStrategy_Fixed;
+/**
+ *  Endpoints service configuration ID will be updated with each rollout.
+ *
+ *  Value: "MANAGED"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_EndpointsApiService_RolloutStrategy_Managed;
+/**
+ *  Not specified. Defaults to FIXED.
+ *
+ *  Value: "UNSPECIFIED_ROLLOUT_STRATEGY"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_EndpointsApiService_RolloutStrategy_UnspecifiedRolloutStrategy;
+
+// ----------------------------------------------------------------------------
 // GTLRAppengine_ErrorHandler.errorCode
 
 /**
@@ -271,6 +299,60 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Instance_Availability_Resident;
 GTLR_EXTERN NSString * const kGTLRAppengine_Instance_Availability_Unspecified;
 
 // ----------------------------------------------------------------------------
+// GTLRAppengine_ManagedCertificate.status
+
+/**
+ *  All renewal attempts have been exhausted, likely due to an invalid DNS
+ *  setup.
+ *
+ *  Value: "FAILED_PERMANENT"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_ManagedCertificate_Status_FailedPermanent;
+/**
+ *  Most recent renewal failed due to a CAA retrieval failure. This means that
+ *  the domain's DNS provider does not properly handle CAA records, failing
+ *  requests for CAA records when no CAA records are defined. Renewals will
+ *  continue to fail until the DNS provider is changed or a CAA record is added
+ *  for the given domain. The last successfully provisioned certificate may
+ *  still be serving.
+ *
+ *  Value: "FAILED_RETRYING_CAA_CHECKING"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_ManagedCertificate_Status_FailedRetryingCaaChecking;
+/**
+ *  Most recent renewal failed due to an explicit CAA record that does not
+ *  include the in-use CA, Let's Encrypt. Renewals will continue to fail until
+ *  the CAA is reconfigured. The last successfully provisioned certificate may
+ *  still be serving.
+ *
+ *  Value: "FAILED_RETRYING_CAA_FORBIDDEN"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_ManagedCertificate_Status_FailedRetryingCaaForbidden;
+/**
+ *  Most recent renewal failed due to an invalid DNS setup and will be retried.
+ *  Renewal attempts will continue to fail until the certificate domain's DNS
+ *  configuration is fixed. The last successfully provisioned certificate may
+ *  still be serving.
+ *
+ *  Value: "FAILED_RETRYING_NOT_VISIBLE"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_ManagedCertificate_Status_FailedRetryingNotVisible;
+/** Value: "MANAGEMENT_STATUS_UNSPECIFIED" */
+GTLR_EXTERN NSString * const kGTLRAppengine_ManagedCertificate_Status_ManagementStatusUnspecified;
+/**
+ *  Certificate was successfully obtained and inserted into the serving system.
+ *
+ *  Value: "OK"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_ManagedCertificate_Status_Ok;
+/**
+ *  Certificate is under active attempts to acquire or renew.
+ *
+ *  Value: "PENDING"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_ManagedCertificate_Status_Pending;
+
+// ----------------------------------------------------------------------------
 // GTLRAppengine_ResourceRecord.type
 
 /**
@@ -297,6 +379,31 @@ GTLR_EXTERN NSString * const kGTLRAppengine_ResourceRecord_Type_Cname;
  *  Value: "RECORD_TYPE_UNSPECIFIED"
  */
 GTLR_EXTERN NSString * const kGTLRAppengine_ResourceRecord_Type_RecordTypeUnspecified;
+
+// ----------------------------------------------------------------------------
+// GTLRAppengine_SslSettings.sslManagementType
+
+/**
+ *  SSL support for this domain is configured automatically. The mapped SSL
+ *  certificate will be automatically renewed.
+ *
+ *  Value: "AUTOMATIC"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_SslSettings_SslManagementType_Automatic;
+/**
+ *  SSL support for this domain is configured manually by the user. Either the
+ *  domain has no SSL support or a user-obtained SSL certificate has been
+ *  explictly mapped to this domain.
+ *
+ *  Value: "MANUAL"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_SslSettings_SslManagementType_Manual;
+/**
+ *  Defaults to AUTOMATIC.
+ *
+ *  Value: "SSL_MANAGEMENT_TYPE_UNSPECIFIED"
+ */
+GTLR_EXTERN NSString * const kGTLRAppengine_SslSettings_SslManagementType_SslManagementTypeUnspecified;
 
 // ----------------------------------------------------------------------------
 // GTLRAppengine_TrafficSplit.shardBy
@@ -633,7 +740,7 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 /**
  *  HTTP path dispatch rules for requests to the application that do not
  *  explicitly target a service or version. Rules are order-dependent. Up to 20
- *  dispatch rules can be supported.\@OutputOnly
+ *  dispatch rules can be supported.
  */
 @property(nonatomic, strong, nullable) NSArray<GTLRAppengine_UrlDispatchRule *> *dispatchRules;
 
@@ -658,10 +765,11 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, copy, nullable) NSString *identifier;
 
 /**
- *  Location from which this application will be run. Application instances will
- *  run out of data centers in the chosen location, which is also where all of
- *  the application's end user content is stored.Defaults to us-central.Options
- *  are:us-central - Central USeurope-west - Western Europeus-east1 - Eastern US
+ *  Location from which this application runs. Application instances run out of
+ *  the data centers in the specified location, which is also where all of the
+ *  application's end user content is stored.Defaults to us-central.View the
+ *  list of supported locations
+ *  (https://cloud.google.com/appengine/docs/locations).
  */
 @property(nonatomic, copy, nullable) NSString *locationId;
 
@@ -741,6 +849,14 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, copy, nullable) NSString *identifier;
 
 /**
+ *  Only applicable if this certificate is managed by App Engine. Managed
+ *  certificates are tied to the lifecycle of a DomainMapping and cannot be
+ *  updated or deleted via the AuthorizedCertificates API. If this certificate
+ *  is manually administered by the user, this field will be empty.\@OutputOnly
+ */
+@property(nonatomic, strong, nullable) GTLRAppengine_ManagedCertificate *managedCertificate;
+
+/**
  *  Full path to the AuthorizedCertificate resource in the API. Example:
  *  apps/myapp/authorizedCertificates/12345.\@OutputOnly
  */
@@ -791,9 +907,12 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @interface GTLRAppengine_AutomaticScaling : GTLRObject
 
 /**
- *  Amount of time that the Autoscaler
- *  (https://cloud.google.com/compute/docs/autoscaler/) should wait between
- *  changes to the number of virtual machines. Only applicable for VM runtimes.
+ *  The time period that the Autoscaler
+ *  (https://cloud.google.com/compute/docs/autoscaler/) should wait before it
+ *  starts collecting information from a new instance. This prevents the
+ *  autoscaler from collecting information when the instance is initializing,
+ *  during which the collected usage would not be reliable. Only applicable in
+ *  the App Engine flexible environment.
  */
 @property(nonatomic, strong, nullable) GTLRDuration *coolDownPeriod;
 
@@ -826,7 +945,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, strong, nullable) GTLRDuration *maxPendingLatency;
 
 /**
- *  Maximum number of instances that should be started to handle requests.
+ *  Maximum number of instances that should be started to handle requests for
+ *  this version.
  *
  *  Uses NSNumber of intValue.
  */
@@ -847,7 +967,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, strong, nullable) GTLRDuration *minPendingLatency;
 
 /**
- *  Minimum number of instances that should be maintained for this version.
+ *  Minimum number of running instances that should be maintained for this
+ *  version.
  *
  *  Uses NSNumber of intValue.
  */
@@ -937,6 +1058,30 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 
 
 /**
+ *  Options for the build operations performed as a part of the version
+ *  deployment. Only applicable for App Engine flexible environment when
+ *  creating a version using source code directly.
+ */
+@interface GTLRAppengine_CloudBuildOptions : GTLRObject
+
+/**
+ *  Path to the yaml file used in deployment, used to determine runtime
+ *  configuration details.Required for flexible environment builds.See
+ *  https://cloud.google.com/appengine/docs/standard/python/config/appref for
+ *  more details.
+ */
+@property(nonatomic, copy, nullable) NSString *appYamlPath;
+
+/**
+ *  The Cloud Build timeout used as part of any dependent builds performed by
+ *  version creation. Defaults to 10 minutes.
+ */
+@property(nonatomic, strong, nullable) GTLRDuration *cloudBuildTimeout;
+
+@end
+
+
+/**
  *  Docker image that is used to create a container and start a VM instance for
  *  the version that you deploy. Only applicable for instances running in the
  *  App Engine flexible environment.
@@ -973,6 +1118,51 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 
 
 /**
+ *  Metadata for the given google.longrunning.Operation during a
+ *  google.appengine.v1.CreateVersionRequest.
+ */
+@interface GTLRAppengine_CreateVersionMetadataV1 : GTLRObject
+
+/**
+ *  The Cloud Build ID if one was created as part of the version create.
+ *  \@OutputOnly
+ */
+@property(nonatomic, copy, nullable) NSString *cloudBuildId;
+
+@end
+
+
+/**
+ *  Metadata for the given google.longrunning.Operation during a
+ *  google.appengine.v1alpha.CreateVersionRequest.
+ */
+@interface GTLRAppengine_CreateVersionMetadataV1Alpha : GTLRObject
+
+/**
+ *  The Cloud Build ID if one was created as part of the version create.
+ *  \@OutputOnly
+ */
+@property(nonatomic, copy, nullable) NSString *cloudBuildId;
+
+@end
+
+
+/**
+ *  Metadata for the given google.longrunning.Operation during a
+ *  google.appengine.v1beta.CreateVersionRequest.
+ */
+@interface GTLRAppengine_CreateVersionMetadataV1Beta : GTLRObject
+
+/**
+ *  The Cloud Build ID if one was created as part of the version create.
+ *  \@OutputOnly
+ */
+@property(nonatomic, copy, nullable) NSString *cloudBuildId;
+
+@end
+
+
+/**
  *  Request message for Instances.DebugInstance.
  */
 @interface GTLRAppengine_DebugInstanceRequest : GTLRObject
@@ -994,6 +1184,15 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
  *  Code and application artifacts used to deploy a version to App Engine.
  */
 @interface GTLRAppengine_Deployment : GTLRObject
+
+/**
+ *  Options for any Google Cloud Build builds created as a part of this
+ *  deployment.Note that this is orthogonal to the build parameter, where the
+ *  deployment depends on an already existing cloud build. These options will
+ *  only be used if a new build is created, such as when deploying to the App
+ *  Engine flexible environment using files or zip.
+ */
+@property(nonatomic, strong, nullable) GTLRAppengine_CloudBuildOptions *cloudBuildOptions;
 
 /**
  *  The Docker image for the container that runs the version. Only applicable
@@ -1029,7 +1228,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 
 
 /**
- *  Target scaling by disk usage. Only applicable for VM runtimes.
+ *  Target scaling by disk usage. Only applicable in the App Engine flexible
+ *  environment.
  */
 @interface GTLRAppengine_DiskUtilization : GTLRObject
 
@@ -1114,23 +1314,67 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 /**
  *  Cloud Endpoints (https://cloud.google.com/endpoints) configuration. The
  *  Endpoints API Service provides tooling for serving Open API and gRPC
- *  endpoints via an NGINX proxy.The fields here refer to the name and
- *  configuration id of a "service" resource in the Service Management API
+ *  endpoints via an NGINX proxy. Only valid for App Engine Flexible environment
+ *  deployments.The fields here refer to the name and configuration ID of a
+ *  "service" resource in the Service Management API
  *  (https://cloud.google.com/service-management/overview).
  */
 @interface GTLRAppengine_EndpointsApiService : GTLRObject
 
 /**
- *  Endpoints service configuration id as specified by the Service Management
- *  API. For example "2016-09-19r1"
+ *  Endpoints service configuration ID as specified by the Service Management
+ *  API. For example "2016-09-19r1".By default, the rollout strategy for
+ *  Endpoints is RolloutStrategy.FIXED. This means that Endpoints starts up with
+ *  a particular configuration ID. When a new configuration is rolled out,
+ *  Endpoints must be given the new configuration ID. The config_id field is
+ *  used to give the configuration ID and is required in this case.Endpoints
+ *  also has a rollout strategy called RolloutStrategy.MANAGED. When using this,
+ *  Endpoints fetches the latest configuration and does not need the
+ *  configuration ID. In this case, config_id must be omitted.
  */
 @property(nonatomic, copy, nullable) NSString *configId;
+
+/**
+ *  Enable or disable trace sampling. By default, this is set to false for
+ *  enabled.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *disableTraceSampling;
 
 /**
  *  Endpoints service name which is the name of the "service" resource in the
  *  Service Management API. For example "myapi.endpoints.myproject.cloud.goog"
  */
 @property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Endpoints rollout strategy. If FIXED, config_id must be specified. If
+ *  MANAGED, config_id must be omitted.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRAppengine_EndpointsApiService_RolloutStrategy_Fixed Endpoints
+ *        service configuration ID will be fixed to the configuration ID
+ *        specified by config_id. (Value: "FIXED")
+ *    @arg @c kGTLRAppengine_EndpointsApiService_RolloutStrategy_Managed
+ *        Endpoints service configuration ID will be updated with each rollout.
+ *        (Value: "MANAGED")
+ *    @arg @c kGTLRAppengine_EndpointsApiService_RolloutStrategy_UnspecifiedRolloutStrategy
+ *        Not specified. Defaults to FIXED. (Value:
+ *        "UNSPECIFIED_ROLLOUT_STRATEGY")
+ */
+@property(nonatomic, copy, nullable) NSString *rolloutStrategy;
+
+@end
+
+
+/**
+ *  The entrypoint for the application.
+ */
+@interface GTLRAppengine_Entrypoint : GTLRObject
+
+/** The format should be a shell command that can be fed to bash -c. */
+@property(nonatomic, copy, nullable) NSString *shell;
 
 @end
 
@@ -1741,6 +1985,12 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @interface GTLRAppengine_Location : GTLRObject
 
 /**
+ *  The friendly name for this location, typically a nearby city name. For
+ *  example, "Tokyo".
+ */
+@property(nonatomic, copy, nullable) NSString *displayName;
+
+/**
  *  Cross-service attributes for the location. For example
  *  {"cloud.googleapis.com/region": "us-east1"}
  */
@@ -1796,7 +2046,7 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @interface GTLRAppengine_LocationMetadata : GTLRObject
 
 /**
- *  App Engine Flexible Environment is available in the given
+ *  App Engine flexible environment is available in the given
  *  location.\@OutputOnly
  *
  *  Uses NSNumber of boolValue.
@@ -1804,12 +2054,65 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, strong, nullable) NSNumber *flexibleEnvironmentAvailable;
 
 /**
- *  App Engine Standard Environment is available in the given
+ *  App Engine standard environment is available in the given
  *  location.\@OutputOnly
  *
  *  Uses NSNumber of boolValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *standardEnvironmentAvailable;
+
+@end
+
+
+/**
+ *  A certificate managed by App Engine.
+ */
+@interface GTLRAppengine_ManagedCertificate : GTLRObject
+
+/**
+ *  Time at which the certificate was last renewed. The renewal process is fully
+ *  managed. Certificate renewal will automatically occur before the certificate
+ *  expires. Renewal errors can be tracked via ManagementStatus.\@OutputOnly
+ */
+@property(nonatomic, strong, nullable) GTLRDateTime *lastRenewalTime;
+
+/**
+ *  Status of certificate management. Refers to the most recent certificate
+ *  acquisition or renewal attempt.\@OutputOnly
+ *
+ *  Likely values:
+ *    @arg @c kGTLRAppengine_ManagedCertificate_Status_FailedPermanent All
+ *        renewal attempts have been exhausted, likely due to an invalid DNS
+ *        setup. (Value: "FAILED_PERMANENT")
+ *    @arg @c kGTLRAppengine_ManagedCertificate_Status_FailedRetryingCaaChecking
+ *        Most recent renewal failed due to a CAA retrieval failure. This means
+ *        that the domain's DNS provider does not properly handle CAA records,
+ *        failing requests for CAA records when no CAA records are defined.
+ *        Renewals will continue to fail until the DNS provider is changed or a
+ *        CAA record is added for the given domain. The last successfully
+ *        provisioned certificate may still be serving. (Value:
+ *        "FAILED_RETRYING_CAA_CHECKING")
+ *    @arg @c kGTLRAppengine_ManagedCertificate_Status_FailedRetryingCaaForbidden
+ *        Most recent renewal failed due to an explicit CAA record that does not
+ *        include the in-use CA, Let's Encrypt. Renewals will continue to fail
+ *        until the CAA is reconfigured. The last successfully provisioned
+ *        certificate may still be serving. (Value:
+ *        "FAILED_RETRYING_CAA_FORBIDDEN")
+ *    @arg @c kGTLRAppengine_ManagedCertificate_Status_FailedRetryingNotVisible
+ *        Most recent renewal failed due to an invalid DNS setup and will be
+ *        retried. Renewal attempts will continue to fail until the certificate
+ *        domain's DNS configuration is fixed. The last successfully provisioned
+ *        certificate may still be serving. (Value:
+ *        "FAILED_RETRYING_NOT_VISIBLE")
+ *    @arg @c kGTLRAppengine_ManagedCertificate_Status_ManagementStatusUnspecified
+ *        Value "MANAGEMENT_STATUS_UNSPECIFIED"
+ *    @arg @c kGTLRAppengine_ManagedCertificate_Status_Ok Certificate was
+ *        successfully obtained and inserted into the serving system. (Value:
+ *        "OK")
+ *    @arg @c kGTLRAppengine_ManagedCertificate_Status_Pending Certificate is
+ *        under active attempts to acquire or renew. (Value: "PENDING")
+ */
+@property(nonatomic, copy, nullable) NSString *status;
 
 @end
 
@@ -1834,21 +2137,21 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 
 
 /**
- *  Extra network settings. Only applicable for App Engine flexible environment
- *  versions
+ *  Extra network settings. Only applicable in the App Engine flexible
+ *  environment.
  */
 @interface GTLRAppengine_Network : GTLRObject
 
 /**
  *  List of ports, or port pairs, to forward from the virtual machine to the
- *  application container. Only applicable for App Engine flexible environment
- *  versions.
+ *  application container. Only applicable in the App Engine flexible
+ *  environment.
  */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *forwardedPorts;
 
 /**
- *  Tag to apply to the VM instance during creation. Only applicable for for App
- *  Engine flexible environment versions.
+ *  Tag to apply to the instance during creation. Only applicable in the App
+ *  Engine flexible environment.
  */
 @property(nonatomic, copy, nullable) NSString *instanceTag;
 
@@ -1863,13 +2166,13 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
  *  Specify the short name, not the resource path.If a subnetwork name is
  *  specified, a network name will also be required unless it is for the default
  *  network.
- *  If the network the VM instance is being created in is a Legacy network, then
- *  the IP address is allocated from the IPv4Range.
- *  If the network the VM instance is being created in is an auto Subnet Mode
+ *  If the network that the instance is being created in is a Legacy network,
+ *  then the IP address is allocated from the IPv4Range.
+ *  If the network that the instance is being created in is an auto Subnet Mode
  *  Network, then only network name should be specified (not the
  *  subnetwork_name) and the IP address is created from the IPCidrRange of the
  *  subnetwork that exists in that zone for that network.
- *  If the network the VM instance is being created in is a custom Subnet Mode
+ *  If the network that the instance is being created in is a custom Subnet Mode
  *  Network, then the subnetwork_name must be specified and the IP address is
  *  created from the IPCidrRange of the subnetwork.If specified, the subnetwork
  *  must exist in the same region as the App Engine flexible environment
@@ -1881,7 +2184,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 
 
 /**
- *  Target scaling by network usage. Only applicable for VM runtimes.
+ *  Target scaling by network usage. Only applicable in the App Engine flexible
+ *  environment.
  */
 @interface GTLRAppengine_NetworkUtilization : GTLRObject
 
@@ -2035,6 +2339,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
  */
 @interface GTLRAppengine_OperationMetadataV1 : GTLRObject
 
+@property(nonatomic, strong, nullable) GTLRAppengine_CreateVersionMetadataV1 *createVersionMetadata;
+
 /** Time that this operation completed.\@OutputOnly */
 @property(nonatomic, strong, nullable) GTLRDateTime *endTime;
 
@@ -2073,6 +2379,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
  */
 @interface GTLRAppengine_OperationMetadataV1Alpha : GTLRObject
 
+@property(nonatomic, strong, nullable) GTLRAppengine_CreateVersionMetadataV1Alpha *createVersionMetadata;
+
 /** Time that this operation completed.\@OutputOnly */
 @property(nonatomic, strong, nullable) GTLRDateTime *endTime;
 
@@ -2110,6 +2418,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
  *  Metadata for the given google.longrunning.Operation.
  */
 @interface GTLRAppengine_OperationMetadataV1Beta : GTLRObject
+
+@property(nonatomic, strong, nullable) GTLRAppengine_CreateVersionMetadataV1Beta *createVersionMetadata;
 
 /** Time that this operation completed.\@OutputOnly */
 @property(nonatomic, strong, nullable) GTLRDateTime *endTime;
@@ -2226,7 +2536,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 
 
 /**
- *  Target scaling by request utilization. Only applicable for VM runtimes.
+ *  Target scaling by request utilization. Only applicable in the App Engine
+ *  flexible environment.
  */
 @interface GTLRAppengine_RequestUtilization : GTLRObject
 
@@ -2365,9 +2676,43 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 
 /**
  *  ID of the AuthorizedCertificate resource configuring SSL for the
- *  application. Clearing this field will remove SSL support. Example: 12345.
+ *  application. Clearing this field will remove SSL support.By default, a
+ *  managed certificate is automatically created for every domain mapping. To
+ *  omit SSL support or to configure SSL manually, specify
+ *  SslManagementType.MANUAL on a CREATE or UPDATE request. You must be
+ *  authorized to administer the AuthorizedCertificate resource to manually map
+ *  it to a DomainMapping resource. Example: 12345.
  */
 @property(nonatomic, copy, nullable) NSString *certificateId;
+
+/**
+ *  ID of the managed AuthorizedCertificate resource currently being
+ *  provisioned, if applicable. Until the new managed certificate has been
+ *  successfully provisioned, the previous SSL state will be preserved. Once the
+ *  provisioning process completes, the certificate_id field will reflect the
+ *  new managed certificate and this field will be left empty. To remove SSL
+ *  support while there is still a pending managed certificate, clear the
+ *  certificate_id field with an UpdateDomainMappingRequest.\@OutputOnly
+ */
+@property(nonatomic, copy, nullable) NSString *pendingManagedCertificateId;
+
+/**
+ *  SSL management type for this domain. If AUTOMATIC, a managed certificate is
+ *  automatically provisioned. If MANUAL, certificate_id must be manually
+ *  specified in order to configure SSL for this domain.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRAppengine_SslSettings_SslManagementType_Automatic SSL support
+ *        for this domain is configured automatically. The mapped SSL
+ *        certificate will be automatically renewed. (Value: "AUTOMATIC")
+ *    @arg @c kGTLRAppengine_SslSettings_SslManagementType_Manual SSL support
+ *        for this domain is configured manually by the user. Either the domain
+ *        has no SSL support or a user-obtained SSL certificate has been
+ *        explictly mapped to this domain. (Value: "MANUAL")
+ *    @arg @c kGTLRAppengine_SslSettings_SslManagementType_SslManagementTypeUnspecified
+ *        Defaults to AUTOMATIC. (Value: "SSL_MANAGEMENT_TYPE_UNSPECIFIED")
+ */
+@property(nonatomic, copy, nullable) NSString *sslManagementType;
 
 @end
 
@@ -2378,16 +2723,16 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @interface GTLRAppengine_StandardSchedulerSettings : GTLRObject
 
 /**
- *  Maximum number of instances for an app version. Set to a non-positive value
- *  (0 by convention) to disable max_instances configuration.
+ *  Maximum number of instances to run for this version. Set to zero to disable
+ *  max_instances configuration.
  *
  *  Uses NSNumber of intValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *maxInstances;
 
 /**
- *  Minimum number of instances for an app version. Set to a non-positive value
- *  (0 by convention) to disable min_instances configuration.
+ *  Minimum number of instances to run for this version. Set to zero to disable
+ *  min_instances configuration.
  *
  *  Uses NSNumber of intValue.
  */
@@ -2670,7 +3015,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, copy, nullable) NSString *authFailAction;
 
 /**
- *  Level of login required to access this resource.
+ *  Level of login required to access this resource. Not supported for Node.js
+ *  in the App Engine standard environment.
  *
  *  Likely values:
  *    @arg @c kGTLRAppengine_UrlMap_Login_LoginAdmin If the user is not signed
@@ -2708,7 +3054,11 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
  */
 @property(nonatomic, copy, nullable) NSString *redirectHttpResponseCode;
 
-/** Executes a script to handle the request that matches this URL pattern. */
+/**
+ *  Executes a script to handle the requests that match this URL pattern. Only
+ *  the auto value is supported for Node.js in the App Engine standard
+ *  environment, for example "script": "auto".
+ */
 @property(nonatomic, strong, nullable) GTLRAppengine_ScriptHandler *script;
 
 /**
@@ -2791,7 +3141,7 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 /**
  *  Duration that static files should be cached by web proxies and browsers.
  *  Only applicable if the corresponding StaticFilesHandler
- *  (https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#staticfileshandler)
+ *  (https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StaticFilesHandler)
  *  does not specify its own expiration time.Only returned in GET requests if
  *  view=FULL is set.
  */
@@ -2805,7 +3155,7 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 
 /**
  *  Total size in bytes of all the files that are included in this version and
- *  curerntly hosted on the App Engine disk.\@OutputOnly
+ *  currently hosted on the App Engine disk.\@OutputOnly
  *
  *  Uses NSNumber of longLongValue.
  */
@@ -2817,6 +3167,9 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
  *  implemented by the app.
  */
 @property(nonatomic, strong, nullable) GTLRAppengine_EndpointsApiService *endpointsApiService;
+
+/** The entrypoint for the application. */
+@property(nonatomic, strong, nullable) GTLRAppengine_Entrypoint *entrypoint;
 
 /** App Engine execution environment for this version.Defaults to standard. */
 @property(nonatomic, copy, nullable) NSString *env;
@@ -2842,9 +3195,9 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, strong, nullable) NSArray<GTLRAppengine_UrlMap *> *handlers;
 
 /**
- *  Configures health checking for VM instances. Unhealthy instances are stopped
- *  and replaced with new instances. Only applicable for VM runtimes.Only
- *  returned in GET requests if view=FULL is set.
+ *  Configures health checking for instances. Unhealthy instances are stopped
+ *  and replaced with new instances. Only applicable in the App Engine flexible
+ *  environment.Only returned in GET requests if view=FULL is set.
  */
 @property(nonatomic, strong, nullable) GTLRAppengine_HealthCheck *healthCheck;
 
@@ -2878,8 +3231,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, strong, nullable) NSArray<GTLRAppengine_Library *> *libraries;
 
 /**
- *  Configures liveness health checking for VM instances. Unhealthy instances
- *  are stopped and replaced with new instancesOnly returned in GET requests if
+ *  Configures liveness health checking for instances. Unhealthy instances are
+ *  stopped and replaced with new instancesOnly returned in GET requests if
  *  view=FULL is set.
  */
 @property(nonatomic, strong, nullable) GTLRAppengine_LivenessCheck *livenessCheck;
@@ -2897,8 +3250,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, copy, nullable) NSString *name;
 
 /**
- *  Extra network settings. Only applicable for App Engine flexible environment
- *  versions.
+ *  Extra network settings. Only applicable in the App Engine flexible
+ *  environment.
  */
 @property(nonatomic, strong, nullable) GTLRAppengine_Network *network;
 
@@ -2910,13 +3263,16 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 @property(nonatomic, copy, nullable) NSString *nobuildFilesRegex;
 
 /**
- *  Configures readiness health checking for VM instances. Unhealthy instances
- *  are not put into the backend traffic rotation.Only returned in GET requests
- *  if view=FULL is set.
+ *  Configures readiness health checking for instances. Unhealthy instances are
+ *  not put into the backend traffic rotation.Only returned in GET requests if
+ *  view=FULL is set.
  */
 @property(nonatomic, strong, nullable) GTLRAppengine_ReadinessCheck *readinessCheck;
 
-/** Machine resources for this version. Only applicable for VM runtimes. */
+/**
+ *  Machine resources for this version. Only applicable in the App Engine
+ *  flexible environment.
+ */
 @property(nonatomic, strong, nullable) GTLRAppengine_Resources *resources;
 
 /** Desired runtime. Example: python27. */
@@ -2928,6 +3284,12 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
  *  https://cloud.google.com/appengine/docs/standard/<language>/config/appref
  */
 @property(nonatomic, copy, nullable) NSString *runtimeApiVersion;
+
+/**
+ *  The channel of the runtime to use. Only available for some runtimes.
+ *  Defaults to the default channel.
+ */
+@property(nonatomic, copy, nullable) NSString *runtimeChannel;
 
 /**
  *  Current serving status of this version. Only the versions with a SERVING
@@ -2966,6 +3328,12 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
  */
 @property(nonatomic, strong, nullable) NSNumber *vm;
 
+/**
+ *  The Google Compute Engine zones that are supported by this version in the
+ *  App Engine flexible environment.
+ */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *zones;
+
 @end
 
 
@@ -2996,7 +3364,8 @@ GTLR_EXTERN NSString * const kGTLRAppengine_Version_ServingStatus_Stopped;
 
 
 /**
- *  Volumes mounted within the app container. Only applicable for VM runtimes.
+ *  Volumes mounted within the app container. Only applicable in the App Engine
+ *  flexible environment.
  */
 @interface GTLRAppengine_Volume : GTLRObject
 

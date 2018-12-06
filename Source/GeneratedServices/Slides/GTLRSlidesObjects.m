@@ -4,7 +4,7 @@
 // API:
 //   Google Slides API (slides/v1)
 // Description:
-//   An API for creating and editing Google Slides presentations.
+//   Reads and writes Google Slides presentations.
 // Documentation:
 //   https://developers.google.com/slides/
 
@@ -194,6 +194,7 @@ NSString * const kGTLRSlides_CreateSheetsChartRequest_LinkingMode_Linked = @"LIN
 NSString * const kGTLRSlides_CreateSheetsChartRequest_LinkingMode_NotLinkedImage = @"NOT_LINKED_IMAGE";
 
 // GTLRSlides_CreateVideoRequest.source
+NSString * const kGTLRSlides_CreateVideoRequest_Source_Drive   = @"DRIVE";
 NSString * const kGTLRSlides_CreateVideoRequest_Source_SourceUnspecified = @"SOURCE_UNSPECIFIED";
 NSString * const kGTLRSlides_CreateVideoRequest_Source_Youtube = @"YOUTUBE";
 
@@ -226,6 +227,7 @@ NSString * const kGTLRSlides_Line_LineType_CurvedConnector3   = @"CURVED_CONNECT
 NSString * const kGTLRSlides_Line_LineType_CurvedConnector4   = @"CURVED_CONNECTOR_4";
 NSString * const kGTLRSlides_Line_LineType_CurvedConnector5   = @"CURVED_CONNECTOR_5";
 NSString * const kGTLRSlides_Line_LineType_StraightConnector1 = @"STRAIGHT_CONNECTOR_1";
+NSString * const kGTLRSlides_Line_LineType_StraightLine       = @"STRAIGHT_LINE";
 NSString * const kGTLRSlides_Line_LineType_TypeUnspecified    = @"TYPE_UNSPECIFIED";
 
 // GTLRSlides_LineProperties.dashStyle
@@ -384,6 +386,11 @@ NSString * const kGTLRSlides_Recolor_Name_Negative  = @"NEGATIVE";
 NSString * const kGTLRSlides_Recolor_Name_None      = @"NONE";
 NSString * const kGTLRSlides_Recolor_Name_Sepia     = @"SEPIA";
 
+// GTLRSlides_ReplaceAllShapesWithImageRequest.imageReplaceMethod
+NSString * const kGTLRSlides_ReplaceAllShapesWithImageRequest_ImageReplaceMethod_CenterCrop = @"CENTER_CROP";
+NSString * const kGTLRSlides_ReplaceAllShapesWithImageRequest_ImageReplaceMethod_CenterInside = @"CENTER_INSIDE";
+NSString * const kGTLRSlides_ReplaceAllShapesWithImageRequest_ImageReplaceMethod_ImageReplaceMethodUnspecified = @"IMAGE_REPLACE_METHOD_UNSPECIFIED";
+
 // GTLRSlides_ReplaceAllShapesWithImageRequest.replaceMethod
 NSString * const kGTLRSlides_ReplaceAllShapesWithImageRequest_ReplaceMethod_CenterCrop = @"CENTER_CROP";
 NSString * const kGTLRSlides_ReplaceAllShapesWithImageRequest_ReplaceMethod_CenterInside = @"CENTER_INSIDE";
@@ -391,6 +398,11 @@ NSString * const kGTLRSlides_ReplaceAllShapesWithImageRequest_ReplaceMethod_Cent
 // GTLRSlides_ReplaceAllShapesWithSheetsChartRequest.linkingMode
 NSString * const kGTLRSlides_ReplaceAllShapesWithSheetsChartRequest_LinkingMode_Linked = @"LINKED";
 NSString * const kGTLRSlides_ReplaceAllShapesWithSheetsChartRequest_LinkingMode_NotLinkedImage = @"NOT_LINKED_IMAGE";
+
+// GTLRSlides_ReplaceImageRequest.imageReplaceMethod
+NSString * const kGTLRSlides_ReplaceImageRequest_ImageReplaceMethod_CenterCrop = @"CENTER_CROP";
+NSString * const kGTLRSlides_ReplaceImageRequest_ImageReplaceMethod_CenterInside = @"CENTER_INSIDE";
+NSString * const kGTLRSlides_ReplaceImageRequest_ImageReplaceMethod_ImageReplaceMethodUnspecified = @"IMAGE_REPLACE_METHOD_UNSPECIFIED";
 
 // GTLRSlides_Shadow.alignment
 NSString * const kGTLRSlides_Shadow_Alignment_BottomCenter     = @"BOTTOM_CENTER";
@@ -633,6 +645,7 @@ NSString * const kGTLRSlides_UpdateTableBorderPropertiesRequest_BorderPosition_R
 NSString * const kGTLRSlides_UpdateTableBorderPropertiesRequest_BorderPosition_Top = @"TOP";
 
 // GTLRSlides_Video.source
+NSString * const kGTLRSlides_Video_Source_Drive             = @"DRIVE";
 NSString * const kGTLRSlides_Video_Source_SourceUnspecified = @"SOURCE_UNSPECIFIED";
 NSString * const kGTLRSlides_Video_Source_Youtube           = @"YOUTUBE";
 
@@ -680,7 +693,7 @@ NSString * const kGTLRSlides_Video_Source_Youtube           = @"YOUTUBE";
 //
 
 @implementation GTLRSlides_BatchUpdatePresentationResponse
-@dynamic presentationId, replies;
+@dynamic presentationId, replies, writeControl;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -1049,7 +1062,7 @@ NSString * const kGTLRSlides_Video_Source_Youtube           = @"YOUTUBE";
 //
 
 @implementation GTLRSlides_Image
-@dynamic contentUrl, imageProperties;
+@dynamic contentUrl, imageProperties, sourceUrl;
 @end
 
 
@@ -1429,7 +1442,8 @@ NSString * const kGTLRSlides_Video_Source_Youtube           = @"YOUTUBE";
 //
 
 @implementation GTLRSlides_ReplaceAllShapesWithImageRequest
-@dynamic containsText, imageUrl, pageObjectIds, replaceMethod;
+@dynamic containsText, imageReplaceMethod, imageUrl, pageObjectIds,
+         replaceMethod;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -1509,6 +1523,16 @@ NSString * const kGTLRSlides_Video_Source_Youtube           = @"YOUTUBE";
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRSlides_ReplaceImageRequest
+//
+
+@implementation GTLRSlides_ReplaceImageRequest
+@dynamic imageObjectId, imageReplaceMethod, url;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRSlides_Request
 //
 
@@ -1519,8 +1543,8 @@ NSString * const kGTLRSlides_Video_Source_Youtube           = @"YOUTUBE";
          duplicateObject, groupObjects, insertTableColumns, insertTableRows,
          insertText, mergeTableCells, refreshSheetsChart,
          replaceAllShapesWithImage, replaceAllShapesWithSheetsChart,
-         replaceAllText, ungroupObjects, unmergeTableCells,
-         updateImageProperties, updateLineProperties,
+         replaceAllText, replaceImage, ungroupObjects, unmergeTableCells,
+         updateImageProperties, updateLineProperties, updatePageElementAltText,
          updatePageElementTransform, updatePageProperties, updateParagraphStyle,
          updateShapeProperties, updateSlidesPosition,
          updateTableBorderProperties, updateTableCellProperties,
@@ -1955,6 +1979,21 @@ NSString * const kGTLRSlides_Video_Source_Youtube           = @"YOUTUBE";
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRSlides_UpdatePageElementAltTextRequest
+//
+
+@implementation GTLRSlides_UpdatePageElementAltTextRequest
+@dynamic descriptionProperty, objectId, title;
+
++ (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
+  return @{ @"descriptionProperty" : @"description" };
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRSlides_UpdatePageElementTransformRequest
 //
 
@@ -2108,7 +2147,7 @@ NSString * const kGTLRSlides_Video_Source_Youtube           = @"YOUTUBE";
 //
 
 @implementation GTLRSlides_VideoProperties
-@dynamic outline;
+@dynamic autoPlay, end, mute, outline, start;
 @end
 
 

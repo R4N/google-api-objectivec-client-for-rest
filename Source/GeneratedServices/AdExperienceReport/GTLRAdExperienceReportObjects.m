@@ -2,9 +2,9 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Ad Experience Report API (adexperiencereport/v1)
+//   Ad Experience Report API (adexperiencereport/v1)
 // Description:
-//   View Ad Experience Report data, and get a list of sites that have a
+//   Views Ad Experience Report data, and gets a list of sites that have a
 //   significant number of annoying ads.
 // Documentation:
 //   https://developers.google.com/ad-experience-report/
@@ -30,6 +30,7 @@ NSString * const kGTLRAdExperienceReport_PlatformSummary_FilterStatus_Unknown = 
 // GTLRAdExperienceReport_PlatformSummary.region
 NSString * const kGTLRAdExperienceReport_PlatformSummary_Region_RegionA = @"REGION_A";
 NSString * const kGTLRAdExperienceReport_PlatformSummary_Region_RegionB = @"REGION_B";
+NSString * const kGTLRAdExperienceReport_PlatformSummary_Region_RegionC = @"REGION_C";
 NSString * const kGTLRAdExperienceReport_PlatformSummary_Region_RegionUnknown = @"REGION_UNKNOWN";
 
 // ----------------------------------------------------------------------------

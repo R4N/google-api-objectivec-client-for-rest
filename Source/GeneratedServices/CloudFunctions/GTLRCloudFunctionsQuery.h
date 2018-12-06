@@ -2,10 +2,9 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Functions API (cloudfunctions/v1)
+//   Cloud Functions API (cloudfunctions/v1)
 // Description:
-//   API for managing lightweight user-provided functions executed in response
-//   to events.
+//   Manages lightweight user-provided functions executed in response to events.
 // Documentation:
 //   https://cloud.google.com/functions
 
@@ -23,6 +22,8 @@
 @class GTLRCloudFunctions_CloudFunction;
 @class GTLRCloudFunctions_GenerateDownloadUrlRequest;
 @class GTLRCloudFunctions_GenerateUploadUrlRequest;
+@class GTLRCloudFunctions_SetIamPolicyRequest;
+@class GTLRCloudFunctions_TestIamPermissionsRequest;
 
 // Generated comments include content from the discovery document; avoid them
 // causing warnings since clang's checks are some what arbitrary.
@@ -67,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param name The name of the operation resource.
  *
- *  @returns GTLRCloudFunctionsQuery_OperationsGet
+ *  @return GTLRCloudFunctionsQuery_OperationsGet
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -118,7 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  collection id, however overriding users must ensure the name binding
  *  is the parent resource, without the operations collection id.
  *
- *  @returns GTLRCloudFunctionsQuery_OperationsList
+ *  @return GTLRCloudFunctionsQuery_OperationsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -154,7 +155,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    the query.
  *  @param name The name of the function to be called.
  *
- *  @returns GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsCall
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsCall
  */
 + (instancetype)queryWithObject:(GTLRCloudFunctions_CallFunctionRequest *)object
                            name:(NSString *)name;
@@ -194,7 +195,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    created, specified
  *    in the format `projects/ * /locations/ *`
  *
- *  @returns GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsCreate
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsCreate
  */
 + (instancetype)queryWithObject:(GTLRCloudFunctions_CloudFunction *)object
                        location:(NSString *)location;
@@ -227,7 +228,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param name The name of the function which should be deleted.
  *
- *  @returns GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsDelete
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsDelete
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -270,7 +271,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    signed
  *    URL should be generated.
  *
- *  @returns GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsGenerateDownloadUrl
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsGenerateDownloadUrl
  */
 + (instancetype)queryWithObject:(GTLRCloudFunctions_GenerateDownloadUrlRequest *)object
                            name:(NSString *)name;
@@ -280,10 +281,17 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Returns a signed URL for uploading a function source code.
  *  For more information about the signed URL usage see:
- *  https://cloud.google.com/storage/docs/access-control/signed-urls
+ *  https://cloud.google.com/storage/docs/access-control/signed-urls.
  *  Once the function source code upload is complete, the used signed
  *  URL should be provided in CreateFunction or UpdateFunction request
  *  as a reference to the function source code.
+ *  When uploading source code to the generated signed URL, please follow
+ *  these restrictions:
+ *  * Source file type should be a zip file.
+ *  * Source file size should not exceed 100MB limit.
+ *  When making a HTTP PUT request, these two headers need to be specified:
+ *  * `content-type: application/zip`
+ *  * `x-goog-content-length-range: 0,104857600`
  *
  *  Method: cloudfunctions.projects.locations.functions.generateUploadUrl
  *
@@ -296,7 +304,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The project and location in which the Google Cloud Storage signed URL
- *  should be generated, specified in the format `projects/ * /locations/ *
+ *  should be generated, specified in the format `projects/ * /locations/ *`.
  */
 @property(nonatomic, copy, nullable) NSString *parent;
 
@@ -305,18 +313,25 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Returns a signed URL for uploading a function source code.
  *  For more information about the signed URL usage see:
- *  https://cloud.google.com/storage/docs/access-control/signed-urls
+ *  https://cloud.google.com/storage/docs/access-control/signed-urls.
  *  Once the function source code upload is complete, the used signed
  *  URL should be provided in CreateFunction or UpdateFunction request
  *  as a reference to the function source code.
+ *  When uploading source code to the generated signed URL, please follow
+ *  these restrictions:
+ *  * Source file type should be a zip file.
+ *  * Source file size should not exceed 100MB limit.
+ *  When making a HTTP PUT request, these two headers need to be specified:
+ *  * `content-type: application/zip`
+ *  * `x-goog-content-length-range: 0,104857600`
  *
  *  @param object The @c GTLRCloudFunctions_GenerateUploadUrlRequest to include
  *    in the query.
  *  @param parent The project and location in which the Google Cloud Storage
  *    signed URL
- *    should be generated, specified in the format `projects/ * /locations/ *
+ *    should be generated, specified in the format `projects/ * /locations/ *`.
  *
- *  @returns GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsGenerateUploadUrl
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsGenerateUploadUrl
  */
 + (instancetype)queryWithObject:(GTLRCloudFunctions_GenerateUploadUrlRequest *)object
                          parent:(NSString *)parent;
@@ -345,9 +360,46 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param name The name of the function which details should be obtained.
  *
- *  @returns GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsGet
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsGet
  */
 + (instancetype)queryWithName:(NSString *)name;
+
+@end
+
+/**
+ *  Gets the access control policy for a resource.
+ *  Returns an empty policy if the resource exists and does not have a policy
+ *  set.
+ *
+ *  Method: cloudfunctions.projects.locations.functions.getIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeCloudFunctionsCloudPlatform
+ */
+@interface GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsGetIamPolicy : GTLRCloudFunctionsQuery
+// Previous library name was
+//   +[GTLQueryCloudFunctions queryForProjectsLocationsFunctionsGetIamPolicyWithresource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being requested.
+ *  See the operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRCloudFunctions_Policy.
+ *
+ *  Gets the access control policy for a resource.
+ *  Returns an empty policy if the resource exists and does not have a policy
+ *  set.
+ *
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    requested.
+ *    See the operation documentation for the appropriate value for this field.
+ *
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsGetIamPolicy
+ */
++ (instancetype)queryWithResource:(NSString *)resource;
 
 @end
 
@@ -393,7 +445,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    If you want to list functions in all locations, use "-" in place of a
  *    location.
  *
- *  @returns GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsList
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -439,10 +491,94 @@ NS_ASSUME_NONNULL_BEGIN
  *    unique
  *    globally and match pattern `projects/ * /locations/ * /functions/ *`
  *
- *  @returns GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsPatch
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsPatch
  */
 + (instancetype)queryWithObject:(GTLRCloudFunctions_CloudFunction *)object
                            name:(NSString *)name;
+
+@end
+
+/**
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  Method: cloudfunctions.projects.locations.functions.setIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeCloudFunctionsCloudPlatform
+ */
+@interface GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsSetIamPolicy : GTLRCloudFunctionsQuery
+// Previous library name was
+//   +[GTLQueryCloudFunctions queryForProjectsLocationsFunctionsSetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being specified.
+ *  See the operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRCloudFunctions_Policy.
+ *
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  @param object The @c GTLRCloudFunctions_SetIamPolicyRequest to include in
+ *    the query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    specified.
+ *    See the operation documentation for the appropriate value for this field.
+ *
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsSetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRCloudFunctions_SetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Returns permissions that a caller has on the specified resource.
+ *  If the resource does not exist, this will return an empty set of
+ *  permissions, not a NOT_FOUND error.
+ *  Note: This operation is designed to be used for building permission-aware
+ *  UIs and command-line tools, not for authorization checking. This operation
+ *  may "fail open" without warning.
+ *
+ *  Method: cloudfunctions.projects.locations.functions.testIamPermissions
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeCloudFunctionsCloudPlatform
+ */
+@interface GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsTestIamPermissions : GTLRCloudFunctionsQuery
+// Previous library name was
+//   +[GTLQueryCloudFunctions queryForProjectsLocationsFunctionsTestIamPermissionsWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy detail is being requested.
+ *  See the operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRCloudFunctions_TestIamPermissionsResponse.
+ *
+ *  Returns permissions that a caller has on the specified resource.
+ *  If the resource does not exist, this will return an empty set of
+ *  permissions, not a NOT_FOUND error.
+ *  Note: This operation is designed to be used for building permission-aware
+ *  UIs and command-line tools, not for authorization checking. This operation
+ *  may "fail open" without warning.
+ *
+ *  @param object The @c GTLRCloudFunctions_TestIamPermissionsRequest to include
+ *    in the query.
+ *  @param resource REQUIRED: The resource for which the policy detail is being
+ *    requested.
+ *    See the operation documentation for the appropriate value for this field.
+ *
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsFunctionsTestIamPermissions
+ */
++ (instancetype)queryWithObject:(GTLRCloudFunctions_TestIamPermissionsRequest *)object
+                       resource:(NSString *)resource;
 
 @end
 
@@ -477,7 +613,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param name The resource that owns the locations collection, if applicable.
  *
- *  @returns GTLRCloudFunctionsQuery_ProjectsLocationsList
+ *  @return GTLRCloudFunctionsQuery_ProjectsLocationsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more

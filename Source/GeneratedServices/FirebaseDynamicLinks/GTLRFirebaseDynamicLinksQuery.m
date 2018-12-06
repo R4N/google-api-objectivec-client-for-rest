@@ -18,6 +18,26 @@
 
 @end
 
+@implementation GTLRFirebaseDynamicLinksQuery_ManagedShortLinksCreate
+
++ (instancetype)queryWithObject:(GTLRFirebaseDynamicLinks_CreateManagedShortLinkRequest *)object {
+  if (object == nil) {
+    GTLR_DEBUG_ASSERT(object != nil, @"Got a nil object");
+    return nil;
+  }
+  NSString *pathURITemplate = @"v1/managedShortLinks:create";
+  GTLRFirebaseDynamicLinksQuery_ManagedShortLinksCreate *query =
+    [[self alloc] initWithPathURITemplate:pathURITemplate
+                               HTTPMethod:@"POST"
+                       pathParameterNames:nil];
+  query.bodyObject = object;
+  query.expectedObjectClass = [GTLRFirebaseDynamicLinks_CreateManagedShortLinkResponse class];
+  query.loggingName = @"firebasedynamiclinks.managedShortLinks.create";
+  return query;
+}
+
+@end
+
 @implementation GTLRFirebaseDynamicLinksQuery_ShortLinksCreate
 
 + (instancetype)queryWithObject:(GTLRFirebaseDynamicLinks_CreateShortDynamicLinkRequest *)object {
@@ -40,7 +60,7 @@
 
 @implementation GTLRFirebaseDynamicLinksQuery_V1GetLinkStats
 
-@dynamic durationDays, dynamicLink;
+@dynamic durationDays, dynamicLink, sdkVersion;
 
 + (instancetype)queryWithDynamicLink:(NSString *)dynamicLink {
   NSArray *pathParams = @[ @"dynamicLink" ];
@@ -72,6 +92,26 @@
   query.bodyObject = object;
   query.expectedObjectClass = [GTLRFirebaseDynamicLinks_GetIosPostInstallAttributionResponse class];
   query.loggingName = @"firebasedynamiclinks.installAttribution";
+  return query;
+}
+
+@end
+
+@implementation GTLRFirebaseDynamicLinksQuery_V1ReopenAttribution
+
++ (instancetype)queryWithObject:(GTLRFirebaseDynamicLinks_GetIosReopenAttributionRequest *)object {
+  if (object == nil) {
+    GTLR_DEBUG_ASSERT(object != nil, @"Got a nil object");
+    return nil;
+  }
+  NSString *pathURITemplate = @"v1/reopenAttribution";
+  GTLRFirebaseDynamicLinksQuery_V1ReopenAttribution *query =
+    [[self alloc] initWithPathURITemplate:pathURITemplate
+                               HTTPMethod:@"POST"
+                       pathParameterNames:nil];
+  query.bodyObject = object;
+  query.expectedObjectClass = [GTLRFirebaseDynamicLinks_GetIosReopenAttributionResponse class];
+  query.loggingName = @"firebasedynamiclinks.reopenAttribution";
   return query;
 }
 

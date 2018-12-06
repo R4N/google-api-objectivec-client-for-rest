@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Testing API (testing/v1)
+//   Cloud Testing API (testing/v1)
 // Description:
 //   Allows developers to run automated tests for their mobile applications on
 //   Google infrastructure.
@@ -29,7 +29,7 @@ NSString * const kGTLRAuthScopeTestingCloudPlatformReadOnly = @"https://www.goog
     // From discovery.
     self.rootURLString = @"https://testing.googleapis.com/";
     self.batchPath = @"batch";
-    self.prettyPrintQueryParameterNames = @[ @"prettyPrint", @"pp" ];
+    self.prettyPrintQueryParameterNames = @[ @"prettyPrint" ];
   }
   return self;
 }

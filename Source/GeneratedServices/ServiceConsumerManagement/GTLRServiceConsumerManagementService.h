@@ -4,8 +4,7 @@
 // API:
 //   Service Consumer Management API (serviceconsumermanagement/v1)
 // Description:
-//   Provides management methods for configuring service producer resources on
-//   Google Cloud.
+//   Manages the service consumers of a Service Infrastructure service.
 // Documentation:
 //   https://cloud.google.com/service-consumer-management/docs/overview
 
@@ -27,7 +26,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 // ----------------------------------------------------------------------------
-// Authorization scopes
+// Authorization scope
 
 /**
  *  Authorization scope: View and manage your data across Google Cloud Platform
@@ -36,12 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Value "https://www.googleapis.com/auth/cloud-platform"
  */
 GTLR_EXTERN NSString * const kGTLRAuthScopeServiceConsumerManagementCloudPlatform;
-/**
- *  Authorization scope: Manage your Google API service configuration
- *
- *  Value "https://www.googleapis.com/auth/service.management"
- */
-GTLR_EXTERN NSString * const kGTLRAuthScopeServiceConsumerManagementServiceManagement;
 
 // ----------------------------------------------------------------------------
 //   GTLRServiceConsumerManagementService
@@ -50,8 +43,7 @@ GTLR_EXTERN NSString * const kGTLRAuthScopeServiceConsumerManagementServiceManag
 /**
  *  Service for executing Service Consumer Management API queries.
  *
- *  Provides management methods for configuring service producer resources on
- *  Google Cloud.
+ *  Manages the service consumers of a Service Infrastructure service.
  */
 @interface GTLRServiceConsumerManagementService : GTLRService
 

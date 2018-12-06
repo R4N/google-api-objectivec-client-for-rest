@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud OS Login API (oslogin/v1alpha)
+//   Cloud OS Login API (oslogin/v1)
 // Description:
 //   Manages OS login configuration for Google account users.
 // Documentation:
@@ -45,9 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCloudOSLoginCloudPlatform
- *    @c kGTLRAuthScopeCloudOSLoginCloudPlatformReadOnly
  *    @c kGTLRAuthScopeCloudOSLoginCompute
- *    @c kGTLRAuthScopeCloudOSLoginComputeReadonly
  */
 @interface GTLRCloudOSLoginQuery_UsersGetLoginProfile : GTLRCloudOSLoginQuery
 // Previous library name was
@@ -55,6 +53,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** The unique ID for the user in format `users/{user}`. */
 @property(nonatomic, copy, nullable) NSString *name;
+
+/** The project ID of the Google Cloud Platform project. */
+@property(nonatomic, copy, nullable) NSString *projectId;
+
+/** A system ID for filtering the results of the request. */
+@property(nonatomic, copy, nullable) NSString *systemId;
 
 /**
  *  Fetches a @c GTLRCloudOSLogin_LoginProfile.
@@ -64,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param name The unique ID for the user in format `users/{user}`.
  *
- *  @returns GTLRCloudOSLoginQuery_UsersGetLoginProfile
+ *  @return GTLRCloudOSLoginQuery_UsersGetLoginProfile
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -101,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param object The @c GTLRCloudOSLogin_SshPublicKey to include in the query.
  *  @param parent The unique ID for the user in format `users/{user}`.
  *
- *  @returns GTLRCloudOSLoginQuery_UsersImportSshPublicKey
+ *  @return GTLRCloudOSLoginQuery_UsersImportSshPublicKey
  */
 + (instancetype)queryWithObject:(GTLRCloudOSLogin_SshPublicKey *)object
                          parent:(NSString *)parent;
@@ -138,7 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    by the project ID they are associated with. A reference to the POSIX
  *    account is in format `users/{user}/projects/{project}`.
  *
- *  @returns GTLRCloudOSLoginQuery_UsersProjectsDelete
+ *  @return GTLRCloudOSLoginQuery_UsersProjectsDelete
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -174,7 +178,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    their SHA-256 fingerprint. The fingerprint of the public key is in format
  *    `users/{user}/sshPublicKeys/{fingerprint}`.
  *
- *  @returns GTLRCloudOSLoginQuery_UsersSshPublicKeysDelete
+ *  @return GTLRCloudOSLoginQuery_UsersSshPublicKeysDelete
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -210,7 +214,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    by their SHA-256 fingerprint. The fingerprint of the public key is in
  *    format `users/{user}/sshPublicKeys/{fingerprint}`.
  *
- *  @returns GTLRCloudOSLoginQuery_UsersSshPublicKeysGet
+ *  @return GTLRCloudOSLoginQuery_UsersSshPublicKeysGet
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -256,7 +260,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    their SHA-256 fingerprint. The fingerprint of the public key is in format
  *    `users/{user}/sshPublicKeys/{fingerprint}`.
  *
- *  @returns GTLRCloudOSLoginQuery_UsersSshPublicKeysPatch
+ *  @return GTLRCloudOSLoginQuery_UsersSshPublicKeysPatch
  */
 + (instancetype)queryWithObject:(GTLRCloudOSLogin_SshPublicKey *)object
                            name:(NSString *)name;

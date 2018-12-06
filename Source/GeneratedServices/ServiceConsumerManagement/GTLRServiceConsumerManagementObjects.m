@@ -4,8 +4,7 @@
 // API:
 //   Service Consumer Management API (serviceconsumermanagement/v1)
 // Description:
-//   Provides management methods for configuring service producer resources on
-//   Google Cloud.
+//   Manages the service consumers of a Service Infrastructure service.
 // Documentation:
 //   https://cloud.google.com/service-consumer-management/docs/overview
 
@@ -73,6 +72,14 @@ NSString * const kGTLRServiceConsumerManagement_MetricDescriptor_ValueType_Money
 NSString * const kGTLRServiceConsumerManagement_MetricDescriptor_ValueType_String = @"STRING";
 NSString * const kGTLRServiceConsumerManagement_MetricDescriptor_ValueType_ValueTypeUnspecified = @"VALUE_TYPE_UNSPECIFIED";
 
+// GTLRServiceConsumerManagement_MetricDescriptorMetadata.launchStage
+NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Alpha = @"ALPHA";
+NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Beta = @"BETA";
+NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Deprecated = @"DEPRECATED";
+NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_EarlyAccess = @"EARLY_ACCESS";
+NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Ga = @"GA";
+NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_LaunchStageUnspecified = @"LAUNCH_STAGE_UNSPECIFIED";
+
 // GTLRServiceConsumerManagement_TenantResource.status
 NSString * const kGTLRServiceConsumerManagement_TenantResource_Status_Active = @"ACTIVE";
 NSString * const kGTLRServiceConsumerManagement_TenantResource_Status_Failed = @"FAILED";
@@ -139,7 +146,7 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 //
 
 @implementation GTLRServiceConsumerManagement_AuthenticationRule
-@dynamic allowWithoutCredential, customAuth, oauth, requirements, selector;
+@dynamic allowWithoutCredential, oauth, requirements, selector;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -158,16 +165,6 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 
 @implementation GTLRServiceConsumerManagement_AuthorizationConfig
 @dynamic provider;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRServiceConsumerManagement_AuthorizationRule
-//
-
-@implementation GTLRServiceConsumerManagement_AuthorizationRule
-@dynamic permissions, selector;
 @end
 
 
@@ -220,7 +217,7 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 //
 
 @implementation GTLRServiceConsumerManagement_BackendRule
-@dynamic address, deadline, minDeadline, selector;
+@dynamic address, deadline, minDeadline, operationDeadline, selector;
 @end
 
 
@@ -303,10 +300,13 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 //
 
 @implementation GTLRServiceConsumerManagement_ContextRule
-@dynamic provided, requested, selector;
+@dynamic allowedRequestExtensions, allowedResponseExtensions, provided,
+         requested, selector;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
+    @"allowedRequestExtensions" : [NSString class],
+    @"allowedResponseExtensions" : [NSString class],
     @"provided" : [NSString class],
     @"requested" : [NSString class]
   };
@@ -333,16 +333,6 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 
 @implementation GTLRServiceConsumerManagement_CreateTenancyUnitRequest
 @dynamic tenancyUnitId;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRServiceConsumerManagement_CustomAuthRequirements
-//
-
-@implementation GTLRServiceConsumerManagement_CustomAuthRequirements
-@dynamic provider;
 @end
 
 
@@ -550,9 +540,8 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 //
 
 @implementation GTLRServiceConsumerManagement_HttpRule
-@dynamic additionalBindings, authorizations, body, custom, deleteProperty, get,
-         mediaDownload, mediaUpload, patch, post, put, responseBody,
-         restCollection, restMethodName, selector;
+@dynamic additionalBindings, body, custom, deleteProperty, get, patch, post,
+         put, responseBody, selector;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"deleteProperty" : @"delete" };
@@ -560,8 +549,7 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
-    @"additionalBindings" : [GTLRServiceConsumerManagement_HttpRule class],
-    @"authorizations" : [GTLRServiceConsumerManagement_AuthorizationRule class]
+    @"additionalBindings" : [GTLRServiceConsumerManagement_HttpRule class]
   };
   return map;
 }
@@ -689,36 +677,6 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 
 // ----------------------------------------------------------------------------
 //
-//   GTLRServiceConsumerManagement_MediaDownload
-//
-
-@implementation GTLRServiceConsumerManagement_MediaDownload
-@dynamic completeNotification, downloadService, dropzone, enabled,
-         maxDirectDownloadSize, useDirectDownload;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRServiceConsumerManagement_MediaUpload
-//
-
-@implementation GTLRServiceConsumerManagement_MediaUpload
-@dynamic completeNotification, dropzone, enabled, maxSize, mimeTypes,
-         progressNotification, startNotification, uploadService;
-
-+ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
-  NSDictionary<NSString *, Class> *map = @{
-    @"mimeTypes" : [NSString class]
-  };
-  return map;
-}
-
-@end
-
-
-// ----------------------------------------------------------------------------
-//
 //   GTLRServiceConsumerManagement_Method
 //
 
@@ -742,8 +700,8 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 //
 
 @implementation GTLRServiceConsumerManagement_MetricDescriptor
-@dynamic descriptionProperty, displayName, labels, metricKind, name, type, unit,
-         valueType;
+@dynamic descriptionProperty, displayName, labels, metadata, metricKind, name,
+         type, unit, valueType;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"descriptionProperty" : @"description" };
@@ -756,6 +714,16 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
   return map;
 }
 
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRServiceConsumerManagement_MetricDescriptorMetadata
+//
+
+@implementation GTLRServiceConsumerManagement_MetricDescriptorMetadata
+@dynamic ingestDelay, launchStage, samplePeriod;
 @end
 
 
@@ -1051,7 +1019,7 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
          control, customError, documentation, endpoints, enums, experimental,
          http, identifier, logging, logs, metrics, monitoredResources,
          monitoring, name, producerProjectId, quota, sourceInfo,
-         systemParameters, systemTypes, title, types, usage, visibility;
+         systemParameters, systemTypes, title, types, usage;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"identifier" : @"id" };
@@ -1337,32 +1305,4 @@ NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3 = @"SYN
 
 @implementation GTLRServiceConsumerManagement_UsageRule
 @dynamic allowUnregisteredCalls, selector, skipServiceControl;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRServiceConsumerManagement_Visibility
-//
-
-@implementation GTLRServiceConsumerManagement_Visibility
-@dynamic rules;
-
-+ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
-  NSDictionary<NSString *, Class> *map = @{
-    @"rules" : [GTLRServiceConsumerManagement_VisibilityRule class]
-  };
-  return map;
-}
-
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRServiceConsumerManagement_VisibilityRule
-//
-
-@implementation GTLRServiceConsumerManagement_VisibilityRule
-@dynamic restriction, selector;
 @end

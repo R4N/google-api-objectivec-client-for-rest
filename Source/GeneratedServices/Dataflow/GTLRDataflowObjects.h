@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Dataflow API (dataflow/v1b3)
+//   Dataflow API (dataflow/v1b3)
 // Description:
 //   Manages Google Cloud Dataflow projects on Google Cloud Platform.
 // Documentation:
@@ -23,6 +23,8 @@
 @class GTLRDataflow_ApproximateSplitRequest;
 @class GTLRDataflow_AutoscalingEvent;
 @class GTLRDataflow_AutoscalingSettings;
+@class GTLRDataflow_BigQueryIODetails;
+@class GTLRDataflow_BigTableIODetails;
 @class GTLRDataflow_ComponentSource;
 @class GTLRDataflow_ComponentTransform;
 @class GTLRDataflow_ComputationTopology;
@@ -35,6 +37,7 @@
 @class GTLRDataflow_CreateJobFromTemplateRequest_Parameters;
 @class GTLRDataflow_CustomSourceLocation;
 @class GTLRDataflow_DataDiskAssignment;
+@class GTLRDataflow_DatastoreIODetails;
 @class GTLRDataflow_DerivedSource;
 @class GTLRDataflow_Disk;
 @class GTLRDataflow_DisplayData;
@@ -48,6 +51,7 @@
 @class GTLRDataflow_ExecutionStageState;
 @class GTLRDataflow_ExecutionStageSummary;
 @class GTLRDataflow_FailedLocation;
+@class GTLRDataflow_FileIODetails;
 @class GTLRDataflow_FlattenInstruction;
 @class GTLRDataflow_FloatingPointList;
 @class GTLRDataflow_FloatingPointMean;
@@ -55,6 +59,7 @@
 @class GTLRDataflow_InstructionInput;
 @class GTLRDataflow_InstructionOutput;
 @class GTLRDataflow_InstructionOutput_Codec;
+@class GTLRDataflow_IntegerGauge;
 @class GTLRDataflow_IntegerList;
 @class GTLRDataflow_IntegerMean;
 @class GTLRDataflow_Job;
@@ -64,6 +69,7 @@
 @class GTLRDataflow_JobExecutionInfo_Stages;
 @class GTLRDataflow_JobExecutionStageInfo;
 @class GTLRDataflow_JobMessage;
+@class GTLRDataflow_JobMetadata;
 @class GTLRDataflow_KeyRangeDataDiskAssignment;
 @class GTLRDataflow_KeyRangeLocation;
 @class GTLRDataflow_LaunchTemplateParameters_Parameters;
@@ -86,12 +92,14 @@
 @class GTLRDataflow_PartialGroupByKeyInstruction_ValueCombiningFn;
 @class GTLRDataflow_PipelineDescription;
 @class GTLRDataflow_Position;
+@class GTLRDataflow_PubSubIODetails;
 @class GTLRDataflow_PubsubLocation;
 @class GTLRDataflow_ReadInstruction;
 @class GTLRDataflow_ReportedParallelism;
 @class GTLRDataflow_ResourceUtilizationReport;
 @class GTLRDataflow_ResourceUtilizationReportResponse;
 @class GTLRDataflow_RuntimeEnvironment;
+@class GTLRDataflow_SdkVersion;
 @class GTLRDataflow_SeqMapTask;
 @class GTLRDataflow_SeqMapTask_UserFn;
 @class GTLRDataflow_SeqMapTaskOutputInfo;
@@ -115,6 +123,7 @@
 @class GTLRDataflow_SourceSplitRequest;
 @class GTLRDataflow_SourceSplitResponse;
 @class GTLRDataflow_SourceSplitShard;
+@class GTLRDataflow_SpannerIODetails;
 @class GTLRDataflow_SplitInt64;
 @class GTLRDataflow_StageSource;
 @class GTLRDataflow_StateFamilyConfig;
@@ -122,6 +131,7 @@
 @class GTLRDataflow_Status_Details_Item;
 @class GTLRDataflow_Step;
 @class GTLRDataflow_Step_Properties;
+@class GTLRDataflow_StreamingApplianceSnapshotConfig;
 @class GTLRDataflow_StreamingComputationConfig;
 @class GTLRDataflow_StreamingComputationRanges;
 @class GTLRDataflow_StreamingComputationTask;
@@ -141,6 +151,8 @@
 @class GTLRDataflow_WorkerHealthReport;
 @class GTLRDataflow_WorkerHealthReport_Pods_Item;
 @class GTLRDataflow_WorkerHealthReportResponse;
+@class GTLRDataflow_WorkerLifecycleEvent;
+@class GTLRDataflow_WorkerLifecycleEvent_Metadata;
 @class GTLRDataflow_WorkerMessage;
 @class GTLRDataflow_WorkerMessage_Labels;
 @class GTLRDataflow_WorkerMessageCode;
@@ -255,6 +267,12 @@ GTLR_EXTERN NSString * const kGTLRDataflow_CounterMetadata_Kind_Distribution;
  *  Value: "INVALID"
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_CounterMetadata_Kind_Invalid;
+/**
+ *  Aggregated value tracks the latest value of a variable.
+ *
+ *  Value: "LATEST_VALUE"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_CounterMetadata_Kind_LatestValue;
 /**
  *  Aggregated value is the max of all contributed values.
  *
@@ -423,9 +441,9 @@ GTLR_EXTERN NSString * const kGTLRDataflow_DerivedSource_DerivationMode_SourceDe
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateCancelled;
 /**
- *  'JOB_STATE_CANCELLING' indicates that the job has been explicitly cancelled
+ *  `JOB_STATE_CANCELLING` indicates that the job has been explicitly cancelled
  *  and is in the process of stopping. Jobs that are cancelling may only
- *  transition to 'JOB_STATE_CANCELLED' or 'JOB_STATE_FAILED'.
+ *  transition to `JOB_STATE_CANCELLED` or `JOB_STATE_FAILED`.
  *
  *  Value: "JOB_STATE_CANCELLING"
  */
@@ -470,13 +488,21 @@ GTLR_EXTERN NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageSta
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateFailed;
 /**
- *  'JOB_STATE_PENDING' indicates that the job has been created but is not yet
+ *  `JOB_STATE_PENDING` indicates that the job has been created but is not yet
  *  running. Jobs that are pending may only transition to `JOB_STATE_RUNNING`,
  *  or `JOB_STATE_FAILED`.
  *
  *  Value: "JOB_STATE_PENDING"
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStatePending;
+/**
+ *  `JOB_STATE_QUEUED` indicates that the job has been created but is being
+ *  delayed until launch. Jobs that are queued may only transition to
+ *  `JOB_STATE_PENDING` or `JOB_STATE_CANCELLED`.
+ *
+ *  Value: "JOB_STATE_QUEUED"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateQueued;
 /**
  *  `JOB_STATE_RUNNING` indicates that the job is currently running.
  *
@@ -578,9 +604,9 @@ GTLR_EXTERN NSString * const kGTLRDataflow_ExecutionStageSummary_Kind_WriteKind;
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_Job_CurrentState_JobStateCancelled;
 /**
- *  'JOB_STATE_CANCELLING' indicates that the job has been explicitly cancelled
+ *  `JOB_STATE_CANCELLING` indicates that the job has been explicitly cancelled
  *  and is in the process of stopping. Jobs that are cancelling may only
- *  transition to 'JOB_STATE_CANCELLED' or 'JOB_STATE_FAILED'.
+ *  transition to `JOB_STATE_CANCELLED` or `JOB_STATE_FAILED`.
  *
  *  Value: "JOB_STATE_CANCELLING"
  */
@@ -625,13 +651,21 @@ GTLR_EXTERN NSString * const kGTLRDataflow_Job_CurrentState_JobStateDraining;
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_Job_CurrentState_JobStateFailed;
 /**
- *  'JOB_STATE_PENDING' indicates that the job has been created but is not yet
+ *  `JOB_STATE_PENDING` indicates that the job has been created but is not yet
  *  running. Jobs that are pending may only transition to `JOB_STATE_RUNNING`,
  *  or `JOB_STATE_FAILED`.
  *
  *  Value: "JOB_STATE_PENDING"
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_Job_CurrentState_JobStatePending;
+/**
+ *  `JOB_STATE_QUEUED` indicates that the job has been created but is being
+ *  delayed until launch. Jobs that are queued may only transition to
+ *  `JOB_STATE_PENDING` or `JOB_STATE_CANCELLED`.
+ *
+ *  Value: "JOB_STATE_QUEUED"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_Job_CurrentState_JobStateQueued;
 /**
  *  `JOB_STATE_RUNNING` indicates that the job is currently running.
  *
@@ -675,9 +709,9 @@ GTLR_EXTERN NSString * const kGTLRDataflow_Job_CurrentState_JobStateUpdated;
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_Job_RequestedState_JobStateCancelled;
 /**
- *  'JOB_STATE_CANCELLING' indicates that the job has been explicitly cancelled
+ *  `JOB_STATE_CANCELLING` indicates that the job has been explicitly cancelled
  *  and is in the process of stopping. Jobs that are cancelling may only
- *  transition to 'JOB_STATE_CANCELLED' or 'JOB_STATE_FAILED'.
+ *  transition to `JOB_STATE_CANCELLED` or `JOB_STATE_FAILED`.
  *
  *  Value: "JOB_STATE_CANCELLING"
  */
@@ -722,13 +756,21 @@ GTLR_EXTERN NSString * const kGTLRDataflow_Job_RequestedState_JobStateDraining;
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_Job_RequestedState_JobStateFailed;
 /**
- *  'JOB_STATE_PENDING' indicates that the job has been created but is not yet
+ *  `JOB_STATE_PENDING` indicates that the job has been created but is not yet
  *  running. Jobs that are pending may only transition to `JOB_STATE_RUNNING`,
  *  or `JOB_STATE_FAILED`.
  *
  *  Value: "JOB_STATE_PENDING"
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_Job_RequestedState_JobStatePending;
+/**
+ *  `JOB_STATE_QUEUED` indicates that the job has been created but is being
+ *  delayed until launch. Jobs that are queued may only transition to
+ *  `JOB_STATE_PENDING` or `JOB_STATE_CANCELLED`.
+ *
+ *  Value: "JOB_STATE_QUEUED"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_Job_RequestedState_JobStateQueued;
 /**
  *  `JOB_STATE_RUNNING` indicates that the job is currently running.
  *
@@ -863,6 +905,12 @@ GTLR_EXTERN NSString * const kGTLRDataflow_NameAndKind_Kind_Distribution;
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_NameAndKind_Kind_Invalid;
 /**
+ *  Aggregated value tracks the latest value of a variable.
+ *
+ *  Value: "LATEST_VALUE"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_NameAndKind_Kind_LatestValue;
+/**
  *  Aggregated value is the max of all contributed values.
  *
  *  Value: "MAX"
@@ -898,6 +946,41 @@ GTLR_EXTERN NSString * const kGTLRDataflow_NameAndKind_Kind_Set;
  *  Value: "SUM"
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_NameAndKind_Kind_Sum;
+
+// ----------------------------------------------------------------------------
+// GTLRDataflow_SdkVersion.sdkSupportStatus
+
+/**
+ *  This version of the SDK is deprecated and will eventually be no
+ *  longer supported.
+ *
+ *  Value: "DEPRECATED"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Deprecated;
+/**
+ *  A newer version of the SDK family exists, and an update is recommended.
+ *
+ *  Value: "STALE"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Stale;
+/**
+ *  This is a known version of an SDK, and is supported.
+ *
+ *  Value: "SUPPORTED"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Supported;
+/**
+ *  Cloud Dataflow is unaware of this version.
+ *
+ *  Value: "UNKNOWN"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Unknown;
+/**
+ *  Support for this SDK version has ended and it should no longer be used.
+ *
+ *  Value: "UNSUPPORTED"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Unsupported;
 
 // ----------------------------------------------------------------------------
 // GTLRDataflow_SourceSplitResponse.outcome
@@ -1028,6 +1111,59 @@ GTLR_EXTERN NSString * const kGTLRDataflow_TransformSummary_Kind_UnknownKind;
  *  Value: "WRITE_KIND"
  */
 GTLR_EXTERN NSString * const kGTLRDataflow_TransformSummary_Kind_WriteKind;
+
+// ----------------------------------------------------------------------------
+// GTLRDataflow_WorkerLifecycleEvent.event
+
+/**
+ *  Our container code starts running. Multiple containers could be
+ *  distinguished with WorkerMessage.labels if desired.
+ *
+ *  Value: "CONTAINER_START"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_ContainerStart;
+/**
+ *  The worker has a functional external network connection.
+ *
+ *  Value: "NETWORK_UP"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_NetworkUp;
+/**
+ *  The time the VM started.
+ *
+ *  Value: "OS_START"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_OsStart;
+/**
+ *  Finished installing SDK.
+ *
+ *  Value: "SDK_INSTALL_FINISH"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_SdkInstallFinish;
+/**
+ *  For applicable SDKs, started installation of SDK and worker packages.
+ *
+ *  Value: "SDK_INSTALL_START"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_SdkInstallStart;
+/**
+ *  Finished downloading all staging files.
+ *
+ *  Value: "STAGING_FILES_DOWNLOAD_FINISH"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_StagingFilesDownloadFinish;
+/**
+ *  Started downloading staging files.
+ *
+ *  Value: "STAGING_FILES_DOWNLOAD_START"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_StagingFilesDownloadStart;
+/**
+ *  Invalid event.
+ *
+ *  Value: "UNKNOWN_EVENT"
+ */
+GTLR_EXTERN NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_UnknownEvent;
 
 // ----------------------------------------------------------------------------
 // GTLRDataflow_WorkerPool.defaultPackageSet
@@ -1273,6 +1409,12 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  */
 @property(nonatomic, strong, nullable) GTLRDateTime *time;
 
+/**
+ *  A short and friendly name for the worker pool this event refers to,
+ *  populated from the value of PoolStageRelation::user_pool_name.
+ */
+@property(nonatomic, copy, nullable) NSString *workerPool;
+
 @end
 
 
@@ -1302,6 +1444,43 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *  Uses NSNumber of intValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *maxNumWorkers;
+
+@end
+
+
+/**
+ *  Metadata for a BigQuery connector used by the job.
+ */
+@interface GTLRDataflow_BigQueryIODetails : GTLRObject
+
+/** Dataset accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *dataset;
+
+/** Project accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *projectId;
+
+/** Query used to access data in the connection. */
+@property(nonatomic, copy, nullable) NSString *query;
+
+/** Table accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *table;
+
+@end
+
+
+/**
+ *  Metadata for a BigTable connector used by the job.
+ */
+@interface GTLRDataflow_BigTableIODetails : GTLRObject
+
+/** InstanceId accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *instanceId;
+
+/** ProjectId accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *projectId;
+
+/** TableId accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *tableId;
 
 @end
 
@@ -1419,6 +1598,8 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *        captures statistics about a distribution. (Value: "DISTRIBUTION")
  *    @arg @c kGTLRDataflow_CounterMetadata_Kind_Invalid Counter aggregation
  *        kind was not set. (Value: "INVALID")
+ *    @arg @c kGTLRDataflow_CounterMetadata_Kind_LatestValue Aggregated value
+ *        tracks the latest value of a variable. (Value: "LATEST_VALUE")
  *    @arg @c kGTLRDataflow_CounterMetadata_Kind_Max Aggregated value is the max
  *        of all contributed values. (Value: "MAX")
  *    @arg @c kGTLRDataflow_CounterMetadata_Kind_Mean Aggregated value is the
@@ -1596,6 +1777,9 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
 /** Integer value for Sum, Max, Min. */
 @property(nonatomic, strong, nullable) GTLRDataflow_SplitInt64 *integer;
 
+/** Gauge data */
+@property(nonatomic, strong, nullable) GTLRDataflow_IntegerGauge *integerGauge;
+
 /** List of integers, for Set. */
 @property(nonatomic, strong, nullable) GTLRDataflow_IntegerList *integerList;
 
@@ -1729,6 +1913,24 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *  "myproject-1014-104817-4c2-harness-0".
  */
 @property(nonatomic, copy, nullable) NSString *vmInstance;
+
+@end
+
+
+/**
+ *  Metadata for a Datastore connector used by the job.
+ */
+@interface GTLRDataflow_DatastoreIODetails : GTLRObject
+
+/**
+ *  Namespace used in the connection.
+ *
+ *  Remapped to 'namespaceProperty' to avoid language reserved word 'namespace'.
+ */
+@property(nonatomic, copy, nullable) NSString *namespaceProperty;
+
+/** ProjectId accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *projectId;
 
 @end
 
@@ -2079,10 +2281,10 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *        set via a Cloud Dataflow `UpdateJob` call, and only if the job has not
  *        yet reached another terminal state. (Value: "JOB_STATE_CANCELLED")
  *    @arg @c kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateCancelling
- *        'JOB_STATE_CANCELLING' indicates that the job has been explicitly
+ *        `JOB_STATE_CANCELLING` indicates that the job has been explicitly
  *        cancelled
  *        and is in the process of stopping. Jobs that are cancelling may only
- *        transition to 'JOB_STATE_CANCELLED' or 'JOB_STATE_FAILED'. (Value:
+ *        transition to `JOB_STATE_CANCELLED` or `JOB_STATE_FAILED`. (Value:
  *        "JOB_STATE_CANCELLING")
  *    @arg @c kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateDone
  *        `JOB_STATE_DONE` indicates that the job has successfully completed.
@@ -2120,11 +2322,17 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *        service, and only as a transition from `JOB_STATE_RUNNING`. (Value:
  *        "JOB_STATE_FAILED")
  *    @arg @c kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStatePending
- *        'JOB_STATE_PENDING' indicates that the job has been created but is not
+ *        `JOB_STATE_PENDING` indicates that the job has been created but is not
  *        yet
  *        running. Jobs that are pending may only transition to
  *        `JOB_STATE_RUNNING`,
  *        or `JOB_STATE_FAILED`. (Value: "JOB_STATE_PENDING")
+ *    @arg @c kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateQueued
+ *        `JOB_STATE_QUEUED` indicates that the job has been created but is
+ *        being
+ *        delayed until launch. Jobs that are queued may only transition to
+ *        `JOB_STATE_PENDING` or `JOB_STATE_CANCELLED`. (Value:
+ *        "JOB_STATE_QUEUED")
  *    @arg @c kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateRunning
  *        `JOB_STATE_RUNNING` indicates that the job is currently running.
  *        (Value: "JOB_STATE_RUNNING")
@@ -2215,6 +2423,17 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
 
 /** The name of the failed location. */
 @property(nonatomic, copy, nullable) NSString *name;
+
+@end
+
+
+/**
+ *  Metadata for a File connector used by the job.
+ */
+@interface GTLRDataflow_FileIODetails : GTLRObject
+
+/** File Pattern used to access files by the connector. */
+@property(nonatomic, copy, nullable) NSString *filePattern;
 
 @end
 
@@ -2427,6 +2646,22 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
 
 
 /**
+ *  A metric value representing temporal values of a variable.
+ */
+@interface GTLRDataflow_IntegerGauge : GTLRObject
+
+/**
+ *  The time at which this value was measured. Measured as msecs from epoch.
+ */
+@property(nonatomic, strong, nullable) GTLRDateTime *timestamp;
+
+/** The value of the variable represented by this gauge. */
+@property(nonatomic, strong, nullable) GTLRDataflow_SplitInt64 *value;
+
+@end
+
+
+/**
  *  A metric value representing a list of integers.
  */
 @interface GTLRDataflow_IntegerList : GTLRObject
@@ -2490,10 +2725,10 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *        set via a Cloud Dataflow `UpdateJob` call, and only if the job has not
  *        yet reached another terminal state. (Value: "JOB_STATE_CANCELLED")
  *    @arg @c kGTLRDataflow_Job_CurrentState_JobStateCancelling
- *        'JOB_STATE_CANCELLING' indicates that the job has been explicitly
+ *        `JOB_STATE_CANCELLING` indicates that the job has been explicitly
  *        cancelled
  *        and is in the process of stopping. Jobs that are cancelling may only
- *        transition to 'JOB_STATE_CANCELLED' or 'JOB_STATE_FAILED'. (Value:
+ *        transition to `JOB_STATE_CANCELLED` or `JOB_STATE_FAILED`. (Value:
  *        "JOB_STATE_CANCELLING")
  *    @arg @c kGTLRDataflow_Job_CurrentState_JobStateDone `JOB_STATE_DONE`
  *        indicates that the job has successfully completed.
@@ -2530,11 +2765,16 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *        terminal job state. This state may only be set by the Cloud Dataflow
  *        service, and only as a transition from `JOB_STATE_RUNNING`. (Value:
  *        "JOB_STATE_FAILED")
- *    @arg @c kGTLRDataflow_Job_CurrentState_JobStatePending 'JOB_STATE_PENDING'
+ *    @arg @c kGTLRDataflow_Job_CurrentState_JobStatePending `JOB_STATE_PENDING`
  *        indicates that the job has been created but is not yet
  *        running. Jobs that are pending may only transition to
  *        `JOB_STATE_RUNNING`,
  *        or `JOB_STATE_FAILED`. (Value: "JOB_STATE_PENDING")
+ *    @arg @c kGTLRDataflow_Job_CurrentState_JobStateQueued `JOB_STATE_QUEUED`
+ *        indicates that the job has been created but is being
+ *        delayed until launch. Jobs that are queued may only transition to
+ *        `JOB_STATE_PENDING` or `JOB_STATE_CANCELLED`. (Value:
+ *        "JOB_STATE_QUEUED")
  *    @arg @c kGTLRDataflow_Job_CurrentState_JobStateRunning `JOB_STATE_RUNNING`
  *        indicates that the job is currently running. (Value:
  *        "JOB_STATE_RUNNING")
@@ -2571,6 +2811,13 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *  identifier property maps to 'id' in JSON (to avoid Objective C's 'id').
  */
 @property(nonatomic, copy, nullable) NSString *identifier;
+
+/**
+ *  This field is populated by the Dataflow service to support filtering jobs
+ *  by the metadata values provided here. Populated for ListJobs and all GetJob
+ *  views SUMMARY and higher.
+ */
+@property(nonatomic, strong, nullable) GTLRDataflow_JobMetadata *jobMetadata;
 
 /**
  *  User-defined labels for this job.
@@ -2638,10 +2885,10 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *        set via a Cloud Dataflow `UpdateJob` call, and only if the job has not
  *        yet reached another terminal state. (Value: "JOB_STATE_CANCELLED")
  *    @arg @c kGTLRDataflow_Job_RequestedState_JobStateCancelling
- *        'JOB_STATE_CANCELLING' indicates that the job has been explicitly
+ *        `JOB_STATE_CANCELLING` indicates that the job has been explicitly
  *        cancelled
  *        and is in the process of stopping. Jobs that are cancelling may only
- *        transition to 'JOB_STATE_CANCELLED' or 'JOB_STATE_FAILED'. (Value:
+ *        transition to `JOB_STATE_CANCELLED` or `JOB_STATE_FAILED`. (Value:
  *        "JOB_STATE_CANCELLING")
  *    @arg @c kGTLRDataflow_Job_RequestedState_JobStateDone `JOB_STATE_DONE`
  *        indicates that the job has successfully completed.
@@ -2679,11 +2926,16 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *        service, and only as a transition from `JOB_STATE_RUNNING`. (Value:
  *        "JOB_STATE_FAILED")
  *    @arg @c kGTLRDataflow_Job_RequestedState_JobStatePending
- *        'JOB_STATE_PENDING' indicates that the job has been created but is not
+ *        `JOB_STATE_PENDING` indicates that the job has been created but is not
  *        yet
  *        running. Jobs that are pending may only transition to
  *        `JOB_STATE_RUNNING`,
  *        or `JOB_STATE_FAILED`. (Value: "JOB_STATE_PENDING")
+ *    @arg @c kGTLRDataflow_Job_RequestedState_JobStateQueued `JOB_STATE_QUEUED`
+ *        indicates that the job has been created but is being
+ *        delayed until launch. Jobs that are queued may only transition to
+ *        `JOB_STATE_PENDING` or `JOB_STATE_CANCELLED`. (Value:
+ *        "JOB_STATE_QUEUED")
  *    @arg @c kGTLRDataflow_Job_RequestedState_JobStateRunning
  *        `JOB_STATE_RUNNING` indicates that the job is currently running.
  *        (Value: "JOB_STATE_RUNNING")
@@ -2708,6 +2960,16 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *  callers cannot mutate it.
  */
 @property(nonatomic, strong, nullable) NSArray<GTLRDataflow_ExecutionStageState *> *stageStates;
+
+/**
+ *  The timestamp when the job was started (transitioned to JOB_STATE_PENDING).
+ *  Flexible resource scheduling jobs are started with some delay after job
+ *  creation, so start_time is unset before start and is updated when the
+ *  job is started by the Cloud Dataflow service. For other jobs, start_time
+ *  always equals to create_time and is immutable and set by the Cloud Dataflow
+ *  service.
+ */
+@property(nonatomic, strong, nullable) GTLRDateTime *startTime;
 
 /** The top-level steps that constitute the entire job. */
 @property(nonatomic, strong, nullable) NSArray<GTLRDataflow_Step *> *steps;
@@ -2877,6 +3139,36 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
 
 /** The timestamp of the message. */
 @property(nonatomic, strong, nullable) GTLRDateTime *time;
+
+@end
+
+
+/**
+ *  Metadata available primarily for filtering jobs. Will be included in the
+ *  ListJob response and Job SUMMARY view+.
+ */
+@interface GTLRDataflow_JobMetadata : GTLRObject
+
+/** Identification of a BigQuery source used in the Dataflow job. */
+@property(nonatomic, strong, nullable) NSArray<GTLRDataflow_BigQueryIODetails *> *bigqueryDetails;
+
+/** Identification of a BigTable source used in the Dataflow job. */
+@property(nonatomic, strong, nullable) NSArray<GTLRDataflow_BigTableIODetails *> *bigTableDetails;
+
+/** Identification of a Datastore source used in the Dataflow job. */
+@property(nonatomic, strong, nullable) NSArray<GTLRDataflow_DatastoreIODetails *> *datastoreDetails;
+
+/** Identification of a File source used in the Dataflow job. */
+@property(nonatomic, strong, nullable) NSArray<GTLRDataflow_FileIODetails *> *fileDetails;
+
+/** Identification of a PubSub source used in the Dataflow job. */
+@property(nonatomic, strong, nullable) NSArray<GTLRDataflow_PubSubIODetails *> *pubsubDetails;
+
+/** The SDK version used to run the job. */
+@property(nonatomic, strong, nullable) GTLRDataflow_SdkVersion *sdkVersion;
+
+/** Identification of a Spanner source used in the Dataflow job. */
+@property(nonatomic, strong, nullable) NSArray<GTLRDataflow_SpannerIODetails *> *spannerDetails;
 
 @end
 
@@ -3091,6 +3383,12 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  */
 @interface GTLRDataflow_MapTask : GTLRObject
 
+/**
+ *  Counter prefix that can be used to prefix counters. Not currently used in
+ *  Dataflow.
+ */
+@property(nonatomic, copy, nullable) NSString *counterPrefix;
+
 /** The instructions in the MapTask. */
 @property(nonatomic, strong, nullable) NSArray<GTLRDataflow_ParallelInstruction *> *instructions;
 
@@ -3197,6 +3495,15 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *  Can be any valid JSON type.
  */
 @property(nonatomic, strong, nullable) id distribution;
+
+/**
+ *  A struct value describing properties of a Gauge.
+ *  Metrics of gauge type show the value of a metric across time, and is
+ *  aggregated based on the newest value.
+ *
+ *  Can be any valid JSON type.
+ */
+@property(nonatomic, strong, nullable) id gauge;
 
 /**
  *  Worker-computed aggregate value for internal use by the Dataflow
@@ -3311,6 +3618,8 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *        captures statistics about a distribution. (Value: "DISTRIBUTION")
  *    @arg @c kGTLRDataflow_NameAndKind_Kind_Invalid Counter aggregation kind
  *        was not set. (Value: "INVALID")
+ *    @arg @c kGTLRDataflow_NameAndKind_Kind_LatestValue Aggregated value tracks
+ *        the latest value of a variable. (Value: "LATEST_VALUE")
  *    @arg @c kGTLRDataflow_NameAndKind_Kind_Max Aggregated value is the max of
  *        all contributed values. (Value: "MAX")
  *    @arg @c kGTLRDataflow_NameAndKind_Kind_Mean Aggregated value is the mean
@@ -3606,6 +3915,20 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
 
 
 /**
+ *  Metadata for a PubSub connector used by the job.
+ */
+@interface GTLRDataflow_PubSubIODetails : GTLRObject
+
+/** Subscription used in the connection. */
+@property(nonatomic, copy, nullable) NSString *subscription;
+
+/** Topic accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *topic;
+
+@end
+
+
+/**
  *  Identifies a pubsub location to use for transferring data into or
  *  out of a streaming Dataflow job.
  */
@@ -3768,6 +4091,9 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  */
 @interface GTLRDataflow_RuntimeEnvironment : GTLRObject
 
+/** Additional experiment flags for the job. */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *additionalExperiments;
+
 /**
  *  Whether to bypass the safety checks for the job's temporary directory.
  *  Use with caution.
@@ -3790,8 +4116,20 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  */
 @property(nonatomic, strong, nullable) NSNumber *maxWorkers;
 
+/**
+ *  Network to which VMs will be assigned. If empty or unspecified,
+ *  the service will use the network "default".
+ */
+@property(nonatomic, copy, nullable) NSString *network;
+
 /** The email address of the service account to run the job as. */
 @property(nonatomic, copy, nullable) NSString *serviceAccountEmail;
+
+/**
+ *  Subnetwork to which VMs will be assigned, if desired. Expected to be of
+ *  the form "regions/REGION/subnetworks/SUBNETWORK".
+ */
+@property(nonatomic, copy, nullable) NSString *subnetwork;
 
 /**
  *  The Cloud Storage path to use for temporary files.
@@ -3807,6 +4145,39 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *  Remapped to 'zoneProperty' to avoid NSObject's 'zone'.
  */
 @property(nonatomic, copy, nullable) NSString *zoneProperty;
+
+@end
+
+
+/**
+ *  The version of the SDK used to run the jobl
+ */
+@interface GTLRDataflow_SdkVersion : GTLRObject
+
+/**
+ *  The support status for this SDK version.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRDataflow_SdkVersion_SdkSupportStatus_Deprecated This version
+ *        of the SDK is deprecated and will eventually be no
+ *        longer supported. (Value: "DEPRECATED")
+ *    @arg @c kGTLRDataflow_SdkVersion_SdkSupportStatus_Stale A newer version of
+ *        the SDK family exists, and an update is recommended. (Value: "STALE")
+ *    @arg @c kGTLRDataflow_SdkVersion_SdkSupportStatus_Supported This is a
+ *        known version of an SDK, and is supported. (Value: "SUPPORTED")
+ *    @arg @c kGTLRDataflow_SdkVersion_SdkSupportStatus_Unknown Cloud Dataflow
+ *        is unaware of this version. (Value: "UNKNOWN")
+ *    @arg @c kGTLRDataflow_SdkVersion_SdkSupportStatus_Unsupported Support for
+ *        this SDK version has ended and it should no longer be used. (Value:
+ *        "UNSUPPORTED")
+ */
+@property(nonatomic, copy, nullable) NSString *sdkSupportStatus;
+
+/** The version of the SDK used to run the job. */
+@property(nonatomic, copy, nullable) NSString *version;
+
+/** A readable string describing the version of the sdk. */
+@property(nonatomic, copy, nullable) NSString *versionDisplayName;
 
 @end
 
@@ -4354,6 +4725,23 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
 
 
 /**
+ *  Metadata for a Spanner connector used by the job.
+ */
+@interface GTLRDataflow_SpannerIODetails : GTLRObject
+
+/** DatabaseId accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *databaseId;
+
+/** InstanceId accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *instanceId;
+
+/** ProjectId accessed in the connection. */
+@property(nonatomic, copy, nullable) NSString *projectId;
+
+@end
+
+
+/**
  *  A representation of an int64, n, that is immune to precision loss when
  *  encoded in JSON.
  */
@@ -4558,6 +4946,20 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
 
 
 /**
+ *  Streaming appliance snapshot configuration.
+ */
+@interface GTLRDataflow_StreamingApplianceSnapshotConfig : GTLRObject
+
+/** Indicates which endpoint is used to import appliance state. */
+@property(nonatomic, copy, nullable) NSString *importStateEndpoint;
+
+/** If set, indicates the snapshot id for the snapshot being performed. */
+@property(nonatomic, copy, nullable) NSString *snapshotId;
+
+@end
+
+
+/**
  *  Configuration information for a single streaming computation.
  */
 @interface GTLRDataflow_StreamingComputationConfig : GTLRObject
@@ -4685,6 +5087,9 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
  *  Uses NSNumber of intValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *receiveWorkPort;
+
+/** Configures streaming appliance snapshot. */
+@property(nonatomic, strong, nullable) GTLRDataflow_StreamingApplianceSnapshotConfig *snapshotConfig;
 
 /** The global topology of the streaming Dataflow job. */
 @property(nonatomic, strong, nullable) GTLRDataflow_TopologyConfig *streamingComputationTopology;
@@ -5078,6 +5483,73 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
 
 
 /**
+ *  A report of an event in a worker's lifecycle.
+ *  The proto contains one event, because the worker is expected to
+ *  asynchronously send each message immediately after the event.
+ *  Due to this asynchrony, messages may arrive out of order (or missing), and
+ *  it
+ *  is up to the consumer to interpret.
+ *  The timestamp of the event is in the enclosing WorkerMessage proto.
+ */
+@interface GTLRDataflow_WorkerLifecycleEvent : GTLRObject
+
+/**
+ *  The start time of this container. All events will report this so that
+ *  events can be grouped together across container/VM restarts.
+ */
+@property(nonatomic, strong, nullable) GTLRDateTime *containerStartTime;
+
+/**
+ *  The event being reported.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRDataflow_WorkerLifecycleEvent_Event_ContainerStart Our
+ *        container code starts running. Multiple containers could be
+ *        distinguished with WorkerMessage.labels if desired. (Value:
+ *        "CONTAINER_START")
+ *    @arg @c kGTLRDataflow_WorkerLifecycleEvent_Event_NetworkUp The worker has
+ *        a functional external network connection. (Value: "NETWORK_UP")
+ *    @arg @c kGTLRDataflow_WorkerLifecycleEvent_Event_OsStart The time the VM
+ *        started. (Value: "OS_START")
+ *    @arg @c kGTLRDataflow_WorkerLifecycleEvent_Event_SdkInstallFinish Finished
+ *        installing SDK. (Value: "SDK_INSTALL_FINISH")
+ *    @arg @c kGTLRDataflow_WorkerLifecycleEvent_Event_SdkInstallStart For
+ *        applicable SDKs, started installation of SDK and worker packages.
+ *        (Value: "SDK_INSTALL_START")
+ *    @arg @c kGTLRDataflow_WorkerLifecycleEvent_Event_StagingFilesDownloadFinish
+ *        Finished downloading all staging files. (Value:
+ *        "STAGING_FILES_DOWNLOAD_FINISH")
+ *    @arg @c kGTLRDataflow_WorkerLifecycleEvent_Event_StagingFilesDownloadStart
+ *        Started downloading staging files. (Value:
+ *        "STAGING_FILES_DOWNLOAD_START")
+ *    @arg @c kGTLRDataflow_WorkerLifecycleEvent_Event_UnknownEvent Invalid
+ *        event. (Value: "UNKNOWN_EVENT")
+ */
+@property(nonatomic, copy, nullable) NSString *event;
+
+/**
+ *  Other stats that can accompany an event. E.g.
+ *  { "downloaded_bytes" : "123456" }
+ */
+@property(nonatomic, strong, nullable) GTLRDataflow_WorkerLifecycleEvent_Metadata *metadata;
+
+@end
+
+
+/**
+ *  Other stats that can accompany an event. E.g.
+ *  { "downloaded_bytes" : "123456" }
+ *
+ *  @note This class is documented as having more properties of NSString. Use @c
+ *        -additionalJSONKeys and @c -additionalPropertyForName: to get the list
+ *        of properties and then fetch them; or @c -additionalProperties to
+ *        fetch them all at once.
+ */
+@interface GTLRDataflow_WorkerLifecycleEvent_Metadata : GTLRObject
+@end
+
+
+/**
  *  WorkerMessage provides information to the backend about a worker.
  */
 @interface GTLRDataflow_WorkerMessage : GTLRObject
@@ -5101,6 +5573,9 @@ GTLR_EXTERN NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPol
 
 /** The health of a worker. */
 @property(nonatomic, strong, nullable) GTLRDataflow_WorkerHealthReport *workerHealthReport;
+
+/** Record of worker lifecycle events. */
+@property(nonatomic, strong, nullable) GTLRDataflow_WorkerLifecycleEvent *workerLifecycleEvent;
 
 /** A worker message code. */
 @property(nonatomic, strong, nullable) GTLRDataflow_WorkerMessageCode *workerMessageCode;

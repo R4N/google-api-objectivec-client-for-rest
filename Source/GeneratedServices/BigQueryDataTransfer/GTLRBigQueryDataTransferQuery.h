@@ -123,7 +123,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param name The data source in the form:
  *    `projects/{project_id}/dataSources/{data_source_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsDataSourcesCheckValidCreds
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsDataSourcesCheckValidCreds
  */
 + (instancetype)queryWithObject:(GTLRBigQueryDataTransfer_CheckValidCredsRequest *)object
                            name:(NSString *)name;
@@ -161,7 +161,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/dataSources/{data_source_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsDataSourcesGet
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsDataSourcesGet
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -210,7 +210,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    returned.
  *    Must be in the form: `projects/{project_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsDataSourcesList
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsDataSourcesList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -260,7 +260,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param name The data source in the form:
  *    `projects/{project_id}/dataSources/{data_source_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsDataSourcesCheckValidCreds
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsDataSourcesCheckValidCreds
  */
 + (instancetype)queryWithObject:(GTLRBigQueryDataTransfer_CheckValidCredsRequest *)object
                            name:(NSString *)name;
@@ -298,7 +298,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/dataSources/{data_source_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsDataSourcesGet
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsDataSourcesGet
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -347,7 +347,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    returned.
  *    Must be in the form: `projects/{project_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsDataSourcesList
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsDataSourcesList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -358,7 +358,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
 @end
 
 /**
- *  Get information about a location.
+ *  Gets information about a location.
  *
  *  Method: bigquerydatatransfer.projects.locations.get
  *
@@ -377,11 +377,11 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
 /**
  *  Fetches a @c GTLRBigQueryDataTransfer_Location.
  *
- *  Get information about a location.
+ *  Gets information about a location.
  *
  *  @param name Resource name for the location.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsGet
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsGet
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -420,7 +420,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *
  *  @param name The resource that owns the locations collection, if applicable.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsList
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -436,7 +436,6 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  Method: bigquerydatatransfer.projects.locations.transferConfigs.create
  *
  *  Authorization scope(s):
- *    @c kGTLRAuthScopeBigQueryDataTransferBigquery
  *    @c kGTLRAuthScopeBigQueryDataTransferCloudPlatform
  */
 @interface GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsCreate : GTLRBigQueryDataTransferQuery
@@ -464,11 +463,9 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
 
 /**
  *  The BigQuery project id where the transfer configuration should be created.
- *  Must be in the format /projects/{project_id}/locations/{location_id}
- *  or
- *  /projects/{project_id}/locations/-
- *  In case when '-' is specified as location_id, location is infered from
- *  the destination dataset region.
+ *  Must be in the format projects/{project_id}/locations/{location_id}
+ *  If specified location and location of the destination bigquery dataset
+ *  do not match - the request will fail.
  */
 @property(nonatomic, copy, nullable) NSString *parent;
 
@@ -481,13 +478,11 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    the query.
  *  @param parent The BigQuery project id where the transfer configuration
  *    should be created.
- *    Must be in the format /projects/{project_id}/locations/{location_id}
- *    or
- *    /projects/{project_id}/locations/-
- *    In case when '-' is specified as location_id, location is infered from
- *    the destination dataset region.
+ *    Must be in the format projects/{project_id}/locations/{location_id}
+ *    If specified location and location of the destination bigquery dataset
+ *    do not match - the request will fail.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsCreate
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsCreate
  */
 + (instancetype)queryWithObject:(GTLRBigQueryDataTransfer_TransferConfig *)object
                          parent:(NSString *)parent;
@@ -524,7 +519,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/transferConfigs/{config_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsDelete
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsDelete
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -559,7 +554,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/transferConfigs/{config_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsGet
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsGet
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -610,7 +605,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param parent The BigQuery project id for which data sources
  *    should be returned: `projects/{project_id}`.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsList
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -627,7 +622,6 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  Method: bigquerydatatransfer.projects.locations.transferConfigs.patch
  *
  *  Authorization scope(s):
- *    @c kGTLRAuthScopeBigQueryDataTransferBigquery
  *    @c kGTLRAuthScopeBigQueryDataTransferCloudPlatform
  */
 @interface GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsPatch : GTLRBigQueryDataTransferQuery
@@ -655,11 +649,12 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
 
 /**
  *  The resource name of the transfer config.
- *  Transfer config names have the form
- *  `projects/{project_id}/transferConfigs/{config_id}`.
- *  Where `config_id` is usually a uuid, even though it is not
- *  guaranteed or required. The name is ignored when creating a transfer
- *  config.
+ *  Transfer config names have the form of
+ *  `projects/{project_id}/location/{region}/transferConfigs/{config_id}`.
+ *  The name is automatically generated based on the config_id specified in
+ *  CreateTransferConfigRequest along with project_id and region. If config_id
+ *  is not provided, usually a uuid, even though it is not guaranteed or
+ *  required, will be generated for config_id.
  */
 @property(nonatomic, copy, nullable) NSString *name;
 
@@ -679,13 +674,14 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param object The @c GTLRBigQueryDataTransfer_TransferConfig to include in
  *    the query.
  *  @param name The resource name of the transfer config.
- *    Transfer config names have the form
- *    `projects/{project_id}/transferConfigs/{config_id}`.
- *    Where `config_id` is usually a uuid, even though it is not
- *    guaranteed or required. The name is ignored when creating a transfer
- *    config.
+ *    Transfer config names have the form of
+ *    `projects/{project_id}/location/{region}/transferConfigs/{config_id}`.
+ *    The name is automatically generated based on the config_id specified in
+ *    CreateTransferConfigRequest along with project_id and region. If config_id
+ *    is not provided, usually a uuid, even though it is not guaranteed or
+ *    required, will be generated for config_id.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsPatch
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsPatch
  */
 + (instancetype)queryWithObject:(GTLRBigQueryDataTransfer_TransferConfig *)object
                            name:(NSString *)name;
@@ -720,7 +716,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsRunsDelete
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsRunsDelete
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -755,7 +751,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsRunsGet
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsRunsGet
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -828,7 +824,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    Format of transfer configuration resource name is:
  *    `projects/{project_id}/transferConfigs/{config_id}`.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsRunsList
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsRunsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -891,7 +887,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param parent Transfer run name in the form:
  *    `projects/{project_id}/transferConfigs/{config_Id}/runs/{run_id}`.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsRunsTransferLogsList
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsRunsTransferLogsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -936,7 +932,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param parent Transfer configuration name in the form:
  *    `projects/{project_id}/transferConfigs/{config_id}`.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsScheduleRuns
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsLocationsTransferConfigsScheduleRuns
  */
 + (instancetype)queryWithObject:(GTLRBigQueryDataTransfer_ScheduleTransferRunsRequest *)object
                          parent:(NSString *)parent;
@@ -949,7 +945,6 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  Method: bigquerydatatransfer.projects.transferConfigs.create
  *
  *  Authorization scope(s):
- *    @c kGTLRAuthScopeBigQueryDataTransferBigquery
  *    @c kGTLRAuthScopeBigQueryDataTransferCloudPlatform
  */
 @interface GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsCreate : GTLRBigQueryDataTransferQuery
@@ -977,11 +972,9 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
 
 /**
  *  The BigQuery project id where the transfer configuration should be created.
- *  Must be in the format /projects/{project_id}/locations/{location_id}
- *  or
- *  /projects/{project_id}/locations/-
- *  In case when '-' is specified as location_id, location is infered from
- *  the destination dataset region.
+ *  Must be in the format projects/{project_id}/locations/{location_id}
+ *  If specified location and location of the destination bigquery dataset
+ *  do not match - the request will fail.
  */
 @property(nonatomic, copy, nullable) NSString *parent;
 
@@ -994,13 +987,11 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    the query.
  *  @param parent The BigQuery project id where the transfer configuration
  *    should be created.
- *    Must be in the format /projects/{project_id}/locations/{location_id}
- *    or
- *    /projects/{project_id}/locations/-
- *    In case when '-' is specified as location_id, location is infered from
- *    the destination dataset region.
+ *    Must be in the format projects/{project_id}/locations/{location_id}
+ *    If specified location and location of the destination bigquery dataset
+ *    do not match - the request will fail.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsCreate
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsCreate
  */
 + (instancetype)queryWithObject:(GTLRBigQueryDataTransfer_TransferConfig *)object
                          parent:(NSString *)parent;
@@ -1037,7 +1028,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/transferConfigs/{config_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsDelete
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsDelete
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -1072,7 +1063,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/transferConfigs/{config_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsGet
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsGet
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -1123,7 +1114,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param parent The BigQuery project id for which data sources
  *    should be returned: `projects/{project_id}`.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsList
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -1140,7 +1131,6 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  Method: bigquerydatatransfer.projects.transferConfigs.patch
  *
  *  Authorization scope(s):
- *    @c kGTLRAuthScopeBigQueryDataTransferBigquery
  *    @c kGTLRAuthScopeBigQueryDataTransferCloudPlatform
  */
 @interface GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsPatch : GTLRBigQueryDataTransferQuery
@@ -1168,11 +1158,12 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
 
 /**
  *  The resource name of the transfer config.
- *  Transfer config names have the form
- *  `projects/{project_id}/transferConfigs/{config_id}`.
- *  Where `config_id` is usually a uuid, even though it is not
- *  guaranteed or required. The name is ignored when creating a transfer
- *  config.
+ *  Transfer config names have the form of
+ *  `projects/{project_id}/location/{region}/transferConfigs/{config_id}`.
+ *  The name is automatically generated based on the config_id specified in
+ *  CreateTransferConfigRequest along with project_id and region. If config_id
+ *  is not provided, usually a uuid, even though it is not guaranteed or
+ *  required, will be generated for config_id.
  */
 @property(nonatomic, copy, nullable) NSString *name;
 
@@ -1192,13 +1183,14 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param object The @c GTLRBigQueryDataTransfer_TransferConfig to include in
  *    the query.
  *  @param name The resource name of the transfer config.
- *    Transfer config names have the form
- *    `projects/{project_id}/transferConfigs/{config_id}`.
- *    Where `config_id` is usually a uuid, even though it is not
- *    guaranteed or required. The name is ignored when creating a transfer
- *    config.
+ *    Transfer config names have the form of
+ *    `projects/{project_id}/location/{region}/transferConfigs/{config_id}`.
+ *    The name is automatically generated based on the config_id specified in
+ *    CreateTransferConfigRequest along with project_id and region. If config_id
+ *    is not provided, usually a uuid, even though it is not guaranteed or
+ *    required, will be generated for config_id.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsPatch
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsPatch
  */
 + (instancetype)queryWithObject:(GTLRBigQueryDataTransfer_TransferConfig *)object
                            name:(NSString *)name;
@@ -1233,7 +1225,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsRunsDelete
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsRunsDelete
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -1268,7 +1260,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    example:
  *    `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}`
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsRunsGet
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsRunsGet
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -1341,7 +1333,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *    Format of transfer configuration resource name is:
  *    `projects/{project_id}/transferConfigs/{config_id}`.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsRunsList
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsRunsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -1404,7 +1396,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param parent Transfer run name in the form:
  *    `projects/{project_id}/transferConfigs/{config_Id}/runs/{run_id}`.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsRunsTransferLogsList
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsRunsTransferLogsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -1449,7 +1441,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransferStatesTransferStateUnspeci
  *  @param parent Transfer configuration name in the form:
  *    `projects/{project_id}/transferConfigs/{config_id}`.
  *
- *  @returns GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsScheduleRuns
+ *  @return GTLRBigQueryDataTransferQuery_ProjectsTransferConfigsScheduleRuns
  */
 + (instancetype)queryWithObject:(GTLRBigQueryDataTransfer_ScheduleTransferRunsRequest *)object
                          parent:(NSString *)parent;

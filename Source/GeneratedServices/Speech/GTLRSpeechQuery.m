@@ -2,11 +2,11 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Speech API (speech/v1)
+//   Cloud Speech API (speech/v1)
 // Description:
 //   Converts audio to text by applying powerful neural network models.
 // Documentation:
-//   https://cloud.google.com/speech/
+//   https://cloud.google.com/speech-to-text/docs/quickstart-protocol
 
 #import "GTLRSpeechQuery.h"
 
@@ -15,50 +15,6 @@
 @implementation GTLRSpeechQuery
 
 @dynamic fields;
-
-@end
-
-@implementation GTLRSpeechQuery_OperationsCancel
-
-@dynamic name;
-
-+ (instancetype)queryWithObject:(GTLRSpeech_CancelOperationRequest *)object
-                           name:(NSString *)name {
-  if (object == nil) {
-    GTLR_DEBUG_ASSERT(object != nil, @"Got a nil object");
-    return nil;
-  }
-  NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v1/operations/{+name}:cancel";
-  GTLRSpeechQuery_OperationsCancel *query =
-    [[self alloc] initWithPathURITemplate:pathURITemplate
-                               HTTPMethod:@"POST"
-                       pathParameterNames:pathParams];
-  query.bodyObject = object;
-  query.name = name;
-  query.expectedObjectClass = [GTLRSpeech_Empty class];
-  query.loggingName = @"speech.operations.cancel";
-  return query;
-}
-
-@end
-
-@implementation GTLRSpeechQuery_OperationsDelete
-
-@dynamic name;
-
-+ (instancetype)queryWithName:(NSString *)name {
-  NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v1/operations/{+name}";
-  GTLRSpeechQuery_OperationsDelete *query =
-    [[self alloc] initWithPathURITemplate:pathURITemplate
-                               HTTPMethod:@"DELETE"
-                       pathParameterNames:pathParams];
-  query.name = name;
-  query.expectedObjectClass = [GTLRSpeech_Empty class];
-  query.loggingName = @"speech.operations.delete";
-  return query;
-}
 
 @end
 

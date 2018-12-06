@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Dataflow API (dataflow/v1b3)
+//   Dataflow API (dataflow/v1b3)
 // Description:
 //   Manages Google Cloud Dataflow projects on Google Cloud Platform.
 // Documentation:
@@ -29,6 +29,7 @@ NSString * const kGTLRDataflow_AutoscalingSettings_Algorithm_AutoscalingAlgorith
 NSString * const kGTLRDataflow_CounterMetadata_Kind_And        = @"AND";
 NSString * const kGTLRDataflow_CounterMetadata_Kind_Distribution = @"DISTRIBUTION";
 NSString * const kGTLRDataflow_CounterMetadata_Kind_Invalid    = @"INVALID";
+NSString * const kGTLRDataflow_CounterMetadata_Kind_LatestValue = @"LATEST_VALUE";
 NSString * const kGTLRDataflow_CounterMetadata_Kind_Max        = @"MAX";
 NSString * const kGTLRDataflow_CounterMetadata_Kind_Mean       = @"MEAN";
 NSString * const kGTLRDataflow_CounterMetadata_Kind_Min        = @"MIN";
@@ -69,6 +70,7 @@ NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateD
 NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateDraining = @"JOB_STATE_DRAINING";
 NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateFailed = @"JOB_STATE_FAILED";
 NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStatePending = @"JOB_STATE_PENDING";
+NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateQueued = @"JOB_STATE_QUEUED";
 NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateRunning = @"JOB_STATE_RUNNING";
 NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateStopped = @"JOB_STATE_STOPPED";
 NSString * const kGTLRDataflow_ExecutionStageState_ExecutionStageState_JobStateUnknown = @"JOB_STATE_UNKNOWN";
@@ -93,6 +95,7 @@ NSString * const kGTLRDataflow_Job_CurrentState_JobStateDrained = @"JOB_STATE_DR
 NSString * const kGTLRDataflow_Job_CurrentState_JobStateDraining = @"JOB_STATE_DRAINING";
 NSString * const kGTLRDataflow_Job_CurrentState_JobStateFailed = @"JOB_STATE_FAILED";
 NSString * const kGTLRDataflow_Job_CurrentState_JobStatePending = @"JOB_STATE_PENDING";
+NSString * const kGTLRDataflow_Job_CurrentState_JobStateQueued = @"JOB_STATE_QUEUED";
 NSString * const kGTLRDataflow_Job_CurrentState_JobStateRunning = @"JOB_STATE_RUNNING";
 NSString * const kGTLRDataflow_Job_CurrentState_JobStateStopped = @"JOB_STATE_STOPPED";
 NSString * const kGTLRDataflow_Job_CurrentState_JobStateUnknown = @"JOB_STATE_UNKNOWN";
@@ -106,6 +109,7 @@ NSString * const kGTLRDataflow_Job_RequestedState_JobStateDrained = @"JOB_STATE_
 NSString * const kGTLRDataflow_Job_RequestedState_JobStateDraining = @"JOB_STATE_DRAINING";
 NSString * const kGTLRDataflow_Job_RequestedState_JobStateFailed = @"JOB_STATE_FAILED";
 NSString * const kGTLRDataflow_Job_RequestedState_JobStatePending = @"JOB_STATE_PENDING";
+NSString * const kGTLRDataflow_Job_RequestedState_JobStateQueued = @"JOB_STATE_QUEUED";
 NSString * const kGTLRDataflow_Job_RequestedState_JobStateRunning = @"JOB_STATE_RUNNING";
 NSString * const kGTLRDataflow_Job_RequestedState_JobStateStopped = @"JOB_STATE_STOPPED";
 NSString * const kGTLRDataflow_Job_RequestedState_JobStateUnknown = @"JOB_STATE_UNKNOWN";
@@ -128,12 +132,20 @@ NSString * const kGTLRDataflow_JobMessage_MessageImportance_JobMessageWarning = 
 NSString * const kGTLRDataflow_NameAndKind_Kind_And          = @"AND";
 NSString * const kGTLRDataflow_NameAndKind_Kind_Distribution = @"DISTRIBUTION";
 NSString * const kGTLRDataflow_NameAndKind_Kind_Invalid      = @"INVALID";
+NSString * const kGTLRDataflow_NameAndKind_Kind_LatestValue  = @"LATEST_VALUE";
 NSString * const kGTLRDataflow_NameAndKind_Kind_Max          = @"MAX";
 NSString * const kGTLRDataflow_NameAndKind_Kind_Mean         = @"MEAN";
 NSString * const kGTLRDataflow_NameAndKind_Kind_Min          = @"MIN";
 NSString * const kGTLRDataflow_NameAndKind_Kind_Or           = @"OR";
 NSString * const kGTLRDataflow_NameAndKind_Kind_Set          = @"SET";
 NSString * const kGTLRDataflow_NameAndKind_Kind_Sum          = @"SUM";
+
+// GTLRDataflow_SdkVersion.sdkSupportStatus
+NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Deprecated = @"DEPRECATED";
+NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Stale = @"STALE";
+NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Supported = @"SUPPORTED";
+NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Unknown = @"UNKNOWN";
+NSString * const kGTLRDataflow_SdkVersion_SdkSupportStatus_Unsupported = @"UNSUPPORTED";
 
 // GTLRDataflow_SourceSplitResponse.outcome
 NSString * const kGTLRDataflow_SourceSplitResponse_Outcome_SourceSplitOutcomeSplittingHappened = @"SOURCE_SPLIT_OUTCOME_SPLITTING_HAPPENED";
@@ -161,6 +173,16 @@ NSString * const kGTLRDataflow_TransformSummary_Kind_ShuffleKind = @"SHUFFLE_KIN
 NSString * const kGTLRDataflow_TransformSummary_Kind_SingletonKind = @"SINGLETON_KIND";
 NSString * const kGTLRDataflow_TransformSummary_Kind_UnknownKind = @"UNKNOWN_KIND";
 NSString * const kGTLRDataflow_TransformSummary_Kind_WriteKind = @"WRITE_KIND";
+
+// GTLRDataflow_WorkerLifecycleEvent.event
+NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_ContainerStart = @"CONTAINER_START";
+NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_NetworkUp = @"NETWORK_UP";
+NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_OsStart = @"OS_START";
+NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_SdkInstallFinish = @"SDK_INSTALL_FINISH";
+NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_SdkInstallStart = @"SDK_INSTALL_START";
+NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_StagingFilesDownloadFinish = @"STAGING_FILES_DOWNLOAD_FINISH";
+NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_StagingFilesDownloadStart = @"STAGING_FILES_DOWNLOAD_START";
+NSString * const kGTLRDataflow_WorkerLifecycleEvent_Event_UnknownEvent = @"UNKNOWN_EVENT";
 
 // GTLRDataflow_WorkerPool.defaultPackageSet
 NSString * const kGTLRDataflow_WorkerPool_DefaultPackageSet_DefaultPackageSetJava = @"DEFAULT_PACKAGE_SET_JAVA";
@@ -216,7 +238,7 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 @implementation GTLRDataflow_AutoscalingEvent
 @dynamic currentNumWorkers, descriptionProperty, eventType, targetNumWorkers,
-         time;
+         time, workerPool;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"descriptionProperty" : @"description" };
@@ -232,6 +254,26 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 @implementation GTLRDataflow_AutoscalingSettings
 @dynamic algorithm, maxNumWorkers;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDataflow_BigQueryIODetails
+//
+
+@implementation GTLRDataflow_BigQueryIODetails
+@dynamic dataset, projectId, query, table;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDataflow_BigTableIODetails
+//
+
+@implementation GTLRDataflow_BigTableIODetails
+@dynamic instanceId, projectId, tableId;
 @end
 
 
@@ -337,8 +379,8 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 @implementation GTLRDataflow_CounterUpdate
 @dynamic boolean, cumulative, distribution, floatingPoint, floatingPointList,
-         floatingPointMean, integer, integerList, integerMean, internal,
-         nameAndKind, shortId, stringList, structuredNameAndMetadata;
+         floatingPointMean, integer, integerGauge, integerList, integerMean,
+         internal, nameAndKind, shortId, stringList, structuredNameAndMetadata;
 @end
 
 
@@ -399,6 +441,21 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
     @"dataDisks" : [NSString class]
   };
   return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDataflow_DatastoreIODetails
+//
+
+@implementation GTLRDataflow_DatastoreIODetails
+@dynamic namespaceProperty, projectId;
+
++ (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
+  return @{ @"namespaceProperty" : @"namespace" };
 }
 
 @end
@@ -591,6 +648,16 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRDataflow_FileIODetails
+//
+
+@implementation GTLRDataflow_FileIODetails
+@dynamic filePattern;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRDataflow_FlattenInstruction
 //
 
@@ -720,6 +787,16 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRDataflow_IntegerGauge
+//
+
+@implementation GTLRDataflow_IntegerGauge
+@dynamic timestamp, value;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRDataflow_IntegerList
 //
 
@@ -753,10 +830,10 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 @implementation GTLRDataflow_Job
 @dynamic clientRequestId, createTime, currentState, currentStateTime,
-         environment, executionInfo, identifier, labels, location, name,
-         pipelineDescription, projectId, replacedByJobId, replaceJobId,
-         requestedState, stageStates, steps, tempFiles, transformNameMapping,
-         type;
+         environment, executionInfo, identifier, jobMetadata, labels, location,
+         name, pipelineDescription, projectId, replacedByJobId, replaceJobId,
+         requestedState, stageStates, startTime, steps, tempFiles,
+         transformNameMapping, type;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"identifier" : @"id" };
@@ -854,6 +931,30 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"identifier" : @"id" };
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDataflow_JobMetadata
+//
+
+@implementation GTLRDataflow_JobMetadata
+@dynamic bigqueryDetails, bigTableDetails, datastoreDetails, fileDetails,
+         pubsubDetails, sdkVersion, spannerDetails;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"bigqueryDetails" : [GTLRDataflow_BigQueryIODetails class],
+    @"bigTableDetails" : [GTLRDataflow_BigTableIODetails class],
+    @"datastoreDetails" : [GTLRDataflow_DatastoreIODetails class],
+    @"fileDetails" : [GTLRDataflow_FileIODetails class],
+    @"pubsubDetails" : [GTLRDataflow_PubSubIODetails class],
+    @"spannerDetails" : [GTLRDataflow_SpannerIODetails class]
+  };
+  return map;
 }
 
 @end
@@ -1013,7 +1114,7 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 //
 
 @implementation GTLRDataflow_MapTask
-@dynamic instructions, stageName, systemName;
+@dynamic counterPrefix, instructions, stageName, systemName;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -1065,8 +1166,8 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 //
 
 @implementation GTLRDataflow_MetricUpdate
-@dynamic cumulative, distribution, internal, kind, meanCount, meanSum, name,
-         scalar, set, updateTime;
+@dynamic cumulative, distribution, gauge, internal, kind, meanCount, meanSum,
+         name, scalar, set, updateTime;
 
 + (BOOL)isKindValidForClassRegistry {
   // This class has a "kind" property that doesn't appear to be usable to
@@ -1283,6 +1384,16 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRDataflow_PubSubIODetails
+//
+
+@implementation GTLRDataflow_PubSubIODetails
+@dynamic subscription, topic;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRDataflow_PubsubLocation
 //
 
@@ -1381,13 +1492,31 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 //
 
 @implementation GTLRDataflow_RuntimeEnvironment
-@dynamic bypassTempDirValidation, machineType, maxWorkers, serviceAccountEmail,
-         tempLocation, zoneProperty;
+@dynamic additionalExperiments, bypassTempDirValidation, machineType,
+         maxWorkers, network, serviceAccountEmail, subnetwork, tempLocation,
+         zoneProperty;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"zoneProperty" : @"zone" };
 }
 
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"additionalExperiments" : [NSString class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDataflow_SdkVersion
+//
+
+@implementation GTLRDataflow_SdkVersion
+@dynamic sdkSupportStatus, version, versionDisplayName;
 @end
 
 
@@ -1740,6 +1869,16 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRDataflow_SpannerIODetails
+//
+
+@implementation GTLRDataflow_SpannerIODetails
+@dynamic databaseId, instanceId, projectId;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRDataflow_SplitInt64
 //
 
@@ -1828,6 +1967,16 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
   return [NSObject class];
 }
 
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDataflow_StreamingApplianceSnapshotConfig
+//
+
+@implementation GTLRDataflow_StreamingApplianceSnapshotConfig
+@dynamic importStateEndpoint, snapshotId;
 @end
 
 
@@ -1925,7 +2074,7 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 //
 
 @implementation GTLRDataflow_StreamingSetupTask
-@dynamic drain, receiveWorkPort, streamingComputationTopology,
+@dynamic drain, receiveWorkPort, snapshotConfig, streamingComputationTopology,
          workerHarnessPort;
 @end
 
@@ -2150,12 +2299,36 @@ NSString * const kGTLRDataflow_WorkerPool_TeardownPolicy_TeardownPolicyUnknown =
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRDataflow_WorkerLifecycleEvent
+//
+
+@implementation GTLRDataflow_WorkerLifecycleEvent
+@dynamic containerStartTime, event, metadata;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDataflow_WorkerLifecycleEvent_Metadata
+//
+
+@implementation GTLRDataflow_WorkerLifecycleEvent_Metadata
+
++ (Class)classForAdditionalProperties {
+  return [NSString class];
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRDataflow_WorkerMessage
 //
 
 @implementation GTLRDataflow_WorkerMessage
-@dynamic labels, time, workerHealthReport, workerMessageCode, workerMetrics,
-         workerShutdownNotice;
+@dynamic labels, time, workerHealthReport, workerLifecycleEvent,
+         workerMessageCode, workerMetrics, workerShutdownNotice;
 @end
 
 

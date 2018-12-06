@@ -4,9 +4,8 @@
 // API:
 //   Admin Directory API (admin/directory_v1)
 // Description:
-//   The Admin SDK Directory API lets you view and manage enterprise resources
-//   such as users and groups, administrative notifications, security features,
-//   and more.
+//   Manages enterprise resources such as users and groups, administrative
+//   notifications, security features, and more.
 // Documentation:
 //   https://developers.google.com/admin-sdk/directory/
 
@@ -115,12 +114,73 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRDirectory_Building
+//
+
+@implementation GTLRDirectory_Building
+@dynamic buildingId, buildingName, coordinates, descriptionProperty, etags,
+         floorNames, kind;
+
++ (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
+  return @{ @"descriptionProperty" : @"description" };
+}
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"floorNames" : [NSString class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_BuildingCoordinates
+//
+
+@implementation GTLRDirectory_BuildingCoordinates
+@dynamic latitude, longitude;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_Buildings
+//
+
+@implementation GTLRDirectory_Buildings
+@dynamic buildings, ETag, kind, nextPageToken;
+
++ (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
+  return @{ @"ETag" : @"etag" };
+}
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"buildings" : [GTLRDirectory_Building class]
+  };
+  return map;
+}
+
++ (NSString *)collectionItemsKey {
+  return @"buildings";
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRDirectory_CalendarResource
 //
 
 @implementation GTLRDirectory_CalendarResource
-@dynamic etags, generatedResourceName, kind, resourceDescription, resourceEmail,
-         resourceId, resourceName, resourceType;
+@dynamic buildingId, capacity, etags, featureInstances, floorName, floorSection,
+         generatedResourceName, kind, resourceCategory, resourceDescription,
+         resourceEmail, resourceId, resourceName, resourceType,
+         userVisibleDescription;
 @end
 
 
@@ -183,10 +243,12 @@
 
 @implementation GTLRDirectory_ChromeOsDevice
 @dynamic activeTimeRanges, annotatedAssetId, annotatedLocation, annotatedUser,
-         bootMode, deviceId, ETag, ethernetMacAddress, firmwareVersion, kind,
-         lastEnrollmentTime, lastSync, macAddress, meid, model, notes,
-         orderNumber, orgUnitPath, osVersion, platformVersion, recentUsers,
-         serialNumber, status, supportEndDate, willAutoRenew;
+         bootMode, cpuStatusReports, deviceFiles, deviceId, diskVolumeReports,
+         ETag, ethernetMacAddress, firmwareVersion, kind, lastEnrollmentTime,
+         lastSync, macAddress, meid, model, notes, orderNumber, orgUnitPath,
+         osVersion, platformVersion, recentUsers, serialNumber, status,
+         supportEndDate, systemRamFreeReports, systemRamTotal, tpmVersionInfo,
+         willAutoRenew;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"ETag" : @"etag" };
@@ -195,7 +257,11 @@
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
     @"activeTimeRanges" : [GTLRDirectory_ChromeOsDevice_ActiveTimeRanges_Item class],
-    @"recentUsers" : [GTLRDirectory_ChromeOsDevice_RecentUsers_Item class]
+    @"cpuStatusReports" : [GTLRDirectory_ChromeOsDevice_CpuStatusReports_Item class],
+    @"deviceFiles" : [GTLRDirectory_ChromeOsDevice_DeviceFiles_Item class],
+    @"diskVolumeReports" : [GTLRDirectory_ChromeOsDevice_DiskVolumeReports_Item class],
+    @"recentUsers" : [GTLRDirectory_ChromeOsDevice_RecentUsers_Item class],
+    @"systemRamFreeReports" : [GTLRDirectory_ChromeOsDevice_SystemRamFreeReports_Item class]
   };
   return map;
 }
@@ -215,11 +281,107 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRDirectory_ChromeOsDevice_CpuStatusReports_Item
+//
+
+@implementation GTLRDirectory_ChromeOsDevice_CpuStatusReports_Item
+@dynamic cpuTemperatureInfo, cpuUtilizationPercentageInfo, reportTime;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"cpuTemperatureInfo" : [GTLRDirectory_ChromeOsDevice_CpuStatusReports_Item_CpuTemperatureInfo_Item class],
+    @"cpuUtilizationPercentageInfo" : [NSNumber class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_ChromeOsDevice_DeviceFiles_Item
+//
+
+@implementation GTLRDirectory_ChromeOsDevice_DeviceFiles_Item
+@dynamic createTime, downloadUrl, name, type;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_ChromeOsDevice_DiskVolumeReports_Item
+//
+
+@implementation GTLRDirectory_ChromeOsDevice_DiskVolumeReports_Item
+@dynamic volumeInfo;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"volumeInfo" : [GTLRDirectory_ChromeOsDevice_DiskVolumeReports_Item_VolumeInfo_Item class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRDirectory_ChromeOsDevice_RecentUsers_Item
 //
 
 @implementation GTLRDirectory_ChromeOsDevice_RecentUsers_Item
 @dynamic email, type;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_ChromeOsDevice_SystemRamFreeReports_Item
+//
+
+@implementation GTLRDirectory_ChromeOsDevice_SystemRamFreeReports_Item
+@dynamic reportTime, systemRamFreeInfo;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"systemRamFreeInfo" : [NSNumber class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_ChromeOsDevice_TpmVersionInfo
+//
+
+@implementation GTLRDirectory_ChromeOsDevice_TpmVersionInfo
+@dynamic family, firmwareVersion, manufacturer, specLevel, tpmModel,
+         vendorSpecific;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_ChromeOsDevice_CpuStatusReports_Item_CpuTemperatureInfo_Item
+//
+
+@implementation GTLRDirectory_ChromeOsDevice_CpuStatusReports_Item_CpuTemperatureInfo_Item
+@dynamic label, temperature;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_ChromeOsDevice_DiskVolumeReports_Item_VolumeInfo_Item
+//
+
+@implementation GTLRDirectory_ChromeOsDevice_DiskVolumeReports_Item_VolumeInfo_Item
+@dynamic storageFree, storageTotal, volumeId;
 @end
 
 
@@ -392,6 +554,62 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRDirectory_Feature
+//
+
+@implementation GTLRDirectory_Feature
+@dynamic etags, kind, name;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_FeatureInstance
+//
+
+@implementation GTLRDirectory_FeatureInstance
+@dynamic feature;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_FeatureRename
+//
+
+@implementation GTLRDirectory_FeatureRename
+@dynamic newName;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRDirectory_Features
+//
+
+@implementation GTLRDirectory_Features
+@dynamic ETag, features, kind, nextPageToken;
+
++ (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
+  return @{ @"ETag" : @"etag" };
+}
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"features" : [GTLRDirectory_Feature class]
+  };
+  return map;
+}
+
++ (NSString *)collectionItemsKey {
+  return @"features";
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRDirectory_Group
 //
 
@@ -451,10 +669,11 @@
 //
 
 @implementation GTLRDirectory_Member
-@dynamic email, ETag, identifier, kind, role, status, type;
+@dynamic deliverySettings, email, ETag, identifier, kind, role, status, type;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   NSDictionary<NSString *, NSString *> *map = @{
+    @"deliverySettings" : @"delivery_settings",
     @"ETag" : @"etag",
     @"identifier" : @"id"
   };
@@ -810,7 +1029,7 @@
 //
 
 @implementation GTLRDirectory_Schema
-@dynamic ETag, fields, kind, schemaId, schemaName;
+@dynamic displayName, ETag, fields, kind, schemaId, schemaName;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"ETag" : @"etag" };
@@ -832,8 +1051,8 @@
 //
 
 @implementation GTLRDirectory_SchemaFieldSpec
-@dynamic ETag, fieldId, fieldName, fieldType, indexed, kind, multiValued,
-         numericIndexingSpec, readAccessType;
+@dynamic displayName, ETag, fieldId, fieldName, fieldType, indexed, kind,
+         multiValued, numericIndexingSpec, readAccessType;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"ETag" : @"etag" };
@@ -967,7 +1186,7 @@
 //
 
 @implementation GTLRDirectory_User
-@dynamic addresses, agreedToTerms, aliases, changePasswordAtNextLogin,
+@dynamic addresses, agreedToTerms, aliases, archived, changePasswordAtNextLogin,
          creationTime, customerId, customSchemas, deletionTime, emails, ETag,
          externalIds, gender, hashFunction, identifier, ims,
          includeInGlobalAddressList, ipWhitelisted, isAdmin, isDelegatedAdmin,
@@ -1188,8 +1407,8 @@
 //
 
 @implementation GTLRDirectory_UserPosixAccount
-@dynamic accountId, gecos, gid, homeDirectory, primary, shell, systemId, uid,
-         username;
+@dynamic accountId, gecos, gid, homeDirectory, operatingSystemType, primary,
+         shell, systemId, uid, username;
 @end
 
 

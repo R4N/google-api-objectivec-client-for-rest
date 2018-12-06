@@ -2,10 +2,10 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Key Management Service (KMS) API (cloudkms/v1)
+//   Cloud Key Management Service (KMS) API (cloudkms/v1)
 // Description:
-//   Manages encryption for your cloud services the same way you do on-premises.
-//   You can generate, use, rotate, and destroy AES256 encryption keys.
+//   Manages keys and performs cryptographic operations in a central cloud
+//   service, for direct use by other cloud resources and applications.
 // Documentation:
 //   https://cloud.google.com/kms/
 
@@ -25,7 +25,10 @@
 @class GTLRCloudKMS_CryptoKey;
 @class GTLRCloudKMS_CryptoKey_Labels;
 @class GTLRCloudKMS_CryptoKeyVersion;
+@class GTLRCloudKMS_CryptoKeyVersionTemplate;
+@class GTLRCloudKMS_Digest;
 @class GTLRCloudKMS_Expr;
+@class GTLRCloudKMS_KeyOperationAttestation;
 @class GTLRCloudKMS_KeyRing;
 @class GTLRCloudKMS_Location;
 @class GTLRCloudKMS_Location_Labels;
@@ -74,6 +77,22 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_AuditLogConfig_LogType_LogTypeUnspeci
 // GTLRCloudKMS_CryptoKey.purpose
 
 /**
+ *  CryptoKeys with this purpose may be used with
+ *  AsymmetricDecrypt and
+ *  GetPublicKey.
+ *
+ *  Value: "ASYMMETRIC_DECRYPT"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKey_Purpose_AsymmetricDecrypt;
+/**
+ *  CryptoKeys with this purpose may be used with
+ *  AsymmetricSign and
+ *  GetPublicKey.
+ *
+ *  Value: "ASYMMETRIC_SIGN"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKey_Purpose_AsymmetricSign;
+/**
  *  Not specified.
  *
  *  Value: "CRYPTO_KEY_PURPOSE_UNSPECIFIED"
@@ -87,6 +106,128 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKey_Purpose_CryptoKeyPurposeUns
  *  Value: "ENCRYPT_DECRYPT"
  */
 GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKey_Purpose_EncryptDecrypt;
+
+// ----------------------------------------------------------------------------
+// GTLRCloudKMS_CryptoKeyVersion.algorithm
+
+/**
+ *  Not specified.
+ *
+ *  Value: "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_CryptoKeyVersionAlgorithmUnspecified;
+/**
+ *  ECDSA on the NIST P-256 curve with a SHA256 digest.
+ *
+ *  Value: "EC_SIGN_P256_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_EcSignP256Sha256;
+/**
+ *  ECDSA on the NIST P-384 curve with a SHA384 digest.
+ *
+ *  Value: "EC_SIGN_P384_SHA384"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_EcSignP384Sha384;
+/**
+ *  Creates symmetric encryption keys.
+ *
+ *  Value: "GOOGLE_SYMMETRIC_ENCRYPTION"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_GoogleSymmetricEncryption;
+/**
+ *  RSAES-OAEP 2048 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_2048_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaDecryptOaep2048Sha256;
+/**
+ *  RSAES-OAEP 3072 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_3072_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaDecryptOaep3072Sha256;
+/**
+ *  RSAES-OAEP 4096 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_4096_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaDecryptOaep4096Sha256;
+/**
+ *  RSAES-OAEP 4096 bit key with a SHA512 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_4096_SHA512"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaDecryptOaep4096Sha512;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_2048_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPkcs12048Sha256;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_3072_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPkcs13072Sha256;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_4096_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPkcs14096Sha256;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_4096_SHA512"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPkcs14096Sha512;
+/**
+ *  RSASSA-PSS 2048 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_2048_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPss2048Sha256;
+/**
+ *  RSASSA-PSS 3072 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_3072_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPss3072Sha256;
+/**
+ *  RSASSA-PSS 4096 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_4096_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPss4096Sha256;
+/**
+ *  RSASSA-PSS 4096 bit key with a SHA512 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_4096_SHA512"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPss4096Sha512;
+
+// ----------------------------------------------------------------------------
+// GTLRCloudKMS_CryptoKeyVersion.protectionLevel
+
+/**
+ *  Crypto operations are performed in a Hardware Security Module.
+ *
+ *  Value: "HSM"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_ProtectionLevel_Hsm;
+/**
+ *  Not specified.
+ *
+ *  Value: "PROTECTION_LEVEL_UNSPECIFIED"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_ProtectionLevel_ProtectionLevelUnspecified;
+/**
+ *  Crypto operations are performed in software.
+ *
+ *  Value: "SOFTWARE"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_ProtectionLevel_Software;
 
 // ----------------------------------------------------------------------------
 // GTLRCloudKMS_CryptoKeyVersion.state
@@ -121,12 +262,318 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_DestroySchedul
  */
 GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Disabled;
 /**
- *  This version may be used in Encrypt and
- *  Decrypt requests.
+ *  This version may be used for cryptographic operations.
  *
  *  Value: "ENABLED"
  */
 GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
+/**
+ *  This version is still being generated. It may not be used, enabled,
+ *  disabled, or destroyed yet. Cloud KMS will automatically mark this
+ *  version ENABLED as soon as the version is ready.
+ *
+ *  Value: "PENDING_GENERATION"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_PendingGeneration;
+
+// ----------------------------------------------------------------------------
+// GTLRCloudKMS_CryptoKeyVersionTemplate.algorithm
+
+/**
+ *  Not specified.
+ *
+ *  Value: "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_CryptoKeyVersionAlgorithmUnspecified;
+/**
+ *  ECDSA on the NIST P-256 curve with a SHA256 digest.
+ *
+ *  Value: "EC_SIGN_P256_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_EcSignP256Sha256;
+/**
+ *  ECDSA on the NIST P-384 curve with a SHA384 digest.
+ *
+ *  Value: "EC_SIGN_P384_SHA384"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_EcSignP384Sha384;
+/**
+ *  Creates symmetric encryption keys.
+ *
+ *  Value: "GOOGLE_SYMMETRIC_ENCRYPTION"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_GoogleSymmetricEncryption;
+/**
+ *  RSAES-OAEP 2048 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_2048_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaDecryptOaep2048Sha256;
+/**
+ *  RSAES-OAEP 3072 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_3072_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaDecryptOaep3072Sha256;
+/**
+ *  RSAES-OAEP 4096 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_4096_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaDecryptOaep4096Sha256;
+/**
+ *  RSAES-OAEP 4096 bit key with a SHA512 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_4096_SHA512"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaDecryptOaep4096Sha512;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_2048_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPkcs12048Sha256;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_3072_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPkcs13072Sha256;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_4096_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPkcs14096Sha256;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_4096_SHA512"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPkcs14096Sha512;
+/**
+ *  RSASSA-PSS 2048 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_2048_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPss2048Sha256;
+/**
+ *  RSASSA-PSS 3072 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_3072_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPss3072Sha256;
+/**
+ *  RSASSA-PSS 4096 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_4096_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPss4096Sha256;
+/**
+ *  RSASSA-PSS 4096 bit key with a SHA512 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_4096_SHA512"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPss4096Sha512;
+
+// ----------------------------------------------------------------------------
+// GTLRCloudKMS_CryptoKeyVersionTemplate.protectionLevel
+
+/**
+ *  Crypto operations are performed in a Hardware Security Module.
+ *
+ *  Value: "HSM"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_ProtectionLevel_Hsm;
+/**
+ *  Not specified.
+ *
+ *  Value: "PROTECTION_LEVEL_UNSPECIFIED"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_ProtectionLevel_ProtectionLevelUnspecified;
+/**
+ *  Crypto operations are performed in software.
+ *
+ *  Value: "SOFTWARE"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersionTemplate_ProtectionLevel_Software;
+
+// ----------------------------------------------------------------------------
+// GTLRCloudKMS_KeyOperationAttestation.format
+
+/** Value: "ATTESTATION_FORMAT_UNSPECIFIED" */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_KeyOperationAttestation_Format_AttestationFormatUnspecified;
+/**
+ *  Cavium HSM attestation compressed with gzip. Note that this format is
+ *  defined by Cavium and subject to change at any time.
+ *
+ *  Value: "CAVIUM_V1_COMPRESSED"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_KeyOperationAttestation_Format_CaviumV1Compressed;
+
+// ----------------------------------------------------------------------------
+// GTLRCloudKMS_PublicKey.algorithm
+
+/**
+ *  Not specified.
+ *
+ *  Value: "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_CryptoKeyVersionAlgorithmUnspecified;
+/**
+ *  ECDSA on the NIST P-256 curve with a SHA256 digest.
+ *
+ *  Value: "EC_SIGN_P256_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_EcSignP256Sha256;
+/**
+ *  ECDSA on the NIST P-384 curve with a SHA384 digest.
+ *
+ *  Value: "EC_SIGN_P384_SHA384"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_EcSignP384Sha384;
+/**
+ *  Creates symmetric encryption keys.
+ *
+ *  Value: "GOOGLE_SYMMETRIC_ENCRYPTION"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_GoogleSymmetricEncryption;
+/**
+ *  RSAES-OAEP 2048 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_2048_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaDecryptOaep2048Sha256;
+/**
+ *  RSAES-OAEP 3072 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_3072_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaDecryptOaep3072Sha256;
+/**
+ *  RSAES-OAEP 4096 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_4096_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaDecryptOaep4096Sha256;
+/**
+ *  RSAES-OAEP 4096 bit key with a SHA512 digest.
+ *
+ *  Value: "RSA_DECRYPT_OAEP_4096_SHA512"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaDecryptOaep4096Sha512;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_2048_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPkcs12048Sha256;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_3072_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPkcs13072Sha256;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_4096_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPkcs14096Sha256;
+/**
+ *  RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.
+ *
+ *  Value: "RSA_SIGN_PKCS1_4096_SHA512"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPkcs14096Sha512;
+/**
+ *  RSASSA-PSS 2048 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_2048_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPss2048Sha256;
+/**
+ *  RSASSA-PSS 3072 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_3072_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPss3072Sha256;
+/**
+ *  RSASSA-PSS 4096 bit key with a SHA256 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_4096_SHA256"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPss4096Sha256;
+/**
+ *  RSASSA-PSS 4096 bit key with a SHA512 digest.
+ *
+ *  Value: "RSA_SIGN_PSS_4096_SHA512"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPss4096Sha512;
+
+/**
+ *  Request message for KeyManagementService.AsymmetricDecrypt.
+ */
+@interface GTLRCloudKMS_AsymmetricDecryptRequest : GTLRObject
+
+/**
+ *  Required. The data encrypted with the named CryptoKeyVersion's public
+ *  key using OAEP.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *ciphertext;
+
+@end
+
+
+/**
+ *  Response message for KeyManagementService.AsymmetricDecrypt.
+ */
+@interface GTLRCloudKMS_AsymmetricDecryptResponse : GTLRObject
+
+/**
+ *  The decrypted data originally encrypted with the matching public key.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *plaintext;
+
+@end
+
+
+/**
+ *  Request message for KeyManagementService.AsymmetricSign.
+ */
+@interface GTLRCloudKMS_AsymmetricSignRequest : GTLRObject
+
+/**
+ *  Required. The digest of the data to sign. The digest must be produced with
+ *  the same digest algorithm as specified by the key version's
+ *  algorithm.
+ */
+@property(nonatomic, strong, nullable) GTLRCloudKMS_Digest *digest;
+
+@end
+
+
+/**
+ *  Response message for KeyManagementService.AsymmetricSign.
+ */
+@interface GTLRCloudKMS_AsymmetricSignResponse : GTLRObject
+
+/**
+ *  The created signature.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *signature;
+
+@end
+
 
 /**
  *  Specifies the audit configuration for a service.
@@ -136,7 +583,7 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  *  If there are AuditConfigs for both `allServices` and a specific service,
  *  the union of the two AuditConfigs is used for that service: the log_types
  *  specified in each AuditConfig are enabled, and the exempted_members in each
- *  AuditConfig are exempted.
+ *  AuditLogConfig are exempted.
  *  Example Policy with multiple AuditConfigs:
  *  {
  *  "audit_configs": [
@@ -179,13 +626,8 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  */
 @interface GTLRCloudKMS_AuditConfig : GTLRObject
 
-/**
- *  The configuration for logging of each type of permission.
- *  Next ID: 4
- */
+/** The configuration for logging of each type of permission. */
 @property(nonatomic, strong, nullable) NSArray<GTLRCloudKMS_AuditLogConfig *> *auditLogConfigs;
-
-@property(nonatomic, strong, nullable) NSArray<NSString *> *exemptedMembers;
 
 /**
  *  Specifies a service that will be enabled for audit logging.
@@ -249,11 +691,10 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 @interface GTLRCloudKMS_Binding : GTLRObject
 
 /**
- *  The condition that is associated with this binding.
+ *  Unimplemented. The condition that is associated with this binding.
  *  NOTE: an unsatisfied condition will not allow user access via current
  *  binding. Different bindings, including their conditions, are examined
  *  independently.
- *  This field is GOOGLE_INTERNAL.
  */
 @property(nonatomic, strong, nullable) GTLRCloudKMS_Expr *condition;
 
@@ -265,7 +706,7 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  *  * `allAuthenticatedUsers`: A special identifier that represents anyone
  *  who is authenticated with a Google account or a service account.
  *  * `user:{emailid}`: An email address that represents a specific Google
- *  account. For example, `alice\@gmail.com` or `joe\@example.com`.
+ *  account. For example, `alice\@gmail.com` .
  *  * `serviceAccount:{emailid}`: An email address that represents a service
  *  account. For example, `my-other-app\@appspot.gserviceaccount.com`.
  *  * `group:{emailid}`: An email address that represents a Google group.
@@ -278,7 +719,6 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 /**
  *  Role that is assigned to `members`.
  *  For example, `roles/viewer`, `roles/editor`, or `roles/owner`.
- *  Required
  */
 @property(nonatomic, copy, nullable) NSString *role;
 
@@ -298,7 +738,7 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 
 /**
  *  Labels with user-defined metadata. For more information, see
- *  [Labeling CryptoKeys](/kms/docs/labeling-keys).
+ *  [Labeling Keys](/kms/docs/labeling-keys).
  */
 @property(nonatomic, strong, nullable) GTLRCloudKMS_CryptoKey_Labels *labels;
 
@@ -316,6 +756,9 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  *  CreateCryptoKeyVersion and
  *  UpdateCryptoKeyPrimaryVersion
  *  do not affect next_rotation_time.
+ *  Keys with purpose
+ *  ENCRYPT_DECRYPT support
+ *  automatic rotation. For other keys, this field must be omitted.
  */
 @property(nonatomic, strong, nullable) GTLRDateTime *nextRotationTime;
 
@@ -325,14 +768,24 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  *  in EncryptRequest.name.
  *  The CryptoKey's primary version can be updated via
  *  UpdateCryptoKeyPrimaryVersion.
+ *  All keys with purpose
+ *  ENCRYPT_DECRYPT have a
+ *  primary. For other keys, this field will be omitted.
  */
 @property(nonatomic, strong, nullable) GTLRCloudKMS_CryptoKeyVersion *primary;
 
 /**
- *  The immutable purpose of this CryptoKey. Currently, the only acceptable
- *  purpose is ENCRYPT_DECRYPT.
+ *  The immutable purpose of this CryptoKey.
  *
  *  Likely values:
+ *    @arg @c kGTLRCloudKMS_CryptoKey_Purpose_AsymmetricDecrypt CryptoKeys with
+ *        this purpose may be used with
+ *        AsymmetricDecrypt and
+ *        GetPublicKey. (Value: "ASYMMETRIC_DECRYPT")
+ *    @arg @c kGTLRCloudKMS_CryptoKey_Purpose_AsymmetricSign CryptoKeys with
+ *        this purpose may be used with
+ *        AsymmetricSign and
+ *        GetPublicKey. (Value: "ASYMMETRIC_SIGN")
  *    @arg @c kGTLRCloudKMS_CryptoKey_Purpose_CryptoKeyPurposeUnspecified Not
  *        specified. (Value: "CRYPTO_KEY_PURPOSE_UNSPECIFIED")
  *    @arg @c kGTLRCloudKMS_CryptoKey_Purpose_EncryptDecrypt CryptoKeys with
@@ -346,15 +799,26 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  *  next_rotation_time will be advanced by this period when the service
  *  automatically rotates a key. Must be at least one day.
  *  If rotation_period is set, next_rotation_time must also be set.
+ *  Keys with purpose
+ *  ENCRYPT_DECRYPT support
+ *  automatic rotation. For other keys, this field must be omitted.
  */
 @property(nonatomic, strong, nullable) GTLRDuration *rotationPeriod;
+
+/**
+ *  A template describing settings for new CryptoKeyVersion instances.
+ *  The properties of new CryptoKeyVersion instances created by either
+ *  CreateCryptoKeyVersion or
+ *  auto-rotation are controlled by this template.
+ */
+@property(nonatomic, strong, nullable) GTLRCloudKMS_CryptoKeyVersionTemplate *versionTemplate;
 
 @end
 
 
 /**
  *  Labels with user-defined metadata. For more information, see
- *  [Labeling CryptoKeys](/kms/docs/labeling-keys).
+ *  [Labeling Keys](/kms/docs/labeling-keys).
  *
  *  @note This class is documented as having more properties of NSString. Use @c
  *        -additionalJSONKeys and @c -additionalPropertyForName: to get the list
@@ -368,15 +832,78 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 /**
  *  A CryptoKeyVersion represents an individual cryptographic key, and the
  *  associated key material.
- *  It can be used for cryptographic operations either directly, or via its
- *  parent CryptoKey, in which case the server will choose the appropriate
- *  version for the operation.
+ *  An ENABLED version can be
+ *  used for cryptographic operations.
  *  For security reasons, the raw cryptographic key material represented by a
  *  CryptoKeyVersion can never be viewed or exported. It can only be used to
- *  encrypt or decrypt data when an authorized user or application invokes Cloud
- *  KMS.
+ *  encrypt, decrypt, or sign data when an authorized user or application
+ *  invokes
+ *  Cloud KMS.
  */
 @interface GTLRCloudKMS_CryptoKeyVersion : GTLRObject
+
+/**
+ *  Output only. The CryptoKeyVersionAlgorithm that this
+ *  CryptoKeyVersion supports.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_CryptoKeyVersionAlgorithmUnspecified
+ *        Not specified. (Value: "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_EcSignP256Sha256 ECDSA on
+ *        the NIST P-256 curve with a SHA256 digest. (Value:
+ *        "EC_SIGN_P256_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_EcSignP384Sha384 ECDSA on
+ *        the NIST P-384 curve with a SHA384 digest. (Value:
+ *        "EC_SIGN_P384_SHA384")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_GoogleSymmetricEncryption
+ *        Creates symmetric encryption keys. (Value:
+ *        "GOOGLE_SYMMETRIC_ENCRYPTION")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaDecryptOaep2048Sha256
+ *        RSAES-OAEP 2048 bit key with a SHA256 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_2048_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaDecryptOaep3072Sha256
+ *        RSAES-OAEP 3072 bit key with a SHA256 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_3072_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaDecryptOaep4096Sha256
+ *        RSAES-OAEP 4096 bit key with a SHA256 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_4096_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaDecryptOaep4096Sha512
+ *        RSAES-OAEP 4096 bit key with a SHA512 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_4096_SHA512")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPkcs12048Sha256
+ *        RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest. (Value:
+ *        "RSA_SIGN_PKCS1_2048_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPkcs13072Sha256
+ *        RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest. (Value:
+ *        "RSA_SIGN_PKCS1_3072_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPkcs14096Sha256
+ *        RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest. (Value:
+ *        "RSA_SIGN_PKCS1_4096_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPkcs14096Sha512
+ *        RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest. (Value:
+ *        "RSA_SIGN_PKCS1_4096_SHA512")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPss2048Sha256
+ *        RSASSA-PSS 2048 bit key with a SHA256 digest. (Value:
+ *        "RSA_SIGN_PSS_2048_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPss3072Sha256
+ *        RSASSA-PSS 3072 bit key with a SHA256 digest. (Value:
+ *        "RSA_SIGN_PSS_3072_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPss4096Sha256
+ *        RSASSA-PSS 4096 bit key with a SHA256 digest. (Value:
+ *        "RSA_SIGN_PSS_4096_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_Algorithm_RsaSignPss4096Sha512
+ *        RSASSA-PSS 4096 bit key with a SHA512 digest. (Value:
+ *        "RSA_SIGN_PSS_4096_SHA512")
+ */
+@property(nonatomic, copy, nullable) NSString *algorithm;
+
+/**
+ *  Output only. Statement that was generated and signed by the HSM at key
+ *  creation time. Use this statement to verify attributes of the key as stored
+ *  on the HSM, independently of Google. Only provided for key versions with
+ *  protection_level HSM.
+ */
+@property(nonatomic, strong, nullable) GTLRCloudKMS_KeyOperationAttestation *attestation;
 
 /** Output only. The time at which this CryptoKeyVersion was created. */
 @property(nonatomic, strong, nullable) GTLRDateTime *createTime;
@@ -396,11 +923,31 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 @property(nonatomic, strong, nullable) GTLRDateTime *destroyTime;
 
 /**
+ *  Output only. The time this CryptoKeyVersion's key material was
+ *  generated.
+ */
+@property(nonatomic, strong, nullable) GTLRDateTime *generateTime;
+
+/**
  *  Output only. The resource name for this CryptoKeyVersion in the format
  *  `projects/ * /locations/ * /keyRings/ * /cryptoKeys/ * /cryptoKeyVersions/
  *  *`.
  */
 @property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Output only. The ProtectionLevel describing how crypto operations are
+ *  performed with this CryptoKeyVersion.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_ProtectionLevel_Hsm Crypto
+ *        operations are performed in a Hardware Security Module. (Value: "HSM")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_ProtectionLevel_ProtectionLevelUnspecified
+ *        Not specified. (Value: "PROTECTION_LEVEL_UNSPECIFIED")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_ProtectionLevel_Software Crypto
+ *        operations are performed in software. (Value: "SOFTWARE")
+ */
+@property(nonatomic, copy, nullable) NSString *protectionLevel;
 
 /**
  *  The current state of the CryptoKeyVersion.
@@ -421,10 +968,97 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  *        and the version can be placed back into the ENABLED state. (Value:
  *        "DISABLED")
  *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_State_Enabled This version may be
- *        used in Encrypt and
- *        Decrypt requests. (Value: "ENABLED")
+ *        used for cryptographic operations. (Value: "ENABLED")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersion_State_PendingGeneration This
+ *        version is still being generated. It may not be used, enabled,
+ *        disabled, or destroyed yet. Cloud KMS will automatically mark this
+ *        version ENABLED as soon as the version is ready. (Value:
+ *        "PENDING_GENERATION")
  */
 @property(nonatomic, copy, nullable) NSString *state;
+
+@end
+
+
+/**
+ *  A CryptoKeyVersionTemplate specifies the properties to use when creating
+ *  a new CryptoKeyVersion, either manually with
+ *  CreateCryptoKeyVersion or
+ *  automatically as a result of auto-rotation.
+ */
+@interface GTLRCloudKMS_CryptoKeyVersionTemplate : GTLRObject
+
+/**
+ *  Required. Algorithm to use
+ *  when creating a CryptoKeyVersion based on this template.
+ *  For backwards compatibility, GOOGLE_SYMMETRIC_ENCRYPTION is implied if both
+ *  this field is omitted and CryptoKey.purpose is
+ *  ENCRYPT_DECRYPT.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_CryptoKeyVersionAlgorithmUnspecified
+ *        Not specified. (Value: "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_EcSignP256Sha256
+ *        ECDSA on the NIST P-256 curve with a SHA256 digest. (Value:
+ *        "EC_SIGN_P256_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_EcSignP384Sha384
+ *        ECDSA on the NIST P-384 curve with a SHA384 digest. (Value:
+ *        "EC_SIGN_P384_SHA384")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_GoogleSymmetricEncryption
+ *        Creates symmetric encryption keys. (Value:
+ *        "GOOGLE_SYMMETRIC_ENCRYPTION")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaDecryptOaep2048Sha256
+ *        RSAES-OAEP 2048 bit key with a SHA256 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_2048_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaDecryptOaep3072Sha256
+ *        RSAES-OAEP 3072 bit key with a SHA256 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_3072_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaDecryptOaep4096Sha256
+ *        RSAES-OAEP 4096 bit key with a SHA256 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_4096_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaDecryptOaep4096Sha512
+ *        RSAES-OAEP 4096 bit key with a SHA512 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_4096_SHA512")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPkcs12048Sha256
+ *        RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest. (Value:
+ *        "RSA_SIGN_PKCS1_2048_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPkcs13072Sha256
+ *        RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest. (Value:
+ *        "RSA_SIGN_PKCS1_3072_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPkcs14096Sha256
+ *        RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest. (Value:
+ *        "RSA_SIGN_PKCS1_4096_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPkcs14096Sha512
+ *        RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest. (Value:
+ *        "RSA_SIGN_PKCS1_4096_SHA512")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPss2048Sha256
+ *        RSASSA-PSS 2048 bit key with a SHA256 digest. (Value:
+ *        "RSA_SIGN_PSS_2048_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPss3072Sha256
+ *        RSASSA-PSS 3072 bit key with a SHA256 digest. (Value:
+ *        "RSA_SIGN_PSS_3072_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPss4096Sha256
+ *        RSASSA-PSS 4096 bit key with a SHA256 digest. (Value:
+ *        "RSA_SIGN_PSS_4096_SHA256")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_Algorithm_RsaSignPss4096Sha512
+ *        RSASSA-PSS 4096 bit key with a SHA512 digest. (Value:
+ *        "RSA_SIGN_PSS_4096_SHA512")
+ */
+@property(nonatomic, copy, nullable) NSString *algorithm;
+
+/**
+ *  ProtectionLevel to use when creating a CryptoKeyVersion based on
+ *  this template. Immutable. Defaults to SOFTWARE.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_ProtectionLevel_Hsm Crypto
+ *        operations are performed in a Hardware Security Module. (Value: "HSM")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_ProtectionLevel_ProtectionLevelUnspecified
+ *        Not specified. (Value: "PROTECTION_LEVEL_UNSPECIFIED")
+ *    @arg @c kGTLRCloudKMS_CryptoKeyVersionTemplate_ProtectionLevel_Software
+ *        Crypto operations are performed in software. (Value: "SOFTWARE")
+ */
+@property(nonatomic, copy, nullable) NSString *protectionLevel;
 
 @end
 
@@ -479,14 +1113,51 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 
 
 /**
+ *  A Digest holds a cryptographic message digest.
+ */
+@interface GTLRCloudKMS_Digest : GTLRObject
+
+/**
+ *  A message digest produced with the SHA-256 algorithm.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *sha256;
+
+/**
+ *  A message digest produced with the SHA-384 algorithm.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *sha384;
+
+/**
+ *  A message digest produced with the SHA-512 algorithm.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *sha512;
+
+@end
+
+
+/**
  *  Request message for KeyManagementService.Encrypt.
  */
 @interface GTLRCloudKMS_EncryptRequest : GTLRObject
 
 /**
  *  Optional data that, if specified, must also be provided during decryption
- *  through DecryptRequest.additional_authenticated_data. Must be no
- *  larger than 64KiB.
+ *  through DecryptRequest.additional_authenticated_data.
+ *  The maximum size depends on the key version's
+ *  protection_level. For
+ *  SOFTWARE keys, the AAD must be no larger than
+ *  64KiB. For HSM keys, the combined length of the
+ *  plaintext and additional_authenticated_data fields must be no larger than
+ *  8KiB.
  *
  *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
  *  web-safe format).
@@ -495,6 +1166,12 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 
 /**
  *  Required. The data to encrypt. Must be no larger than 64KiB.
+ *  The maximum size depends on the key version's
+ *  protection_level. For
+ *  SOFTWARE keys, the plaintext must be no larger
+ *  than 64KiB. For HSM keys, the combined length of the
+ *  plaintext and additional_authenticated_data fields must be no larger than
+ *  8KiB.
  *
  *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
  *  web-safe format).
@@ -559,6 +1236,36 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  *  expression.
  */
 @property(nonatomic, copy, nullable) NSString *title;
+
+@end
+
+
+/**
+ *  Contains an HSM-generated attestation about a key operation.
+ */
+@interface GTLRCloudKMS_KeyOperationAttestation : GTLRObject
+
+/**
+ *  Output only. The attestation data provided by the HSM when the key
+ *  operation was performed.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *content;
+
+/**
+ *  Output only. The format of the attestation data.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCloudKMS_KeyOperationAttestation_Format_AttestationFormatUnspecified
+ *        Value "ATTESTATION_FORMAT_UNSPECIFIED"
+ *    @arg @c kGTLRCloudKMS_KeyOperationAttestation_Format_CaviumV1Compressed
+ *        Cavium HSM attestation compressed with gzip. Note that this format is
+ *        defined by Cavium and subject to change at any time. (Value:
+ *        "CAVIUM_V1_COMPRESSED")
+ */
+@property(nonatomic, copy, nullable) NSString *format;
 
 @end
 
@@ -714,6 +1421,12 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 @interface GTLRCloudKMS_Location : GTLRObject
 
 /**
+ *  The friendly name for this location, typically a nearby city name.
+ *  For example, "Tokyo".
+ */
+@property(nonatomic, copy, nullable) NSString *displayName;
+
+/**
  *  Cross-service attributes for the location. For example
  *  {"cloud.googleapis.com/region": "us-east1"}
  */
@@ -764,15 +1477,32 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 
 
 /**
+ *  Cloud KMS metadata for the given google.cloud.location.Location.
+ */
+@interface GTLRCloudKMS_LocationMetadata : GTLRObject
+
+/**
+ *  Indicates whether CryptoKeys with
+ *  protection_level
+ *  HSM can be created in this location.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *hsmAvailable;
+
+@end
+
+
+/**
  *  Defines an Identity and Access Management (IAM) policy. It is used to
  *  specify access control policies for Cloud Platform resources.
- *  A `Policy` consists of a list of `bindings`. A `Binding` binds a list of
+ *  A `Policy` consists of a list of `bindings`. A `binding` binds a list of
  *  `members` to a `role`, where the members can be user accounts, Google
  *  groups,
  *  Google domains, and service accounts. A `role` is a named list of
  *  permissions
  *  defined by IAM.
- *  **Example**
+ *  **JSON Example**
  *  {
  *  "bindings": [
  *  {
@@ -781,7 +1511,7 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  *  "user:mike\@example.com",
  *  "group:admins\@example.com",
  *  "domain:google.com",
- *  "serviceAccount:my-other-app\@appspot.gserviceaccount.com",
+ *  "serviceAccount:my-other-app\@appspot.gserviceaccount.com"
  *  ]
  *  },
  *  {
@@ -790,8 +1520,19 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
  *  }
  *  ]
  *  }
+ *  **YAML Example**
+ *  bindings:
+ *  - members:
+ *  - user:mike\@example.com
+ *  - group:admins\@example.com
+ *  - domain:google.com
+ *  - serviceAccount:my-other-app\@appspot.gserviceaccount.com
+ *  role: roles/owner
+ *  - members:
+ *  - user:sean\@example.com
+ *  role: roles/viewer
  *  For a description of IAM and its features, see the
- *  [IAM developer's guide](https://cloud.google.com/iam).
+ *  [IAM developer's guide](https://cloud.google.com/iam/docs).
  */
 @interface GTLRCloudKMS_Policy : GTLRObject
 
@@ -821,18 +1562,78 @@ GTLR_EXTERN NSString * const kGTLRCloudKMS_CryptoKeyVersion_State_Enabled;
 @property(nonatomic, copy, nullable) NSString *ETag;
 
 /**
- *  iamOwned
- *
- *  Uses NSNumber of boolValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *iamOwned;
-
-/**
- *  Version of the `Policy`. The default version is 0.
+ *  Deprecated.
  *
  *  Uses NSNumber of intValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *version;
+
+@end
+
+
+/**
+ *  The public key for a given CryptoKeyVersion. Obtained via
+ *  GetPublicKey.
+ */
+@interface GTLRCloudKMS_PublicKey : GTLRObject
+
+/**
+ *  The Algorithm associated
+ *  with this key.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_CryptoKeyVersionAlgorithmUnspecified
+ *        Not specified. (Value: "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_EcSignP256Sha256 ECDSA on the
+ *        NIST P-256 curve with a SHA256 digest. (Value: "EC_SIGN_P256_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_EcSignP384Sha384 ECDSA on the
+ *        NIST P-384 curve with a SHA384 digest. (Value: "EC_SIGN_P384_SHA384")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_GoogleSymmetricEncryption
+ *        Creates symmetric encryption keys. (Value:
+ *        "GOOGLE_SYMMETRIC_ENCRYPTION")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaDecryptOaep2048Sha256
+ *        RSAES-OAEP 2048 bit key with a SHA256 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_2048_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaDecryptOaep3072Sha256
+ *        RSAES-OAEP 3072 bit key with a SHA256 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_3072_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaDecryptOaep4096Sha256
+ *        RSAES-OAEP 4096 bit key with a SHA256 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_4096_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaDecryptOaep4096Sha512
+ *        RSAES-OAEP 4096 bit key with a SHA512 digest. (Value:
+ *        "RSA_DECRYPT_OAEP_4096_SHA512")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPkcs12048Sha256
+ *        RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest. (Value:
+ *        "RSA_SIGN_PKCS1_2048_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPkcs13072Sha256
+ *        RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest. (Value:
+ *        "RSA_SIGN_PKCS1_3072_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPkcs14096Sha256
+ *        RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest. (Value:
+ *        "RSA_SIGN_PKCS1_4096_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPkcs14096Sha512
+ *        RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest. (Value:
+ *        "RSA_SIGN_PKCS1_4096_SHA512")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPss2048Sha256 RSASSA-PSS
+ *        2048 bit key with a SHA256 digest. (Value: "RSA_SIGN_PSS_2048_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPss3072Sha256 RSASSA-PSS
+ *        3072 bit key with a SHA256 digest. (Value: "RSA_SIGN_PSS_3072_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPss4096Sha256 RSASSA-PSS
+ *        4096 bit key with a SHA256 digest. (Value: "RSA_SIGN_PSS_4096_SHA256")
+ *    @arg @c kGTLRCloudKMS_PublicKey_Algorithm_RsaSignPss4096Sha512 RSASSA-PSS
+ *        4096 bit key with a SHA512 digest. (Value: "RSA_SIGN_PSS_4096_SHA512")
+ */
+@property(nonatomic, copy, nullable) NSString *algorithm;
+
+/**
+ *  The public key, encoded in PEM format. For more information, see the
+ *  [RFC 7468](https://tools.ietf.org/html/rfc7468) sections for
+ *  [General Considerations](https://tools.ietf.org/html/rfc7468#section-2) and
+ *  [Textual Encoding of Subject Public Key Info]
+ *  (https://tools.ietf.org/html/rfc7468#section-13).
+ */
+@property(nonatomic, copy, nullable) NSString *pem;
 
 @end
 

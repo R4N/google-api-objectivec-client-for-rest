@@ -69,19 +69,41 @@ NSString * const kGTLRToolResults_Step_State_InProgress   = @"inProgress";
 NSString * const kGTLRToolResults_Step_State_Pending      = @"pending";
 NSString * const kGTLRToolResults_Step_State_UnknownState = @"unknownState";
 
+// GTLRToolResults_TestIssue.category
+NSString * const kGTLRToolResults_TestIssue_Category_Common    = @"common";
+NSString * const kGTLRToolResults_TestIssue_Category_Robo      = @"robo";
+NSString * const kGTLRToolResults_TestIssue_Category_UnspecifiedCategory = @"unspecifiedCategory";
+
 // GTLRToolResults_TestIssue.severity
 NSString * const kGTLRToolResults_TestIssue_Severity_Info      = @"info";
 NSString * const kGTLRToolResults_TestIssue_Severity_Severe    = @"severe";
+NSString * const kGTLRToolResults_TestIssue_Severity_Suggestion = @"suggestion";
 NSString * const kGTLRToolResults_TestIssue_Severity_UnspecifiedSeverity = @"unspecifiedSeverity";
 NSString * const kGTLRToolResults_TestIssue_Severity_Warning   = @"warning";
 
 // GTLRToolResults_TestIssue.type
 NSString * const kGTLRToolResults_TestIssue_Type_Anr           = @"anr";
+NSString * const kGTLRToolResults_TestIssue_Type_AvailableDeepLinks = @"availableDeepLinks";
 NSString * const kGTLRToolResults_TestIssue_Type_CompatibleWithOrchestrator = @"compatibleWithOrchestrator";
+NSString * const kGTLRToolResults_TestIssue_Type_CompleteRoboScriptExecution = @"completeRoboScriptExecution";
+NSString * const kGTLRToolResults_TestIssue_Type_EncounteredLoginScreen = @"encounteredLoginScreen";
+NSString * const kGTLRToolResults_TestIssue_Type_EncounteredNonAndroidUiWidgetScreen = @"encounteredNonAndroidUiWidgetScreen";
+NSString * const kGTLRToolResults_TestIssue_Type_FailedToInstall = @"failedToInstall";
 NSString * const kGTLRToolResults_TestIssue_Type_FatalException = @"fatalException";
+NSString * const kGTLRToolResults_TestIssue_Type_InAppPurchases = @"inAppPurchases";
+NSString * const kGTLRToolResults_TestIssue_Type_IncompleteRoboScriptExecution = @"incompleteRoboScriptExecution";
+NSString * const kGTLRToolResults_TestIssue_Type_InsufficientCoverage = @"insufficientCoverage";
+NSString * const kGTLRToolResults_TestIssue_Type_IosCrash      = @"iosCrash";
+NSString * const kGTLRToolResults_TestIssue_Type_IosException  = @"iosException";
+NSString * const kGTLRToolResults_TestIssue_Type_LauncherActivityNotFound = @"launcherActivityNotFound";
 NSString * const kGTLRToolResults_TestIssue_Type_NativeCrash   = @"nativeCrash";
+NSString * const kGTLRToolResults_TestIssue_Type_NonSdkApiUsageViolation = @"nonSdkApiUsageViolation";
+NSString * const kGTLRToolResults_TestIssue_Type_PerformedGoogleLogin = @"performedGoogleLogin";
+NSString * const kGTLRToolResults_TestIssue_Type_PerformedMonkeyActions = @"performedMonkeyActions";
+NSString * const kGTLRToolResults_TestIssue_Type_StartActivityNotFound = @"startActivityNotFound";
 NSString * const kGTLRToolResults_TestIssue_Type_UnspecifiedType = @"unspecifiedType";
 NSString * const kGTLRToolResults_TestIssue_Type_UnusedRoboDirective = @"unusedRoboDirective";
+NSString * const kGTLRToolResults_TestIssue_Type_UsedRoboDirective = @"usedRoboDirective";
 
 // ----------------------------------------------------------------------------
 //
@@ -609,7 +631,7 @@ NSString * const kGTLRToolResults_TestIssue_Type_UnusedRoboDirective = @"unusedR
 //
 
 @implementation GTLRToolResults_StackTrace
-@dynamic clusterId, exception, reportId;
+@dynamic exception;
 @end
 
 
@@ -726,7 +748,7 @@ NSString * const kGTLRToolResults_TestIssue_Type_UnusedRoboDirective = @"unusedR
 //
 
 @implementation GTLRToolResults_TestIssue
-@dynamic errorMessage, severity, stackTrace, type, warning;
+@dynamic category, errorMessage, severity, stackTrace, type, warning;
 @end
 
 

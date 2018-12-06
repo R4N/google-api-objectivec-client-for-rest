@@ -6,7 +6,9 @@
 // Description:
 //   Sends application trace data to Stackdriver Trace for viewing. Trace data
 //   is collected for all App Engine applications by default. Trace data from
-//   other applications can be provided using this API.
+//   other applications can be provided using this API. This library is used to
+//   interact with the Trace API directly. If you are looking to instrument your
+//   application for Stackdriver Trace, we recommend using OpenCensus.
 // Documentation:
 //   https://cloud.google.com/trace
 
@@ -72,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    format is
  *    `projects/[PROJECT_ID]`.
  *
- *  @returns GTLRCloudTraceQuery_ProjectsTracesBatchWrite
+ *  @return GTLRCloudTraceQuery_ProjectsTracesBatchWrite
  */
 + (instancetype)queryWithObject:(GTLRCloudTrace_BatchWriteSpansRequest *)object
                            name:(NSString *)name;
@@ -82,15 +84,15 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Creates a new span.
  *
- *  Method: cloudtrace.projects.traces.spans.create
+ *  Method: cloudtrace.projects.traces.spans.createSpan
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCloudTraceCloudPlatform
  *    @c kGTLRAuthScopeCloudTraceTraceAppend
  */
-@interface GTLRCloudTraceQuery_ProjectsTracesSpansCreate : GTLRCloudTraceQuery
+@interface GTLRCloudTraceQuery_ProjectsTracesSpansCreateSpan : GTLRCloudTraceQuery
 // Previous library name was
-//   +[GTLQueryCloudTrace queryForProjectsTracesSpansCreateWithObject:name:]
+//   +[GTLQueryCloudTrace queryForProjectsTracesSpansCreateSpanWithObject:name:]
 
 /**
  *  The resource name of the span in the following format:
@@ -115,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    [SPAN_ID] is a unique identifier for a span within a trace; it
  *    is a 16-character hexadecimal encoding of an 8-byte array.
  *
- *  @returns GTLRCloudTraceQuery_ProjectsTracesSpansCreate
+ *  @return GTLRCloudTraceQuery_ProjectsTracesSpansCreateSpan
  */
 + (instancetype)queryWithObject:(GTLRCloudTrace_Span *)object
                            name:(NSString *)name;

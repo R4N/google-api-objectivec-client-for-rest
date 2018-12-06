@@ -199,19 +199,6 @@ NSString * const kGTLRPartners_ExamStatus_ExamType_CetMobileSites = @"CET_MOBILE
 NSString * const kGTLRPartners_ExamStatus_ExamType_CetShopping = @"CET_SHOPPING";
 NSString * const kGTLRPartners_ExamStatus_ExamType_CetVideoAds = @"CET_VIDEO_ADS";
 
-// GTLRPartners_ExamToken.examType
-NSString * const kGTLRPartners_ExamToken_ExamType_CertificationExamTypeUnspecified = @"CERTIFICATION_EXAM_TYPE_UNSPECIFIED";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetAdwordsAdvancedDisplay = @"CET_ADWORDS_ADVANCED_DISPLAY";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetAdwordsAdvancedSearch = @"CET_ADWORDS_ADVANCED_SEARCH";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetAdwordsFundamentals = @"CET_ADWORDS_FUNDAMENTALS";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetAnalytics = @"CET_ANALYTICS";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetDigitalSales = @"CET_DIGITAL_SALES";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetDoubleclick = @"CET_DOUBLECLICK";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetMobile    = @"CET_MOBILE";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetMobileSites = @"CET_MOBILE_SITES";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetShopping  = @"CET_SHOPPING";
-NSString * const kGTLRPartners_ExamToken_ExamType_CetVideoAds  = @"CET_VIDEO_ADS";
-
 // GTLRPartners_HistoricalOffer.offerType
 NSString * const kGTLRPartners_HistoricalOffer_OfferType_OfferTypeSpendMatch = @"OFFER_TYPE_SPEND_MATCH";
 NSString * const kGTLRPartners_HistoricalOffer_OfferType_OfferTypeSpendXGetY = @"OFFER_TYPE_SPEND_X_GET_Y";
@@ -594,12 +581,13 @@ NSString * const kGTLRPartners_SpecializationStatus_BadgeSpecializationState_Bad
 //
 
 @implementation GTLRPartners_Company
-@dynamic additionalWebsites, autoApprovalEmailDomains, badgeTier,
-         certificationStatuses, companyTypes, convertedMinMonthlyBudget,
-         identifier, industries, localizedInfos, locations, name,
-         originalMinMonthlyBudget, primaryAdwordsManagerAccountId,
-         primaryLanguageCode, primaryLocation, profileStatus, publicProfile,
-         ranks, services, specializationStatus, websiteUrl;
+@dynamic additionalWebsites, autoApprovalEmailDomains, badgeAuthorityInAwn,
+         badgeTier, certificationStatuses, companyTypes,
+         convertedMinMonthlyBudget, identifier, industries, localizedInfos,
+         locations, name, originalMinMonthlyBudget,
+         primaryAdwordsManagerAccountId, primaryLanguageCode, primaryLocation,
+         profileStatus, publicProfile, ranks, services, specializationStatus,
+         websiteUrl;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"identifier" : @"id" };
@@ -730,16 +718,6 @@ NSString * const kGTLRPartners_SpecializationStatus_BadgeSpecializationState_Bad
 
 @implementation GTLRPartners_ExamStatus
 @dynamic examType, expiration, lastPassed, passed, taken, warning;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRPartners_ExamToken
-//
-
-@implementation GTLRPartners_ExamToken
-@dynamic examId, examType, token;
 @end
 
 
@@ -1160,8 +1138,8 @@ NSString * const kGTLRPartners_SpecializationStatus_BadgeSpecializationState_Bad
 //
 
 @implementation GTLRPartners_User
-@dynamic availableAdwordsManagerAccounts, certificationStatus, company,
-         companyVerificationEmail, examStatus, identifier, internalId,
+@dynamic afaInfoShared, availableAdwordsManagerAccounts, certificationStatus,
+         company, companyVerificationEmail, examStatus, identifier, internalId,
          lastAccessTime, primaryEmails, profile, publicProfile;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {

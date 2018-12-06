@@ -33,6 +33,7 @@
 @class GTLRFirebaseRules_TestCase;
 @class GTLRFirebaseRules_TestResult;
 @class GTLRFirebaseRules_TestSuite;
+@class GTLRFirebaseRules_VisitedExpression;
 
 // Generated comments include content from the discovery document; avoid them
 // causing warnings since clang's checks are some what arbitrary.
@@ -313,6 +314,13 @@ GTLR_EXTERN NSString * const kGTLRFirebaseRules_TestResult_State_Success;
 
 /** `Ruleset` name associated with the `Release` executable. */
 @property(nonatomic, copy, nullable) NSString *rulesetName;
+
+/**
+ *  Optional, indicates the freshness of the result. The response is
+ *  guaranteed to be the latest within an interval up to the
+ *  sync_time (inclusive).
+ */
+@property(nonatomic, strong, nullable) GTLRDateTime *syncTime;
 
 /** Timestamp for the most recent `Release.update_time`. */
 @property(nonatomic, strong, nullable) GTLRDateTime *updateTime;
@@ -650,6 +658,12 @@ GTLR_EXTERN NSString * const kGTLRFirebaseRules_TestResult_State_Success;
  */
 @property(nonatomic, copy, nullable) NSString *state;
 
+/**
+ *  The set of visited expressions for a given test. This returns positions
+ *  and evaluation results of all visited expressions.
+ */
+@property(nonatomic, strong, nullable) NSArray<GTLRFirebaseRules_VisitedExpression *> *visitedExpressions;
+
 @end
 
 
@@ -724,6 +738,24 @@ GTLR_EXTERN NSString * const kGTLRFirebaseRules_TestResult_State_Success;
  *  String format is a comma-separated list of fields.
  */
 @property(nonatomic, copy, nullable) NSString *updateMask;
+
+@end
+
+
+/**
+ *  Store the position and access outcome for an expression visited in rules.
+ */
+@interface GTLRFirebaseRules_VisitedExpression : GTLRObject
+
+/** Position in the `Source` or `Ruleset` where an expression was visited. */
+@property(nonatomic, strong, nullable) GTLRFirebaseRules_SourcePosition *sourcePosition;
+
+/**
+ *  The evaluated value for the visited expression, e.g. true/false
+ *
+ *  Can be any valid JSON type.
+ */
+@property(nonatomic, strong, nullable) id value;
 
 @end
 

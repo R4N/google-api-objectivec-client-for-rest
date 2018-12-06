@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud IoT API (cloudiot/v1)
+//   Cloud IoT API (cloudiot/v1)
 // Description:
 //   Registers and manages IoT (Internet of Things) devices that connect to the
 //   Google Cloud Platform.
@@ -29,7 +29,7 @@ NSString * const kGTLRAuthScopeCloudIotCloudPlatform = @"https://www.googleapis.
     // From discovery.
     self.rootURLString = @"https://cloudiot.googleapis.com/";
     self.batchPath = @"batch";
-    self.prettyPrintQueryParameterNames = @[ @"prettyPrint", @"pp" ];
+    self.prettyPrintQueryParameterNames = @[ @"prettyPrint" ];
   }
   return self;
 }

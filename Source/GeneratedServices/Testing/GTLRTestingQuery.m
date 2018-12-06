@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Testing API (testing/v1)
+//   Cloud Testing API (testing/v1)
 // Description:
 //   Allows developers to run automated tests for their mobile applications on
 //   Google infrastructure.
@@ -19,7 +19,9 @@
 // environmentType
 NSString * const kGTLRTestingEnvironmentTypeAndroid            = @"ANDROID";
 NSString * const kGTLRTestingEnvironmentTypeEnvironmentTypeUnspecified = @"ENVIRONMENT_TYPE_UNSPECIFIED";
+NSString * const kGTLRTestingEnvironmentTypeIos                = @"IOS";
 NSString * const kGTLRTestingEnvironmentTypeNetworkConfiguration = @"NETWORK_CONFIGURATION";
+NSString * const kGTLRTestingEnvironmentTypeProvidedSoftware   = @"PROVIDED_SOFTWARE";
 
 // ----------------------------------------------------------------------------
 // Query Classes
@@ -28,6 +30,26 @@ NSString * const kGTLRTestingEnvironmentTypeNetworkConfiguration = @"NETWORK_CON
 @implementation GTLRTestingQuery
 
 @dynamic fields;
+
+@end
+
+@implementation GTLRTestingQuery_ApplicationDetailServiceGetApkDetails
+
++ (instancetype)queryWithObject:(GTLRTesting_FileReference *)object {
+  if (object == nil) {
+    GTLR_DEBUG_ASSERT(object != nil, @"Got a nil object");
+    return nil;
+  }
+  NSString *pathURITemplate = @"v1/applicationDetailService/getApkDetails";
+  GTLRTestingQuery_ApplicationDetailServiceGetApkDetails *query =
+    [[self alloc] initWithPathURITemplate:pathURITemplate
+                               HTTPMethod:@"POST"
+                       pathParameterNames:nil];
+  query.bodyObject = object;
+  query.expectedObjectClass = [GTLRTesting_GetApkDetailsResponse class];
+  query.loggingName = @"testing.applicationDetailService.getApkDetails";
+  return query;
+}
 
 @end
 

@@ -4,7 +4,7 @@
 // API:
 //   Stackdriver Logging API (logging/v2)
 // Description:
-//   Writes log entries and manages your Stackdriver Logging configuration.
+//   Writes log entries and manages your Logging configuration.
 // Documentation:
 //   https://cloud.google.com/logging/docs/
 
@@ -36,9 +36,13 @@
 @class GTLRLogging_LogMetric_LabelExtractors;
 @class GTLRLogging_LogSink;
 @class GTLRLogging_MetricDescriptor;
+@class GTLRLogging_MetricDescriptorMetadata;
 @class GTLRLogging_MonitoredResource;
 @class GTLRLogging_MonitoredResource_Labels;
 @class GTLRLogging_MonitoredResourceDescriptor;
+@class GTLRLogging_MonitoredResourceMetadata;
+@class GTLRLogging_MonitoredResourceMetadata_SystemLabels;
+@class GTLRLogging_MonitoredResourceMetadata_UserLabels;
 @class GTLRLogging_SourceLocation;
 @class GTLRLogging_SourceReference;
 @class GTLRLogging_WriteLogEntriesRequest_Labels;
@@ -197,13 +201,13 @@ GTLR_EXTERN NSString * const kGTLRLogging_LogLine_Severity_Warning;
 // GTLRLogging_LogMetric.version
 
 /**
- *  Stackdriver Logging API v1.
+ *  Logging API v1.
  *
  *  Value: "V1"
  */
 GTLR_EXTERN NSString * const kGTLRLogging_LogMetric_Version_V1;
 /**
- *  Stackdriver Logging API v2.
+ *  Logging API v2.
  *
  *  Value: "V2"
  */
@@ -309,6 +313,66 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_String;
  *  Value: "VALUE_TYPE_UNSPECIFIED"
  */
 GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUnspecified;
+
+// ----------------------------------------------------------------------------
+// GTLRLogging_MetricDescriptorMetadata.launchStage
+
+/**
+ *  Alpha is a limited availability test for releases before they are cleared
+ *  for widespread use. By Alpha, all significant design issues are resolved and
+ *  we are in the process of verifying functionality. Alpha customers need to
+ *  apply for access, agree to applicable terms, and have their projects
+ *  whitelisted. Alpha releases don’t have to be feature complete, no SLAs are
+ *  provided, and there are no technical support obligations, but they will be
+ *  far enough along that customers can actually use them in test environments
+ *  or for limited-use tests -- just like they would in normal production cases.
+ *
+ *  Value: "ALPHA"
+ */
+GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptorMetadata_LaunchStage_Alpha;
+/**
+ *  Beta is the point at which we are ready to open a release for any customer
+ *  to use. There are no SLA or technical support obligations in a Beta release.
+ *  Products will be complete from a feature perspective, but may have some open
+ *  outstanding issues. Beta releases are suitable for limited production use
+ *  cases.
+ *
+ *  Value: "BETA"
+ */
+GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptorMetadata_LaunchStage_Beta;
+/**
+ *  Deprecated features are scheduled to be shut down and removed. For more
+ *  information, see the “Deprecation Policy” section of our Terms of Service
+ *  (https://cloud.google.com/terms/) and the Google Cloud Platform Subject to
+ *  the Deprecation Policy (https://cloud.google.com/terms/deprecation)
+ *  documentation.
+ *
+ *  Value: "DEPRECATED"
+ */
+GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptorMetadata_LaunchStage_Deprecated;
+/**
+ *  Early Access features are limited to a closed group of testers. To use these
+ *  features, you must sign up in advance and sign a Trusted Tester agreement
+ *  (which includes confidentiality provisions). These features may be unstable,
+ *  changed in backward-incompatible ways, and are not guaranteed to be
+ *  released.
+ *
+ *  Value: "EARLY_ACCESS"
+ */
+GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptorMetadata_LaunchStage_EarlyAccess;
+/**
+ *  GA features are open to all developers and are considered stable and fully
+ *  qualified for production use.
+ *
+ *  Value: "GA"
+ */
+GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptorMetadata_LaunchStage_Ga;
+/**
+ *  Do not use this default value.
+ *
+ *  Value: "LAUNCH_STAGE_UNSPECIFIED"
+ */
+GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptorMetadata_LaunchStage_LaunchStageUnspecified;
 
 /**
  *  BucketOptions describes the bucket boundaries used to create a histogram for
@@ -825,11 +889,11 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
 
 /**
  *  Optional. A unique identifier for the log entry. If you provide a value,
- *  then Stackdriver Logging considers other log entries in the same project,
- *  with the same timestamp, and with the same insert_id to be duplicates which
- *  can be removed. If omitted in new log entries, then Stackdriver Logging
- *  assigns its own unique identifier. The insert_id is also used to order log
- *  entries that have the same timestamp value.
+ *  then Logging considers other log entries in the same project, with the same
+ *  timestamp, and with the same insert_id to be duplicates which can be
+ *  removed. If omitted in new log entries, then Logging assigns its own unique
+ *  identifier. The insert_id is also used to order log entries that have the
+ *  same timestamp value.
  */
 @property(nonatomic, copy, nullable) NSString *insertId;
 
@@ -867,6 +931,13 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
 @property(nonatomic, copy, nullable) NSString *logName;
 
 /**
+ *  Output only. Additional metadata about the monitored resource. Only
+ *  k8s_container, k8s_pod, and k8s_node MonitoredResources have this field
+ *  populated.
+ */
+@property(nonatomic, strong, nullable) GTLRLogging_MonitoredResourceMetadata *metadata;
+
+/**
  *  Optional. Information about an operation associated with the log entry, if
  *  applicable.
  */
@@ -878,15 +949,13 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  */
 @property(nonatomic, strong, nullable) GTLRLogging_LogEntry_ProtoPayload *protoPayload;
 
-/**
- *  Output only. The time the log entry was received by Stackdriver Logging.
- */
+/** Output only. The time the log entry was received by Logging. */
 @property(nonatomic, strong, nullable) GTLRDateTime *receiveTimestamp;
 
 /**
- *  Required. The monitored resource associated with this log entry. Example: a
- *  log entry that reports a database error would be associated with the
- *  monitored resource designating the particular database that reported the
+ *  Required. The primary monitored resource associated with this log entry.
+ *  Example: a log entry that reports a database error would be associated with
+ *  the monitored resource designating the particular database that reported the
  *  error.
  */
 @property(nonatomic, strong, nullable) GTLRLogging_MonitoredResource *resource;
@@ -926,8 +995,8 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
 
 /**
  *  Optional. The span ID within the trace associated with the log entry. For
- *  Stackdriver Trace spans, this is the same format that the Stackdriver Trace
- *  API v2 uses: a 16-character hexadecimal encoding of an 8-byte array, such as
+ *  Trace spans, this is the same format that the Trace API v2 uses: a
+ *  16-character hexadecimal encoding of an 8-byte array, such as
  *  <code>"000000000000004a"</code>.
  */
 @property(nonatomic, copy, nullable) NSString *spanId;
@@ -938,11 +1007,14 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
 /**
  *  Optional. The time the event described by the log entry occurred. This time
  *  is used to compute the log entry's age and to enforce the logs retention
- *  period. If this field is omitted in a new log entry, then Stackdriver
- *  Logging assigns it the current time.Incoming log entries should have
- *  timestamps that are no more than the logs retention period in the past, and
- *  no more than 24 hours in the future. See the entries.write API method for
- *  more information.
+ *  period. If this field is omitted in a new log entry, then Logging assigns it
+ *  the current time. Timestamps have nanosecond accuracy, but trailing zeros in
+ *  the fractional seconds might be omitted when the timestamp is
+ *  displayed.Incoming log entries should have timestamps that are no more than
+ *  the logs retention period in the past, and no more than 24 hours in the
+ *  future. Log entries outside those time boundaries will not be available when
+ *  calling entries.list, but those log entries can still be exported with
+ *  LogSinks.
  */
 @property(nonatomic, strong, nullable) GTLRDateTime *timestamp;
 
@@ -953,6 +1025,18 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  *  projects/my-projectid/traces/06796866738c859f2f19b7cfb3214824
  */
 @property(nonatomic, copy, nullable) NSString *trace;
+
+/**
+ *  Optional. The sampling decision of the trace associated with the log entry.
+ *  True means that the trace resource name in the trace field was sampled for
+ *  storage in a trace backend. False means that the trace was not sampled for
+ *  storage when this log entry was written, or the sampling decision was
+ *  unknown at the time. A non-sampled trace value is still useful as a request
+ *  correlation identifier. The default is False.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *traceSampled;
 
 @end
 
@@ -1067,12 +1151,11 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
 
 
 /**
- *  Specifies a set of log entries that are not to be stored in Stackdriver
- *  Logging. If your project receives a large volume of logs, you might be able
- *  to use exclusions to reduce your chargeable logs. Exclusions are processed
- *  after log sinks, so you can export log entries before they are excluded.
- *  Audit log entries and log entries from Amazon Web Services are never
- *  excluded.
+ *  Specifies a set of log entries that are not to be stored in Logging. If your
+ *  project receives a large volume of logs, you might be able to use exclusions
+ *  to reduce your chargeable logs. Exclusions are processed after log sinks, so
+ *  you can export log entries before they are excluded. Audit log entries and
+ *  log entries from Amazon Web Services are never excluded.
  */
 @interface GTLRLogging_LogExclusion : GTLRObject
 
@@ -1096,8 +1179,9 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  *  Required. An advanced logs filter that matches the log entries to be
  *  excluded. By using the sample function, you can exclude less than 100% of
  *  the matching log entries. For example, the following filter matches 99% of
- *  low-severity log entries from load balancers:
- *  "resource.type=http_load_balancer severity<ERROR sample(insertId, 0.99)"
+ *  low-severity log entries from load
+ *  balancers:"resource.type=http_load_balancer severity<ERROR sample(insertId,
+ *  0.99)"
  */
 @property(nonatomic, copy, nullable) NSString *filter;
 
@@ -1172,7 +1256,8 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
 @property(nonatomic, strong, nullable) GTLRLogging_BucketOptions *bucketOptions;
 
 /**
- *  Optional. A description of this metric, which is used in documentation.
+ *  Optional. A description of this metric, which is used in documentation. The
+ *  maximum length of the description is 8000 characters.
  *
  *  Remapped to 'descriptionProperty' to avoid NSObject's 'description'.
  */
@@ -1256,10 +1341,8 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  *  format is used by default and cannot be changed.
  *
  *  Likely values:
- *    @arg @c kGTLRLogging_LogMetric_Version_V1 Stackdriver Logging API v1.
- *        (Value: "V1")
- *    @arg @c kGTLRLogging_LogMetric_Version_V2 Stackdriver Logging API v2.
- *        (Value: "V2")
+ *    @arg @c kGTLRLogging_LogMetric_Version_V1 Logging API v1. (Value: "V1")
+ *    @arg @c kGTLRLogging_LogMetric_Version_V2 Logging API v2. (Value: "V2")
  */
 @property(nonatomic, copy, nullable) NSString *version;
 
@@ -1307,9 +1390,6 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  *  exported. For more information, see Exporting Logs With Sinks.
  */
 @property(nonatomic, copy, nullable) NSString *destination;
-
-/** Deprecated. This field is ignored when creating or updating sinks. */
-@property(nonatomic, strong, nullable) GTLRDateTime *endTime;
 
 /**
  *  Optional. An advanced logs filter. The only exported log entries are those
@@ -1360,18 +1440,15 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  */
 @property(nonatomic, copy, nullable) NSString *outputVersionFormat;
 
-/** Deprecated. This field is ignored when creating or updating sinks. */
-@property(nonatomic, strong, nullable) GTLRDateTime *startTime;
-
 /**
  *  Output only. An IAM identity&mdash;a service account or group&mdash;under
- *  which Stackdriver Logging writes the exported log entries to the sink's
- *  destination. This field is set by sinks.create and sinks.update, based on
- *  the setting of unique_writer_identity in those methods.Until you grant this
- *  identity write-access to the destination, log entry exports from this sink
- *  will fail. For more information, see Granting access for a resource. Consult
- *  the destination service's documentation to determine the appropriate IAM
- *  roles to assign to the identity.
+ *  which Logging writes the exported log entries to the sink's destination.
+ *  This field is set by sinks.create and sinks.update, based on the setting of
+ *  unique_writer_identity in those methods.Until you grant this identity
+ *  write-access to the destination, log entry exports from this sink will fail.
+ *  For more information, see Granting access for a resource. Consult the
+ *  destination service's documentation to determine the appropriate IAM roles
+ *  to assign to the identity.
  */
 @property(nonatomic, copy, nullable) NSString *writerIdentity;
 
@@ -1409,6 +1486,9 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  */
 @property(nonatomic, strong, nullable) NSArray<GTLRLogging_LabelDescriptor *> *labels;
 
+/** Optional. Metadata which can be used to guide usage of the metric. */
+@property(nonatomic, strong, nullable) GTLRLogging_MetricDescriptorMetadata *metadata;
+
 /**
  *  Whether the metric records instantaneous values, changes to a value, etc.
  *  Some combinations of metric_kind and value_type might not be supported.
@@ -1433,10 +1513,11 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
 
 /**
  *  The metric type, including its DNS name prefix. The type is not URL-encoded.
- *  All user-defined custom metric types have the DNS name
- *  custom.googleapis.com. Metric types should use a natural hierarchical
+ *  All user-defined metric types have the DNS name custom.googleapis.com or
+ *  external.googleapis.com. Metric types should use a natural hierarchical
  *  grouping. For example:
  *  "custom.googleapis.com/invoice/paid/amount"
+ *  "external.googleapis.com/prometheus/up"
  *  "appengine.googleapis.com/http/server/response_latencies"
  */
 @property(nonatomic, copy, nullable) NSString *type;
@@ -1471,13 +1552,12 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  *  Ki kibi (2**10)
  *  Mi mebi (2**20)
  *  Gi gibi (2**30)
- *  Ti tebi (2**40)GrammarThe grammar includes the dimensionless unit 1, such as
- *  1/s.The grammar also includes these connectors:
+ *  Ti tebi (2**40)GrammarThe grammar also includes these connectors:
  *  / division (as an infix operator, e.g. 1/s).
  *  . multiplication (as an infix operator, e.g. GBy.d)The grammar for a unit is
  *  as follows:
  *  Expression = Component { "." Component } { "/" Component } ;
- *  Component = [ PREFIX ] UNIT [ Annotation ]
+ *  Component = ( [ PREFIX ] UNIT | "%" ) [ Annotation ]
  *  | Annotation
  *  | "1"
  *  ;
@@ -1488,6 +1568,9 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  *  By/s.
  *  NAME is a sequence of non-blank printable ASCII characters not containing
  *  '{' or '}'.
+ *  1 represents dimensionless value 1, such as in 1/s.
+ *  % represents dimensionless value 1/100, and annotates values giving a
+ *  percentage.
  */
 @property(nonatomic, copy, nullable) NSString *unit;
 
@@ -1514,6 +1597,70 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  *        not use this default value. (Value: "VALUE_TYPE_UNSPECIFIED")
  */
 @property(nonatomic, copy, nullable) NSString *valueType;
+
+@end
+
+
+/**
+ *  Additional annotations that can be used to guide the usage of a metric.
+ */
+@interface GTLRLogging_MetricDescriptorMetadata : GTLRObject
+
+/**
+ *  The delay of data points caused by ingestion. Data points older than this
+ *  age are guaranteed to be ingested and available to be read, excluding data
+ *  loss due to errors.
+ */
+@property(nonatomic, strong, nullable) GTLRDuration *ingestDelay;
+
+/**
+ *  The launch stage of the metric definition.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRLogging_MetricDescriptorMetadata_LaunchStage_Alpha Alpha is a
+ *        limited availability test for releases before they are cleared for
+ *        widespread use. By Alpha, all significant design issues are resolved
+ *        and we are in the process of verifying functionality. Alpha customers
+ *        need to apply for access, agree to applicable terms, and have their
+ *        projects whitelisted. Alpha releases don’t have to be feature
+ *        complete, no SLAs are provided, and there are no technical support
+ *        obligations, but they will be far enough along that customers can
+ *        actually use them in test environments or for limited-use tests --
+ *        just like they would in normal production cases. (Value: "ALPHA")
+ *    @arg @c kGTLRLogging_MetricDescriptorMetadata_LaunchStage_Beta Beta is the
+ *        point at which we are ready to open a release for any customer to use.
+ *        There are no SLA or technical support obligations in a Beta release.
+ *        Products will be complete from a feature perspective, but may have
+ *        some open outstanding issues. Beta releases are suitable for limited
+ *        production use cases. (Value: "BETA")
+ *    @arg @c kGTLRLogging_MetricDescriptorMetadata_LaunchStage_Deprecated
+ *        Deprecated features are scheduled to be shut down and removed. For
+ *        more information, see the “Deprecation Policy” section of our Terms of
+ *        Service (https://cloud.google.com/terms/) and the Google Cloud
+ *        Platform Subject to the Deprecation Policy
+ *        (https://cloud.google.com/terms/deprecation) documentation. (Value:
+ *        "DEPRECATED")
+ *    @arg @c kGTLRLogging_MetricDescriptorMetadata_LaunchStage_EarlyAccess
+ *        Early Access features are limited to a closed group of testers. To use
+ *        these features, you must sign up in advance and sign a Trusted Tester
+ *        agreement (which includes confidentiality provisions). These features
+ *        may be unstable, changed in backward-incompatible ways, and are not
+ *        guaranteed to be released. (Value: "EARLY_ACCESS")
+ *    @arg @c kGTLRLogging_MetricDescriptorMetadata_LaunchStage_Ga GA features
+ *        are open to all developers and are considered stable and fully
+ *        qualified for production use. (Value: "GA")
+ *    @arg @c kGTLRLogging_MetricDescriptorMetadata_LaunchStage_LaunchStageUnspecified
+ *        Do not use this default value. (Value: "LAUNCH_STAGE_UNSPECIFIED")
+ */
+@property(nonatomic, copy, nullable) NSString *launchStage;
+
+/**
+ *  The sampling period of metric data points. For metrics which are written
+ *  periodically, consecutive data points are stored at this time interval,
+ *  excluding data loss due to errors. Metrics with a higher granularity have a
+ *  smaller sampling period.
+ */
+@property(nonatomic, strong, nullable) GTLRDuration *samplePeriod;
 
 @end
 
@@ -1616,6 +1763,62 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  */
 @property(nonatomic, copy, nullable) NSString *type;
 
+@end
+
+
+/**
+ *  Auxiliary metadata for a MonitoredResource object. MonitoredResource objects
+ *  contain the minimum set of information to uniquely identify a monitored
+ *  resource instance. There is some other useful auxiliary metadata. Monitoring
+ *  and Logging use an ingestion pipeline to extract metadata for cloud
+ *  resources of all types, and store the metadata in this message.
+ */
+@interface GTLRLogging_MonitoredResourceMetadata : GTLRObject
+
+/**
+ *  Output only. Values for predefined system metadata labels. System labels are
+ *  a kind of metadata extracted by Google, including "machine_image", "vpc",
+ *  "subnet_id", "security_group", "name", etc. System label values can be only
+ *  strings, Boolean values, or a list of strings. For example:
+ *  { "name": "my-test-instance",
+ *  "security_group": ["a", "b", "c"],
+ *  "spot_instance": false }
+ */
+@property(nonatomic, strong, nullable) GTLRLogging_MonitoredResourceMetadata_SystemLabels *systemLabels;
+
+/** Output only. A map of user-defined metadata labels. */
+@property(nonatomic, strong, nullable) GTLRLogging_MonitoredResourceMetadata_UserLabels *userLabels;
+
+@end
+
+
+/**
+ *  Output only. Values for predefined system metadata labels. System labels are
+ *  a kind of metadata extracted by Google, including "machine_image", "vpc",
+ *  "subnet_id", "security_group", "name", etc. System label values can be only
+ *  strings, Boolean values, or a list of strings. For example:
+ *  { "name": "my-test-instance",
+ *  "security_group": ["a", "b", "c"],
+ *  "spot_instance": false }
+ *
+ *  @note This class is documented as having more properties of any valid JSON
+ *        type. Use @c -additionalJSONKeys and @c -additionalPropertyForName: to
+ *        get the list of properties and then fetch them; or @c
+ *        -additionalProperties to fetch them all at once.
+ */
+@interface GTLRLogging_MonitoredResourceMetadata_SystemLabels : GTLRObject
+@end
+
+
+/**
+ *  Output only. A map of user-defined metadata labels.
+ *
+ *  @note This class is documented as having more properties of NSString. Use @c
+ *        -additionalJSONKeys and @c -additionalPropertyForName: to get the list
+ *        of properties and then fetch them; or @c -additionalProperties to
+ *        fetch them all at once.
+ */
+@interface GTLRLogging_MonitoredResourceMetadata_UserLabels : GTLRObject
 @end
 
 
@@ -1761,6 +1964,14 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
 /** Stackdriver Trace identifier for this request. */
 @property(nonatomic, copy, nullable) NSString *traceId;
 
+/**
+ *  If true, the value in the 'trace_id' field was sampled for storage in a
+ *  trace backend.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *traceSampled;
+
 /** File or class that handled the request. */
 @property(nonatomic, copy, nullable) NSString *urlMapEntry;
 
@@ -1837,21 +2048,31 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
 @interface GTLRLogging_WriteLogEntriesRequest : GTLRObject
 
 /**
- *  Required. The log entries to send to Stackdriver Logging. The order of log
- *  entries in this list does not matter. Values supplied in this method's
- *  log_name, resource, and labels fields are copied into those log entries in
- *  this list that do not include values for their corresponding fields. For
- *  more information, see the LogEntry type.If the timestamp or insert_id fields
- *  are missing in log entries, then this method supplies the current time or a
+ *  Optional. If true, the request should expect normal response, but the
+ *  entries won't be persisted nor exported. Useful for checking whether the
+ *  logging API endpoints are working properly before sending valuable data.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *dryRun;
+
+/**
+ *  Required. The log entries to send to Logging. The order of log entries in
+ *  this list does not matter. Values supplied in this method's log_name,
+ *  resource, and labels fields are copied into those log entries in this list
+ *  that do not include values for their corresponding fields. For more
+ *  information, see the LogEntry type.If the timestamp or insert_id fields are
+ *  missing in log entries, then this method supplies the current time or a
  *  unique identifier, respectively. The supplied values are chosen so that,
  *  among the log entries that did not supply their own values, the entries
  *  earlier in the list will sort before the entries later in the list. See the
  *  entries.list method.Log entries with timestamps that are more than the logs
- *  retention period in the past or more than 24 hours in the future might be
- *  discarded. Discarding does not return an error.To improve throughput and to
- *  avoid exceeding the quota limit for calls to entries.write, you should try
- *  to include several log entries in this list, rather than calling this method
- *  for each individual log entry.
+ *  retention period in the past or more than 24 hours in the future will not be
+ *  available when calling entries.list. However, those log entries can still be
+ *  exported with LogSinks.To improve throughput and to avoid exceeding the
+ *  quota limit for calls to entries.write, you should try to include several
+ *  log entries in this list, rather than calling this method for each
+ *  individual log entry.
  */
 @property(nonatomic, strong, nullable) NSArray<GTLRLogging_LogEntry *> *entries;
 
@@ -1870,10 +2091,13 @@ GTLR_EXTERN NSString * const kGTLRLogging_MetricDescriptor_ValueType_ValueTypeUn
  *  "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
  *  "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
  *  "folders/[FOLDER_ID]/logs/[LOG_ID]"
- *  [LOG_ID] must be URL-encoded. For example,
- *  "projects/my-project-id/logs/syslog" or
- *  "organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity".
- *  For more information about log names, see LogEntry.
+ *  [LOG_ID] must be URL-encoded. For example:
+ *  "projects/my-project-id/logs/syslog"
+ *  "organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"
+ *  The permission <code>logging.logEntries.create</code> is needed on each
+ *  project, organization, billing account, or folder that is receiving new log
+ *  entries, whether the resource is specified in <code>logName</code> or in an
+ *  individual log entry.
  */
 @property(nonatomic, copy, nullable) NSString *logName;
 

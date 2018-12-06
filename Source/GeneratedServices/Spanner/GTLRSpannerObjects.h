@@ -25,6 +25,7 @@
 @class GTLRSpanner_Delete;
 @class GTLRSpanner_ExecuteSqlRequest_Params;
 @class GTLRSpanner_ExecuteSqlRequest_ParamTypes;
+@class GTLRSpanner_Expr;
 @class GTLRSpanner_Field;
 @class GTLRSpanner_Instance;
 @class GTLRSpanner_Instance_Labels;
@@ -35,6 +36,11 @@
 @class GTLRSpanner_Operation;
 @class GTLRSpanner_Operation_Metadata;
 @class GTLRSpanner_Operation_Response;
+@class GTLRSpanner_Partition;
+@class GTLRSpanner_PartitionedDml;
+@class GTLRSpanner_PartitionOptions;
+@class GTLRSpanner_PartitionQueryRequest_Params;
+@class GTLRSpanner_PartitionQueryRequest_ParamTypes;
 @class GTLRSpanner_PlanNode;
 @class GTLRSpanner_PlanNode_ExecutionStats;
 @class GTLRSpanner_PlanNode_Metadata;
@@ -95,14 +101,13 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Database_State_StateUnspecified;
 // GTLRSpanner_ExecuteSqlRequest.queryMode
 
 /**
- *  The default mode where only the query result, without any information
- *  about the query plan is returned.
+ *  The default mode. Only the statement results are returned.
  *
  *  Value: "NORMAL"
  */
 GTLR_EXTERN NSString * const kGTLRSpanner_ExecuteSqlRequest_QueryMode_Normal;
 /**
- *  This mode returns only the query plan, without any result rows or
+ *  This mode returns only the query plan, without any results or
  *  execution statistics information.
  *
  *  Value: "PLAN"
@@ -110,7 +115,7 @@ GTLR_EXTERN NSString * const kGTLRSpanner_ExecuteSqlRequest_QueryMode_Normal;
 GTLR_EXTERN NSString * const kGTLRSpanner_ExecuteSqlRequest_QueryMode_Plan;
 /**
  *  This mode returns both the query plan and the execution statistics along
- *  with the result rows.
+ *  with the results.
  *
  *  Value: "PROFILE"
  */
@@ -226,6 +231,11 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_Struct;
 /**
  *  Encoded as `string` in RFC 3339 timestamp format. The time zone
  *  must be present, and must be `"Z"`.
+ *  If the schema has the column option
+ *  `allow_commit_timestamp=true`, the placeholder string
+ *  `"spanner.commit_timestamp()"` can be used to instruct the system
+ *  to insert the commit timestamp associated with the transaction
+ *  commit.
  *
  *  Value: "TIMESTAMP"
  */
@@ -254,6 +264,14 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
 @interface GTLRSpanner_Binding : GTLRObject
 
 /**
+ *  Unimplemented. The condition that is associated with this binding.
+ *  NOTE: an unsatisfied condition will not allow user access via current
+ *  binding. Different bindings, including their conditions, are examined
+ *  independently.
+ */
+@property(nonatomic, strong, nullable) GTLRSpanner_Expr *condition;
+
+/**
  *  Specifies the identities requesting access for a Cloud Platform resource.
  *  `members` can have the following values:
  *  * `allUsers`: A special identifier that represents anyone who is
@@ -261,7 +279,7 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  * `allAuthenticatedUsers`: A special identifier that represents anyone
  *  who is authenticated with a Google account or a service account.
  *  * `user:{emailid}`: An email address that represents a specific Google
- *  account. For example, `alice\@gmail.com` or `joe\@example.com`.
+ *  account. For example, `alice\@gmail.com` .
  *  * `serviceAccount:{emailid}`: An email address that represents a service
  *  account. For example, `my-other-app\@appspot.gserviceaccount.com`.
  *  * `group:{emailid}`: An email address that represents a Google group.
@@ -274,7 +292,6 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
 /**
  *  Role that is assigned to `members`.
  *  For example, `roles/viewer`, `roles/editor`, or `roles/owner`.
- *  Required
  */
 @property(nonatomic, copy, nullable) NSString *role;
 
@@ -498,7 +515,11 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  */
 @interface GTLRSpanner_Delete : GTLRObject
 
-/** Required. The primary keys of the rows within table to delete. */
+/**
+ *  Required. The primary keys of the rows within table to delete.
+ *  Delete is idempotent. The transaction will succeed even if some or all
+ *  rows do not exist.
+ */
 @property(nonatomic, strong, nullable) GTLRSpanner_KeySet *keySet;
 
 /** Required. The table whose rows will be deleted. */
@@ -527,14 +548,14 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
 @interface GTLRSpanner_ExecuteSqlRequest : GTLRObject
 
 /**
- *  The SQL query string can contain parameter placeholders. A parameter
+ *  The SQL string can contain parameter placeholders. A parameter
  *  placeholder consists of `'\@'` followed by the parameter
  *  name. Parameter names consist of any combination of letters,
  *  numbers, and underscores.
  *  Parameters can appear anywhere that a literal value is expected. The same
  *  parameter name can be used more than once, for example:
  *  `"WHERE id > \@msg_id AND id < \@msg_id + 100"`
- *  It is an error to execute an SQL query with unbound parameters.
+ *  It is an error to execute an SQL statement with unbound parameters.
  *  Parameter values are specified using `params`, which is a JSON
  *  object whose keys are parameter names, and whose values are the
  *  corresponding parameter values.
@@ -546,34 +567,45 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  from a JSON value. For example, values of type `BYTES` and values
  *  of type `STRING` both appear in params as JSON strings.
  *  In these cases, `param_types` can be used to specify the exact
- *  SQL type for some or all of the SQL query parameters. See the
+ *  SQL type for some or all of the SQL statement parameters. See the
  *  definition of Type for more information
  *  about SQL types.
  */
 @property(nonatomic, strong, nullable) GTLRSpanner_ExecuteSqlRequest_ParamTypes *paramTypes;
 
 /**
+ *  If present, results will be restricted to the specified partition
+ *  previously created using PartitionQuery(). There must be an exact
+ *  match for the values of fields common to this message and the
+ *  PartitionQueryRequest message used to create this partition_token.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *partitionToken;
+
+/**
  *  Used to control the amount of debugging information returned in
- *  ResultSetStats.
+ *  ResultSetStats. If partition_token is set, query_mode can only
+ *  be set to QueryMode.NORMAL.
  *
  *  Likely values:
- *    @arg @c kGTLRSpanner_ExecuteSqlRequest_QueryMode_Normal The default mode
- *        where only the query result, without any information
- *        about the query plan is returned. (Value: "NORMAL")
+ *    @arg @c kGTLRSpanner_ExecuteSqlRequest_QueryMode_Normal The default mode.
+ *        Only the statement results are returned. (Value: "NORMAL")
  *    @arg @c kGTLRSpanner_ExecuteSqlRequest_QueryMode_Plan This mode returns
- *        only the query plan, without any result rows or
+ *        only the query plan, without any results or
  *        execution statistics information. (Value: "PLAN")
  *    @arg @c kGTLRSpanner_ExecuteSqlRequest_QueryMode_Profile This mode returns
  *        both the query plan and the execution statistics along
- *        with the result rows. (Value: "PROFILE")
+ *        with the results. (Value: "PROFILE")
  */
 @property(nonatomic, copy, nullable) NSString *queryMode;
 
 /**
- *  If this request is resuming a previously interrupted SQL query
+ *  If this request is resuming a previously interrupted SQL statement
  *  execution, `resume_token` should be copied from the last
  *  PartialResultSet yielded before the interruption. Doing this
- *  enables the new SQL query execution to resume where the last one left
+ *  enables the new SQL statement execution to resume where the last one left
  *  off. The rest of the request parameters must exactly match the
  *  request that yielded this token.
  *
@@ -582,12 +614,33 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  */
 @property(nonatomic, copy, nullable) NSString *resumeToken;
 
-/** Required. The SQL query string. */
+/**
+ *  A per-transaction sequence number used to identify this request. This
+ *  makes each request idempotent such that if the request is received multiple
+ *  times, at most one will succeed.
+ *  The sequence number must be monotonically increasing within the
+ *  transaction. If a request arrives for the first time with an out-of-order
+ *  sequence number, the transaction may be aborted. Replays of previously
+ *  handled requests will yield the same response as the first execution.
+ *  Required for DML statements. Ignored for queries.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *seqno;
+
+/** Required. The SQL string. */
 @property(nonatomic, copy, nullable) NSString *sql;
 
 /**
  *  The transaction to use. If none is provided, the default is a
  *  temporary read-only transaction with strong concurrency.
+ *  The transaction to use.
+ *  For queries, if none is provided, the default is a temporary read-only
+ *  transaction with strong concurrency.
+ *  Standard DML statements require a ReadWrite transaction. Single-use
+ *  transactions are not supported (to avoid replay). The caller must
+ *  either supply an existing transaction ID or begin a new transaction.
+ *  Partitioned DML requires an existing PartitionedDml transaction ID.
  */
 @property(nonatomic, strong, nullable) GTLRSpanner_TransactionSelector *transaction;
 
@@ -595,14 +648,14 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
 
 
 /**
- *  The SQL query string can contain parameter placeholders. A parameter
+ *  The SQL string can contain parameter placeholders. A parameter
  *  placeholder consists of `'\@'` followed by the parameter
  *  name. Parameter names consist of any combination of letters,
  *  numbers, and underscores.
  *  Parameters can appear anywhere that a literal value is expected. The same
  *  parameter name can be used more than once, for example:
  *  `"WHERE id > \@msg_id AND id < \@msg_id + 100"`
- *  It is an error to execute an SQL query with unbound parameters.
+ *  It is an error to execute an SQL statement with unbound parameters.
  *  Parameter values are specified using `params`, which is a JSON
  *  object whose keys are parameter names, and whose values are the
  *  corresponding parameter values.
@@ -621,7 +674,7 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  from a JSON value. For example, values of type `BYTES` and values
  *  of type `STRING` both appear in params as JSON strings.
  *  In these cases, `param_types` can be used to specify the exact
- *  SQL type for some or all of the SQL query parameters. See the
+ *  SQL type for some or all of the SQL statement parameters. See the
  *  definition of Type for more information
  *  about SQL types.
  *
@@ -631,6 +684,46 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *        fetch them; or @c -additionalProperties to fetch them all at once.
  */
 @interface GTLRSpanner_ExecuteSqlRequest_ParamTypes : GTLRObject
+@end
+
+
+/**
+ *  Represents an expression text. Example:
+ *  title: "User account presence"
+ *  description: "Determines whether the request has a user account"
+ *  expression: "size(request.user) > 0"
+ */
+@interface GTLRSpanner_Expr : GTLRObject
+
+/**
+ *  An optional description of the expression. This is a longer text which
+ *  describes the expression, e.g. when hovered over it in a UI.
+ *
+ *  Remapped to 'descriptionProperty' to avoid NSObject's 'description'.
+ */
+@property(nonatomic, copy, nullable) NSString *descriptionProperty;
+
+/**
+ *  Textual representation of an expression in
+ *  Common Expression Language syntax.
+ *  The application context of the containing message determines which
+ *  well-known feature set of CEL is supported.
+ */
+@property(nonatomic, copy, nullable) NSString *expression;
+
+/**
+ *  An optional string indicating the location of the expression for error
+ *  reporting, e.g. a file name and a position in the file.
+ */
+@property(nonatomic, copy, nullable) NSString *location;
+
+/**
+ *  An optional title for the expression, i.e. a short string describing
+ *  its purpose. This can be used e.g. in UIs which allow to enter the
+ *  expression.
+ */
+@property(nonatomic, copy, nullable) NSString *title;
+
 @end
 
 
@@ -1242,10 +1335,12 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
 @property(nonatomic, copy, nullable) NSString *resumeToken;
 
 /**
- *  Query plan and execution statistics for the query that produced this
+ *  Query plan and execution statistics for the statement that produced this
  *  streaming result set. These can be requested by setting
  *  ExecuteSqlRequest.query_mode and are sent
  *  only once with the last response in the stream.
+ *  This field will also be present in the last response for DML
+ *  statements.
  */
 @property(nonatomic, strong, nullable) GTLRSpanner_ResultSetStats *stats;
 
@@ -1313,6 +1408,219 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  Can be any valid JSON type.
  */
 @property(nonatomic, strong, nullable) NSArray *values;
+
+@end
+
+
+/**
+ *  Information returned for each partition returned in a
+ *  PartitionResponse.
+ */
+@interface GTLRSpanner_Partition : GTLRObject
+
+/**
+ *  This token can be passed to Read, StreamingRead, ExecuteSql, or
+ *  ExecuteStreamingSql requests to restrict the results to those identified by
+ *  this partition token.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *partitionToken;
+
+@end
+
+
+/**
+ *  Message type to initiate a Partitioned DML transaction.
+ */
+@interface GTLRSpanner_PartitionedDml : GTLRObject
+@end
+
+
+/**
+ *  Options for a PartitionQueryRequest and
+ *  PartitionReadRequest.
+ */
+@interface GTLRSpanner_PartitionOptions : GTLRObject
+
+/**
+ *  **Note:** This hint is currently ignored by PartitionQuery and
+ *  PartitionRead requests.
+ *  The desired maximum number of partitions to return. For example, this may
+ *  be set to the number of workers available. The default for this option
+ *  is currently 10,000. The maximum value is currently 200,000. This is only
+ *  a hint. The actual number of partitions returned may be smaller or larger
+ *  than this maximum count request.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *maxPartitions;
+
+/**
+ *  **Note:** This hint is currently ignored by PartitionQuery and
+ *  PartitionRead requests.
+ *  The desired data size for each partition generated. The default for this
+ *  option is currently 1 GiB. This is only a hint. The actual size of each
+ *  partition may be smaller or larger than this size request.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *partitionSizeBytes;
+
+@end
+
+
+/**
+ *  The request for PartitionQuery
+ */
+@interface GTLRSpanner_PartitionQueryRequest : GTLRObject
+
+/**
+ *  The SQL query string can contain parameter placeholders. A parameter
+ *  placeholder consists of `'\@'` followed by the parameter
+ *  name. Parameter names consist of any combination of letters,
+ *  numbers, and underscores.
+ *  Parameters can appear anywhere that a literal value is expected. The same
+ *  parameter name can be used more than once, for example:
+ *  `"WHERE id > \@msg_id AND id < \@msg_id + 100"`
+ *  It is an error to execute an SQL query with unbound parameters.
+ *  Parameter values are specified using `params`, which is a JSON
+ *  object whose keys are parameter names, and whose values are the
+ *  corresponding parameter values.
+ */
+@property(nonatomic, strong, nullable) GTLRSpanner_PartitionQueryRequest_Params *params;
+
+/**
+ *  It is not always possible for Cloud Spanner to infer the right SQL type
+ *  from a JSON value. For example, values of type `BYTES` and values
+ *  of type `STRING` both appear in params as JSON strings.
+ *  In these cases, `param_types` can be used to specify the exact
+ *  SQL type for some or all of the SQL query parameters. See the
+ *  definition of Type for more information
+ *  about SQL types.
+ */
+@property(nonatomic, strong, nullable) GTLRSpanner_PartitionQueryRequest_ParamTypes *paramTypes;
+
+/** Additional options that affect how many partitions are created. */
+@property(nonatomic, strong, nullable) GTLRSpanner_PartitionOptions *partitionOptions;
+
+/**
+ *  The query request to generate partitions for. The request will fail if
+ *  the query is not root partitionable. The query plan of a root
+ *  partitionable query has a single distributed union operator. A distributed
+ *  union operator conceptually divides one or more tables into multiple
+ *  splits, remotely evaluates a subquery independently on each split, and
+ *  then unions all results.
+ *  This must not contain DML commands, such as INSERT, UPDATE, or
+ *  DELETE. Use ExecuteStreamingSql with a
+ *  PartitionedDml transaction for large, partition-friendly DML operations.
+ */
+@property(nonatomic, copy, nullable) NSString *sql;
+
+/**
+ *  Read only snapshot transactions are supported, read/write and single use
+ *  transactions are not.
+ */
+@property(nonatomic, strong, nullable) GTLRSpanner_TransactionSelector *transaction;
+
+@end
+
+
+/**
+ *  The SQL query string can contain parameter placeholders. A parameter
+ *  placeholder consists of `'\@'` followed by the parameter
+ *  name. Parameter names consist of any combination of letters,
+ *  numbers, and underscores.
+ *  Parameters can appear anywhere that a literal value is expected. The same
+ *  parameter name can be used more than once, for example:
+ *  `"WHERE id > \@msg_id AND id < \@msg_id + 100"`
+ *  It is an error to execute an SQL query with unbound parameters.
+ *  Parameter values are specified using `params`, which is a JSON
+ *  object whose keys are parameter names, and whose values are the
+ *  corresponding parameter values.
+ *
+ *  @note This class is documented as having more properties of any valid JSON
+ *        type. Use @c -additionalJSONKeys and @c -additionalPropertyForName: to
+ *        get the list of properties and then fetch them; or @c
+ *        -additionalProperties to fetch them all at once.
+ */
+@interface GTLRSpanner_PartitionQueryRequest_Params : GTLRObject
+@end
+
+
+/**
+ *  It is not always possible for Cloud Spanner to infer the right SQL type
+ *  from a JSON value. For example, values of type `BYTES` and values
+ *  of type `STRING` both appear in params as JSON strings.
+ *  In these cases, `param_types` can be used to specify the exact
+ *  SQL type for some or all of the SQL query parameters. See the
+ *  definition of Type for more information
+ *  about SQL types.
+ *
+ *  @note This class is documented as having more properties of
+ *        GTLRSpanner_Type. Use @c -additionalJSONKeys and @c
+ *        -additionalPropertyForName: to get the list of properties and then
+ *        fetch them; or @c -additionalProperties to fetch them all at once.
+ */
+@interface GTLRSpanner_PartitionQueryRequest_ParamTypes : GTLRObject
+@end
+
+
+/**
+ *  The request for PartitionRead
+ */
+@interface GTLRSpanner_PartitionReadRequest : GTLRObject
+
+/**
+ *  The columns of table to be returned for each row matching
+ *  this request.
+ */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *columns;
+
+/**
+ *  If non-empty, the name of an index on table. This index is
+ *  used instead of the table primary key when interpreting key_set
+ *  and sorting result rows. See key_set for further information.
+ */
+@property(nonatomic, copy, nullable) NSString *index;
+
+/**
+ *  Required. `key_set` identifies the rows to be yielded. `key_set` names the
+ *  primary keys of the rows in table to be yielded, unless index
+ *  is present. If index is present, then key_set instead names
+ *  index keys in index.
+ *  It is not an error for the `key_set` to name rows that do not
+ *  exist in the database. Read yields nothing for nonexistent rows.
+ */
+@property(nonatomic, strong, nullable) GTLRSpanner_KeySet *keySet;
+
+/** Additional options that affect how many partitions are created. */
+@property(nonatomic, strong, nullable) GTLRSpanner_PartitionOptions *partitionOptions;
+
+/** Required. The name of the table in the database to be read. */
+@property(nonatomic, copy, nullable) NSString *table;
+
+/**
+ *  Read only snapshot transactions are supported, read/write and single use
+ *  transactions are not.
+ */
+@property(nonatomic, strong, nullable) GTLRSpanner_TransactionSelector *transaction;
+
+@end
+
+
+/**
+ *  The response for PartitionQuery
+ *  or PartitionRead
+ */
+@interface GTLRSpanner_PartitionResponse : GTLRObject
+
+/** Partitions created by this request. */
+@property(nonatomic, strong, nullable) NSArray<GTLRSpanner_Partition *> *partitions;
+
+/** Transaction created by this request. */
+@property(nonatomic, strong, nullable) GTLRSpanner_Transaction *transaction;
 
 @end
 
@@ -1421,13 +1729,13 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
 /**
  *  Defines an Identity and Access Management (IAM) policy. It is used to
  *  specify access control policies for Cloud Platform resources.
- *  A `Policy` consists of a list of `bindings`. A `Binding` binds a list of
+ *  A `Policy` consists of a list of `bindings`. A `binding` binds a list of
  *  `members` to a `role`, where the members can be user accounts, Google
  *  groups,
  *  Google domains, and service accounts. A `role` is a named list of
  *  permissions
  *  defined by IAM.
- *  **Example**
+ *  **JSON Example**
  *  {
  *  "bindings": [
  *  {
@@ -1436,7 +1744,7 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  "user:mike\@example.com",
  *  "group:admins\@example.com",
  *  "domain:google.com",
- *  "serviceAccount:my-other-app\@appspot.gserviceaccount.com",
+ *  "serviceAccount:my-other-app\@appspot.gserviceaccount.com"
  *  ]
  *  },
  *  {
@@ -1445,8 +1753,19 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  }
  *  ]
  *  }
+ *  **YAML Example**
+ *  bindings:
+ *  - members:
+ *  - user:mike\@example.com
+ *  - group:admins\@example.com
+ *  - domain:google.com
+ *  - serviceAccount:my-other-app\@appspot.gserviceaccount.com
+ *  role: roles/owner
+ *  - members:
+ *  - user:sean\@example.com
+ *  role: roles/viewer
  *  For a description of IAM and its features, see the
- *  [IAM developer's guide](https://cloud.google.com/iam).
+ *  [IAM developer's guide](https://cloud.google.com/iam/docs).
  */
 @interface GTLRSpanner_Policy : GTLRObject
 
@@ -1473,7 +1792,7 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
 @property(nonatomic, copy, nullable) NSString *ETag;
 
 /**
- *  Version of the `Policy`. The default version is 0.
+ *  Deprecated.
  *
  *  Uses NSNumber of intValue.
  */
@@ -1598,8 +1917,10 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  primary keys of the rows in table to be yielded, unless index
  *  is present. If index is present, then key_set instead names
  *  index keys in index.
- *  Rows are yielded in table primary key order (if index is empty)
- *  or index key order (if index is non-empty).
+ *  If the partition_token field is empty, rows are yielded
+ *  in table primary key order (if index is empty) or index key order
+ *  (if index is non-empty). If the partition_token field is not
+ *  empty, rows will be yielded in an unspecified order.
  *  It is not an error for the `key_set` to name rows that do not
  *  exist in the database. Read yields nothing for nonexistent rows.
  */
@@ -1607,11 +1928,23 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
 
 /**
  *  If greater than zero, only the first `limit` rows are yielded. If `limit`
- *  is zero, the default is no limit.
+ *  is zero, the default is no limit. A limit cannot be specified if
+ *  `partition_token` is set.
  *
  *  Uses NSNumber of longLongValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *limit;
+
+/**
+ *  If present, results will be restricted to the specified partition
+ *  previously created using PartitionRead(). There must be an exact
+ *  match for the values of fields common to this message and the
+ *  PartitionReadRequest message used to create this partition_token.
+ *
+ *  Contains encoded binary data; GTLRBase64 can encode/decode (probably
+ *  web-safe format).
+ */
+@property(nonatomic, copy, nullable) NSString *partitionToken;
 
 /**
  *  If this request is resuming a previously interrupted read,
@@ -1668,8 +2001,13 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
 @property(nonatomic, strong, nullable) NSArray<NSArray *> *rows;
 
 /**
- *  Query plan and execution statistics for the query that produced this
- *  result set. These can be requested by setting
+ *  Query plan and execution statistics for the SQL statement that
+ *  produced this result set. These can be requested by setting
+ *  ExecuteSqlRequest.query_mode.
+ *  DML statements always produce stats containing the number of rows
+ *  modified, unless executed using the
+ *  ExecuteSqlRequest.QueryMode.PLAN ExecuteSqlRequest.query_mode.
+ *  Other fields may or may not be populated, based on the
  *  ExecuteSqlRequest.query_mode.
  */
 @property(nonatomic, strong, nullable) GTLRSpanner_ResultSetStats *stats;
@@ -1721,6 +2059,21 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  }
  */
 @property(nonatomic, strong, nullable) GTLRSpanner_ResultSetStats_QueryStats *queryStats;
+
+/**
+ *  Standard DML returns an exact count of rows that were modified.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *rowCountExact;
+
+/**
+ *  Partitioned DML does not offer exactly-once semantics, so it
+ *  returns a lower bound of the rows modified.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *rowCountLowerBound;
 
 @end
 
@@ -2038,7 +2391,7 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  re-used for the next transaction. It is not necessary to create a
  *  new session for each transaction.
  *  # Transaction Modes
- *  Cloud Spanner supports two transaction modes:
+ *  Cloud Spanner supports three transaction modes:
  *  1. Locking read-write. This type of transaction is the only way
  *  to write data into Cloud Spanner. These transactions rely on
  *  pessimistic locking and, if necessary, two-phase commit.
@@ -2049,6 +2402,12 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  writes. Snapshot read-only transactions can be configured to
  *  read at timestamps in the past. Snapshot read-only
  *  transactions do not need to be committed.
+ *  3. Partitioned DML. This type of transaction is used to execute
+ *  a single Partitioned DML statement. Partitioned DML partitions
+ *  the key space and runs the DML statement over each partition
+ *  in parallel using separate, internal transactions that commit
+ *  independently. Partitioned DML transactions do not need to be
+ *  committed.
  *  For transactions that only read, snapshot read-only transactions
  *  provide simpler semantics and are almost always faster. In
  *  particular, read-only transactions do not take locks, so they do
@@ -2070,11 +2429,8 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  Rollback. Long periods of
  *  inactivity at the client may cause Cloud Spanner to release a
  *  transaction's locks and abort it.
- *  Reads performed within a transaction acquire locks on the data
- *  being read. Writes can only be done at commit time, after all reads
- *  have been completed.
  *  Conceptually, a read-write transaction consists of zero or more
- *  reads or SQL queries followed by
+ *  reads or SQL statements followed by
  *  Commit. At any time before
  *  Commit, the client can send a
  *  Rollback request to abort the
@@ -2200,8 +2556,61 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *  restriction also applies to in-progress reads and/or SQL queries whose
  *  timestamp become too old while executing. Reads and SQL queries with
  *  too-old read timestamps fail with the error `FAILED_PRECONDITION`.
+ *  ## Partitioned DML Transactions
+ *  Partitioned DML transactions are used to execute DML statements with a
+ *  different execution strategy that provides different, and often better,
+ *  scalability properties for large, table-wide operations than DML in a
+ *  ReadWrite transaction. Smaller scoped statements, such as an OLTP workload,
+ *  should prefer using ReadWrite transactions.
+ *  Partitioned DML partitions the keyspace and runs the DML statement on each
+ *  partition in separate, internal transactions. These transactions commit
+ *  automatically when complete, and run independently from one another.
+ *  To reduce lock contention, this execution strategy only acquires read locks
+ *  on rows that match the WHERE clause of the statement. Additionally, the
+ *  smaller per-partition transactions hold locks for less time.
+ *  That said, Partitioned DML is not a drop-in replacement for standard DML
+ *  used
+ *  in ReadWrite transactions.
+ *  - The DML statement must be fully-partitionable. Specifically, the statement
+ *  must be expressible as the union of many statements which each access only
+ *  a single row of the table.
+ *  - The statement is not applied atomically to all rows of the table. Rather,
+ *  the statement is applied atomically to partitions of the table, in
+ *  independent transactions. Secondary index rows are updated atomically
+ *  with the base table rows.
+ *  - Partitioned DML does not guarantee exactly-once execution semantics
+ *  against a partition. The statement will be applied at least once to each
+ *  partition. It is strongly recommended that the DML statement should be
+ *  idempotent to avoid unexpected results. For instance, it is potentially
+ *  dangerous to run a statement such as
+ *  `UPDATE table SET column = column + 1` as it could be run multiple times
+ *  against some rows.
+ *  - The partitions are committed automatically - there is no support for
+ *  Commit or Rollback. If the call returns an error, or if the client issuing
+ *  the ExecuteSql call dies, it is possible that some rows had the statement
+ *  executed on them successfully. It is also possible that statement was
+ *  never executed against other rows.
+ *  - Partitioned DML transactions may only contain the execution of a single
+ *  DML statement via ExecuteSql or ExecuteStreamingSql.
+ *  - If any error is encountered during the execution of the partitioned DML
+ *  operation (for instance, a UNIQUE INDEX violation, division by zero, or a
+ *  value that cannot be stored due to schema constraints), then the
+ *  operation is stopped at that point and an error is returned. It is
+ *  possible that at this point, some partitions have been committed (or even
+ *  committed multiple times), and other partitions have not been run at all.
+ *  Given the above, Partitioned DML is good fit for large, database-wide,
+ *  operations that are idempotent, such as deleting old rows from a very large
+ *  table.
  */
 @interface GTLRSpanner_TransactionOptions : GTLRObject
+
+/**
+ *  Partitioned DML transaction.
+ *  Authorization to begin a Partitioned DML transaction requires
+ *  `spanner.databases.beginPartitionedDmlTransaction` permission
+ *  on the `session` resource.
+ */
+@property(nonatomic, strong, nullable) GTLRSpanner_PartitionedDml *partitionedDml;
 
 /**
  *  Transaction will not write.
@@ -2296,7 +2705,12 @@ GTLR_EXTERN NSString * const kGTLRSpanner_Type_Code_TypeCodeUnspecified;
  *        (Value: "STRUCT")
  *    @arg @c kGTLRSpanner_Type_Code_Timestamp Encoded as `string` in RFC 3339
  *        timestamp format. The time zone
- *        must be present, and must be `"Z"`. (Value: "TIMESTAMP")
+ *        must be present, and must be `"Z"`.
+ *        If the schema has the column option
+ *        `allow_commit_timestamp=true`, the placeholder string
+ *        `"spanner.commit_timestamp()"` can be used to instruct the system
+ *        to insert the commit timestamp associated with the transaction
+ *        commit. (Value: "TIMESTAMP")
  *    @arg @c kGTLRSpanner_Type_Code_TypeCodeUnspecified Not specified. (Value:
  *        "TYPE_CODE_UNSPECIFIED")
  */

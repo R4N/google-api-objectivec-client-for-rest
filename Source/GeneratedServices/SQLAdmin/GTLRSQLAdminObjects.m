@@ -2,10 +2,10 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Cloud SQL Administration API (sqladmin/v1beta4)
+//   Cloud SQL Admin API (sqladmin/v1beta4)
 // Description:
-//   Creates and configures Cloud SQL instances, which provide fully-managed
-//   MySQL databases.
+//   Creates and manages Cloud SQL instances, which provide fully managed MySQL
+//   or PostgreSQL databases.
 // Documentation:
 //   https://cloud.google.com/sql/docs/reference/latest
 
@@ -23,11 +23,22 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRSQLAdmin_ApiWarning
+//
+
+@implementation GTLRSQLAdmin_ApiWarning
+@dynamic code, message;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRSQLAdmin_BackupConfiguration
 //
 
 @implementation GTLRSQLAdmin_BackupConfiguration
-@dynamic binaryLogEnabled, enabled, kind, startTime;
+@dynamic binaryLogEnabled, enabled, kind, replicationLogArchivingEnabled,
+         startTime;
 @end
 
 
@@ -85,7 +96,7 @@
 //
 
 @implementation GTLRSQLAdmin_CloneContext
-@dynamic binLogCoordinates, destinationInstanceName, kind;
+@dynamic binLogCoordinates, destinationInstanceName, kind, pitrTimestampMs;
 @end
 
 
@@ -187,7 +198,7 @@
 //
 
 @implementation GTLRSQLAdmin_DemoteMasterContext
-@dynamic kind, masterInstanceName, replicaConfiguration;
+@dynamic kind, masterInstanceName, replicaConfiguration, verifyGtidConsistency;
 @end
 
 
@@ -235,7 +246,7 @@
 //
 
 @implementation GTLRSQLAdmin_ExportContext_SqlExportOptions
-@dynamic schemaOnly, tables;
+@dynamic mysqlExportOptions, schemaOnly, tables;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -244,6 +255,16 @@
   return map;
 }
 
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRSQLAdmin_ExportContext_SqlExportOptions_MysqlExportOptions
+//
+
+@implementation GTLRSQLAdmin_ExportContext_SqlExportOptions_MysqlExportOptions
+@dynamic masterData;
 @end
 
 
@@ -379,11 +400,30 @@
 //
 
 @implementation GTLRSQLAdmin_InstancesListResponse
-@dynamic items, kind, nextPageToken;
+@dynamic items, kind, nextPageToken, warnings;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
-    @"items" : [GTLRSQLAdmin_DatabaseInstance class]
+    @"items" : [GTLRSQLAdmin_DatabaseInstance class],
+    @"warnings" : [GTLRSQLAdmin_ApiWarning class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRSQLAdmin_InstancesListServerCasResponse
+//
+
+@implementation GTLRSQLAdmin_InstancesListServerCasResponse
+@dynamic activeVersion, certs, kind;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"certs" : [GTLRSQLAdmin_SslCert class]
   };
   return map;
 }
@@ -403,6 +443,16 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRSQLAdmin_InstancesRotateServerCaRequest
+//
+
+@implementation GTLRSQLAdmin_InstancesRotateServerCaRequest
+@dynamic rotateServerCaContext;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRSQLAdmin_InstancesTruncateLogRequest
 //
 
@@ -417,7 +467,7 @@
 //
 
 @implementation GTLRSQLAdmin_IpConfiguration
-@dynamic authorizedNetworks, ipv4Enabled, requireSsl;
+@dynamic authorizedNetworks, ipv4Enabled, privateNetwork, requireSsl;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -561,6 +611,16 @@
 
 @implementation GTLRSQLAdmin_RestoreBackupContext
 @dynamic backupRunId, instanceId, kind;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRSQLAdmin_RotateServerCaContext
+//
+
+@implementation GTLRSQLAdmin_RotateServerCaContext
+@dynamic kind, nextVersion;
 @end
 
 

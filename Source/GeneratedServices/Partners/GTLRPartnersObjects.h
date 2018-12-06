@@ -910,76 +910,6 @@ GTLR_EXTERN NSString * const kGTLRPartners_ExamStatus_ExamType_CetShopping;
 GTLR_EXTERN NSString * const kGTLRPartners_ExamStatus_ExamType_CetVideoAds;
 
 // ----------------------------------------------------------------------------
-// GTLRPartners_ExamToken.examType
-
-/**
- *  Unchosen.
- *
- *  Value: "CERTIFICATION_EXAM_TYPE_UNSPECIFIED"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CertificationExamTypeUnspecified;
-/**
- *  AdWords advanced display exam.
- *
- *  Value: "CET_ADWORDS_ADVANCED_DISPLAY"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetAdwordsAdvancedDisplay;
-/**
- *  AdWords advanced search exam.
- *
- *  Value: "CET_ADWORDS_ADVANCED_SEARCH"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetAdwordsAdvancedSearch;
-/**
- *  Adwords Fundamentals exam.
- *
- *  Value: "CET_ADWORDS_FUNDAMENTALS"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetAdwordsFundamentals;
-/**
- *  Analytics exam.
- *
- *  Value: "CET_ANALYTICS"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetAnalytics;
-/**
- *  Digital Sales exam.
- *
- *  Value: "CET_DIGITAL_SALES"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetDigitalSales;
-/**
- *  DoubleClick exam.
- *
- *  Value: "CET_DOUBLECLICK"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetDoubleclick;
-/**
- *  Mobile exam.
- *
- *  Value: "CET_MOBILE"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetMobile;
-/**
- *  Mobile Sites exam.
- *
- *  Value: "CET_MOBILE_SITES"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetMobileSites;
-/**
- *  Shopping exam.
- *
- *  Value: "CET_SHOPPING"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetShopping;
-/**
- *  VideoAds exam.
- *
- *  Value: "CET_VIDEO_ADS"
- */
-GTLR_EXTERN NSString * const kGTLRPartners_ExamToken_ExamType_CetVideoAds;
-
-// ----------------------------------------------------------------------------
 // GTLRPartners_HistoricalOffer.offerType
 
 /**
@@ -2758,6 +2688,13 @@ GTLR_EXTERN NSString * const kGTLRPartners_SpecializationStatus_BadgeSpecializat
 @property(nonatomic, strong, nullable) NSArray<NSString *> *autoApprovalEmailDomains;
 
 /**
+ *  Whether the company's badge authority is in AWN
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *badgeAuthorityInAwn;
+
+/**
  *  Partner badge tier
  *
  *  Likely values:
@@ -3072,27 +3009,32 @@ GTLR_EXTERN NSString * const kGTLRPartners_SpecializationStatus_BadgeSpecializat
 
 
 /**
- *  Represents a whole calendar date, e.g. date of birth. The time of day and
- *  time zone are either specified elsewhere or are not significant. The date
- *  is relative to the Proleptic Gregorian Calendar. The day may be 0 to
- *  represent a year and month where the day is not significant, e.g. credit
- *  card
- *  expiration date. The year may be 0 to represent a month and day independent
- *  of year, e.g. anniversary date. Related types are google.type.TimeOfDay
- *  and `google.protobuf.Timestamp`.
+ *  Represents a whole or partial calendar date, e.g. a birthday. The time of
+ *  day
+ *  and time zone are either specified elsewhere or are not significant. The
+ *  date
+ *  is relative to the Proleptic Gregorian Calendar. This can represent:
+ *  * A full date, with non-zero year, month and day values
+ *  * A month and day value, with a zero year, e.g. an anniversary
+ *  * A year on its own, with zero month and day values
+ *  * A year and month value, with a zero day, e.g. a credit card expiration
+ *  date
+ *  Related types are google.type.TimeOfDay and `google.protobuf.Timestamp`.
  */
 @interface GTLRPartners_Date : GTLRObject
 
 /**
  *  Day of month. Must be from 1 to 31 and valid for the year and month, or 0
- *  if specifying a year/month where the day is not significant.
+ *  if specifying a year by itself or a year and month where the day is not
+ *  significant.
  *
  *  Uses NSNumber of intValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *day;
 
 /**
- *  Month of year. Must be from 1 to 12.
+ *  Month of year. Must be from 1 to 12, or 0 if specifying a year without a
+ *  month and day.
  *
  *  Uses NSNumber of intValue.
  */
@@ -3283,53 +3225,6 @@ GTLR_EXTERN NSString * const kGTLRPartners_SpecializationStatus_BadgeSpecializat
  *  Uses NSNumber of boolValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *warning;
-
-@end
-
-
-/**
- *  A token that allows a user to take an exam.
- */
-@interface GTLRPartners_ExamToken : GTLRObject
-
-/**
- *  The id of the exam the token is for.
- *
- *  Uses NSNumber of longLongValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *examId;
-
-/**
- *  The type of the exam the token belongs to.
- *
- *  Likely values:
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CertificationExamTypeUnspecified
- *        Unchosen. (Value: "CERTIFICATION_EXAM_TYPE_UNSPECIFIED")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetAdwordsAdvancedDisplay AdWords
- *        advanced display exam. (Value: "CET_ADWORDS_ADVANCED_DISPLAY")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetAdwordsAdvancedSearch AdWords
- *        advanced search exam. (Value: "CET_ADWORDS_ADVANCED_SEARCH")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetAdwordsFundamentals Adwords
- *        Fundamentals exam. (Value: "CET_ADWORDS_FUNDAMENTALS")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetAnalytics Analytics exam.
- *        (Value: "CET_ANALYTICS")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetDigitalSales Digital Sales
- *        exam. (Value: "CET_DIGITAL_SALES")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetDoubleclick DoubleClick exam.
- *        (Value: "CET_DOUBLECLICK")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetMobile Mobile exam. (Value:
- *        "CET_MOBILE")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetMobileSites Mobile Sites exam.
- *        (Value: "CET_MOBILE_SITES")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetShopping Shopping exam.
- *        (Value: "CET_SHOPPING")
- *    @arg @c kGTLRPartners_ExamToken_ExamType_CetVideoAds VideoAds exam.
- *        (Value: "CET_VIDEO_ADS")
- */
-@property(nonatomic, copy, nullable) NSString *examType;
-
-/** The token, only present if the user has access to the exam. */
-@property(nonatomic, copy, nullable) NSString *token;
 
 @end
 
@@ -4792,6 +4687,14 @@ GTLR_EXTERN NSString * const kGTLRPartners_SpecializationStatus_BadgeSpecializat
  *  A resource representing a user of the Partners platform.
  */
 @interface GTLRPartners_User : GTLRObject
+
+/**
+ *  Whether or not the user has opted to share their Academy for Ads info with
+ *  Google Partners.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *afaInfoShared;
 
 /**
  *  This is the list of AdWords Manager Accounts the user has edit access to.

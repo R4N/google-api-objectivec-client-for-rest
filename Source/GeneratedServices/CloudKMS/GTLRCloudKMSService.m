@@ -2,10 +2,10 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Key Management Service (KMS) API (cloudkms/v1)
+//   Cloud Key Management Service (KMS) API (cloudkms/v1)
 // Description:
-//   Manages encryption for your cloud services the same way you do on-premises.
-//   You can generate, use, rotate, and destroy AES256 encryption keys.
+//   Manages keys and performs cryptographic operations in a central cloud
+//   service, for direct use by other cloud resources and applications.
 // Documentation:
 //   https://cloud.google.com/kms/
 
@@ -28,7 +28,7 @@ NSString * const kGTLRAuthScopeCloudKMSCloudPlatform = @"https://www.googleapis.
     // From discovery.
     self.rootURLString = @"https://cloudkms.googleapis.com/";
     self.batchPath = @"batch";
-    self.prettyPrintQueryParameterNames = @[ @"prettyPrint", @"pp" ];
+    self.prettyPrintQueryParameterNames = @[ @"prettyPrint" ];
   }
   return self;
 }

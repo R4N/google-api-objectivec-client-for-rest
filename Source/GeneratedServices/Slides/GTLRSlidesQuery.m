@@ -4,7 +4,7 @@
 // API:
 //   Google Slides API (slides/v1)
 // Description:
-//   An API for creating and editing Google Slides presentations.
+//   Reads and writes Google Slides presentations.
 // Documentation:
 //   https://developers.google.com/slides/
 
@@ -20,6 +20,8 @@ NSString * const kGTLRSlidesThumbnailPropertiesMimeTypePng = @"PNG";
 
 // thumbnailPropertiesThumbnailSize
 NSString * const kGTLRSlidesThumbnailPropertiesThumbnailSizeLarge = @"LARGE";
+NSString * const kGTLRSlidesThumbnailPropertiesThumbnailSizeMedium = @"MEDIUM";
+NSString * const kGTLRSlidesThumbnailPropertiesThumbnailSizeSmall = @"SMALL";
 NSString * const kGTLRSlidesThumbnailPropertiesThumbnailSizeThumbnailSizeUnspecified = @"THUMBNAIL_SIZE_UNSPECIFIED";
 
 // ----------------------------------------------------------------------------

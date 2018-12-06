@@ -2,12 +2,11 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Cloud Tasks API (cloudtasks/v2beta2)
+//   Cloud Tasks API (cloudtasks/v2beta3)
 // Description:
-//   Manages the execution of large numbers of distributed requests. Cloud Tasks
-//   is in Alpha.
+//   Manages the execution of large numbers of distributed requests.
 // Documentation:
-//   https://cloud.google.com/cloud-tasks/
+//   https://cloud.google.com/tasks/
 
 #if GTLR_BUILT_AS_FRAMEWORK
   #import "GTLR/GTLRService.h"
@@ -44,8 +43,7 @@ GTLR_EXTERN NSString * const kGTLRAuthScopeCloudTasksCloudPlatform;
 /**
  *  Service for executing Cloud Tasks API queries.
  *
- *  Manages the execution of large numbers of distributed requests. Cloud Tasks
- *  is in Alpha.
+ *  Manages the execution of large numbers of distributed requests.
  */
 @interface GTLRCloudTasksService : GTLRService
 

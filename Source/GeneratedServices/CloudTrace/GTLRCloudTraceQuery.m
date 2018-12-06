@@ -6,7 +6,9 @@
 // Description:
 //   Sends application trace data to Stackdriver Trace for viewing. Trace data
 //   is collected for all App Engine applications by default. Trace data from
-//   other applications can be provided using this API.
+//   other applications can be provided using this API. This library is used to
+//   interact with the Trace API directly. If you are looking to instrument your
+//   application for Stackdriver Trace, we recommend using OpenCensus.
 // Documentation:
 //   https://cloud.google.com/trace
 
@@ -45,7 +47,7 @@
 
 @end
 
-@implementation GTLRCloudTraceQuery_ProjectsTracesSpansCreate
+@implementation GTLRCloudTraceQuery_ProjectsTracesSpansCreateSpan
 
 @dynamic name;
 
@@ -56,15 +58,15 @@
     return nil;
   }
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2/{+name}/spans";
-  GTLRCloudTraceQuery_ProjectsTracesSpansCreate *query =
+  NSString *pathURITemplate = @"v2/{+name}";
+  GTLRCloudTraceQuery_ProjectsTracesSpansCreateSpan *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"
                        pathParameterNames:pathParams];
   query.bodyObject = object;
   query.name = name;
   query.expectedObjectClass = [GTLRCloudTrace_Span class];
-  query.loggingName = @"cloudtrace.projects.traces.spans.create";
+  query.loggingName = @"cloudtrace.projects.traces.spans.createSpan";
   return query;
 }
 

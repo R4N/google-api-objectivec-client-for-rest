@@ -4,9 +4,8 @@
 // API:
 //   Admin Directory API (admin/directory_v1)
 // Description:
-//   The Admin SDK Directory API lets you view and manage enterprise resources
-//   such as users and groups, administrative notifications, security features,
-//   and more.
+//   Manages enterprise resources such as users and groups, administrative
+//   notifications, security features, and more.
 // Documentation:
 //   https://developers.google.com/admin-sdk/directory/
 
@@ -21,6 +20,7 @@
 #endif
 
 @class GTLRDirectory_Alias;
+@class GTLRDirectory_Building;
 @class GTLRDirectory_CalendarResource;
 @class GTLRDirectory_Channel;
 @class GTLRDirectory_ChromeOsDevice;
@@ -29,6 +29,8 @@
 @class GTLRDirectory_Customer;
 @class GTLRDirectory_DomainAlias;
 @class GTLRDirectory_Domains;
+@class GTLRDirectory_Feature;
+@class GTLRDirectory_FeatureRename;
 @class GTLRDirectory_Group;
 @class GTLRDirectory_Member;
 @class GTLRDirectory_MobileDeviceAction;
@@ -267,7 +269,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    user's primary email address, alias email address, or unique user ID.
  *  @param codeId The unique ID of the ASP to be deleted.
  *
- *  @returns GTLRDirectoryQuery_AspsDelete
+ *  @return GTLRDirectoryQuery_AspsDelete
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey
                           codeId:(NSInteger)codeId;
@@ -304,7 +306,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    user's primary email address, alias email address, or unique user ID.
  *  @param codeId The unique ID of the ASP.
  *
- *  @returns GTLRDirectoryQuery_AspsGet
+ *  @return GTLRDirectoryQuery_AspsGet
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey
                           codeId:(NSInteger)codeId;
@@ -337,7 +339,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param userKey Identifies the user in the API request. The value can be the
  *    user's primary email address, alias email address, or unique user ID.
  *
- *  @returns GTLRDirectoryQuery_AspsList
+ *  @return GTLRDirectoryQuery_AspsList
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 
@@ -366,7 +368,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param object The @c GTLRDirectory_Channel to include in the query.
  *
- *  @returns GTLRDirectoryQuery_ChannelsStop
+ *  @return GTLRDirectoryQuery_ChannelsStop
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Channel *)object;
 
@@ -401,7 +403,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param resourceId Immutable ID of Chrome OS Device
  *
- *  @returns GTLRDirectoryQuery_ChromeosdevicesAction
+ *  @return GTLRDirectoryQuery_ChromeosdevicesAction
  */
 + (instancetype)queryWithObject:(GTLRDirectory_ChromeOsDeviceAction *)object
                      customerId:(NSString *)customerId
@@ -448,7 +450,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param deviceId Immutable ID of Chrome OS Device
  *
- *  @returns GTLRDirectoryQuery_ChromeosdevicesGet
+ *  @return GTLRDirectoryQuery_ChromeosdevicesGet
  */
 + (instancetype)queryWithCustomerId:(NSString *)customerId
                            deviceId:(NSString *)deviceId;
@@ -514,7 +516,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
 
 /**
  *  Search string in the format given at
- *  http://support.google.com/chromeos/a/bin/answer.py?hl=en&answer=1698333
+ *  http://support.google.com/chromeos/a/bin/answer.py?answer=1698333
  */
 @property(nonatomic, copy, nullable) NSString *query;
 
@@ -537,7 +539,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customerId Immutable ID of the G Suite account
  *
- *  @returns GTLRDirectoryQuery_ChromeosdevicesList
+ *  @return GTLRDirectoryQuery_ChromeosdevicesList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -576,7 +578,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param orgUnitPath Full path of the target organizational unit or its ID
  *
- *  @returns GTLRDirectoryQuery_ChromeosdevicesMoveDevicesToOu
+ *  @return GTLRDirectoryQuery_ChromeosdevicesMoveDevicesToOu
  */
 + (instancetype)queryWithObject:(GTLRDirectory_ChromeOsMoveDevicesToOu *)object
                      customerId:(NSString *)customerId
@@ -623,7 +625,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param deviceId Immutable ID of Chrome OS Device
  *
- *  @returns GTLRDirectoryQuery_ChromeosdevicesPatch
+ *  @return GTLRDirectoryQuery_ChromeosdevicesPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_ChromeOsDevice *)object
                      customerId:(NSString *)customerId
@@ -670,7 +672,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param deviceId Immutable ID of Chrome OS Device
  *
- *  @returns GTLRDirectoryQuery_ChromeosdevicesUpdate
+ *  @return GTLRDirectoryQuery_ChromeosdevicesUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_ChromeOsDevice *)object
                      customerId:(NSString *)customerId
@@ -701,7 +703,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customerKey Id of the customer to be retrieved
  *
- *  @returns GTLRDirectoryQuery_CustomersGet
+ *  @return GTLRDirectoryQuery_CustomersGet
  */
 + (instancetype)queryWithCustomerKey:(NSString *)customerKey;
 
@@ -730,7 +732,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_Customer to include in the query.
  *  @param customerKey Id of the customer to be updated
  *
- *  @returns GTLRDirectoryQuery_CustomersPatch
+ *  @return GTLRDirectoryQuery_CustomersPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Customer *)object
                     customerKey:(NSString *)customerKey;
@@ -760,7 +762,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_Customer to include in the query.
  *  @param customerKey Id of the customer to be updated
  *
- *  @returns GTLRDirectoryQuery_CustomersUpdate
+ *  @return GTLRDirectoryQuery_CustomersUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Customer *)object
                     customerKey:(NSString *)customerKey;
@@ -794,7 +796,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param domainAliasName Name of domain alias to be retrieved.
  *
- *  @returns GTLRDirectoryQuery_DomainAliasesDelete
+ *  @return GTLRDirectoryQuery_DomainAliasesDelete
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                   domainAliasName:(NSString *)domainAliasName;
@@ -828,7 +830,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param domainAliasName Name of domain alias to be retrieved.
  *
- *  @returns GTLRDirectoryQuery_DomainAliasesGet
+ *  @return GTLRDirectoryQuery_DomainAliasesGet
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                   domainAliasName:(NSString *)domainAliasName;
@@ -858,7 +860,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_DomainAlias to include in the query.
  *  @param customer Immutable ID of the G Suite account.
  *
- *  @returns GTLRDirectoryQuery_DomainAliasesInsert
+ *  @return GTLRDirectoryQuery_DomainAliasesInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_DomainAlias *)object
                        customer:(NSString *)customer;
@@ -891,7 +893,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customer Immutable ID of the G Suite account.
  *
- *  @returns GTLRDirectoryQuery_DomainAliasesList
+ *  @return GTLRDirectoryQuery_DomainAliasesList
  */
 + (instancetype)queryWithCustomer:(NSString *)customer;
 
@@ -924,7 +926,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param domainName Name of domain to be deleted
  *
- *  @returns GTLRDirectoryQuery_DomainsDelete
+ *  @return GTLRDirectoryQuery_DomainsDelete
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                        domainName:(NSString *)domainName;
@@ -958,7 +960,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param domainName Name of domain to be retrieved
  *
- *  @returns GTLRDirectoryQuery_DomainsGet
+ *  @return GTLRDirectoryQuery_DomainsGet
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                        domainName:(NSString *)domainName;
@@ -988,7 +990,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_Domains to include in the query.
  *  @param customer Immutable ID of the G Suite account.
  *
- *  @returns GTLRDirectoryQuery_DomainsInsert
+ *  @return GTLRDirectoryQuery_DomainsInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Domains *)object
                        customer:(NSString *)customer;
@@ -1018,7 +1020,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customer Immutable ID of the G Suite account.
  *
- *  @returns GTLRDirectoryQuery_DomainsList
+ *  @return GTLRDirectoryQuery_DomainsList
  */
 + (instancetype)queryWithCustomer:(NSString *)customer;
 
@@ -1051,7 +1053,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param groupKey Email or immutable ID of the group
  *  @param alias The alias to be removed
  *
- *  @returns GTLRDirectoryQuery_GroupsAliasesDelete
+ *  @return GTLRDirectoryQuery_GroupsAliasesDelete
  */
 + (instancetype)queryWithGroupKey:(NSString *)groupKey
                             alias:(NSString *)alias;
@@ -1081,7 +1083,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_Alias to include in the query.
  *  @param groupKey Email or immutable ID of the group
  *
- *  @returns GTLRDirectoryQuery_GroupsAliasesInsert
+ *  @return GTLRDirectoryQuery_GroupsAliasesInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Alias *)object
                        groupKey:(NSString *)groupKey;
@@ -1111,7 +1113,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param groupKey Email or immutable ID of the group
  *
- *  @returns GTLRDirectoryQuery_GroupsAliasesList
+ *  @return GTLRDirectoryQuery_GroupsAliasesList
  */
 + (instancetype)queryWithGroupKey:(NSString *)groupKey;
 
@@ -1140,7 +1142,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param groupKey Email or immutable ID of the group
  *
- *  @returns GTLRDirectoryQuery_GroupsDelete
+ *  @return GTLRDirectoryQuery_GroupsDelete
  */
 + (instancetype)queryWithGroupKey:(NSString *)groupKey;
 
@@ -1169,7 +1171,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param groupKey Email or immutable ID of the group
  *
- *  @returns GTLRDirectoryQuery_GroupsGet
+ *  @return GTLRDirectoryQuery_GroupsGet
  */
 + (instancetype)queryWithGroupKey:(NSString *)groupKey;
 
@@ -1194,14 +1196,14 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param object The @c GTLRDirectory_Group to include in the query.
  *
- *  @returns GTLRDirectoryQuery_GroupsInsert
+ *  @return GTLRDirectoryQuery_GroupsInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Group *)object;
 
 @end
 
 /**
- *  Retrieve all groups in a domain (paginated)
+ *  Retrieve all groups of a domain or of a user given a userKey (paginated)
  *
  *  Method: directory.groups.list
  *
@@ -1228,21 +1230,47 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
 /** Maximum number of results to return. Default is 200 */
 @property(nonatomic, assign) NSInteger maxResults;
 
+/**
+ *  Column to use for sorting results
+ *
+ *  Likely values:
+ *    @arg @c kGTLRDirectoryOrderByEmail Email of the group. (Value: "email")
+ */
+@property(nonatomic, copy, nullable) NSString *orderBy;
+
 /** Token to specify next page in the list */
 @property(nonatomic, copy, nullable) NSString *pageToken;
 
 /**
- *  Email or immutable ID of the user if only those groups are to be listed, the
- *  given user is a member of. If ID, it should match with id of user object
+ *  Query string search. Should be of the form "". Complete documentation is at
+ *  https://developers.google.com/admin-sdk/directory/v1/guides/search-groups
+ */
+@property(nonatomic, copy, nullable) NSString *query;
+
+/**
+ *  Whether to return results in ascending or descending order. Only of use when
+ *  orderBy is also used
+ *
+ *  Likely values:
+ *    @arg @c kGTLRDirectorySortOrderAscending Ascending order. (Value:
+ *        "ASCENDING")
+ *    @arg @c kGTLRDirectorySortOrderDescending Descending order. (Value:
+ *        "DESCENDING")
+ */
+@property(nonatomic, copy, nullable) NSString *sortOrder;
+
+/**
+ *  Email or immutable Id of the user if only those groups are to be listed, the
+ *  given user is a member of. If Id, it should match with id of user object
  */
 @property(nonatomic, copy, nullable) NSString *userKey;
 
 /**
  *  Fetches a @c GTLRDirectory_Groups.
  *
- *  Retrieve all groups in a domain (paginated)
+ *  Retrieve all groups of a domain or of a user given a userKey (paginated)
  *
- *  @returns GTLRDirectoryQuery_GroupsList
+ *  @return GTLRDirectoryQuery_GroupsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -1279,7 +1307,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param groupKey Email or immutable ID of the group. If ID, it should match
  *    with id of group object
  *
- *  @returns GTLRDirectoryQuery_GroupsPatch
+ *  @return GTLRDirectoryQuery_GroupsPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Group *)object
                        groupKey:(NSString *)groupKey;
@@ -1313,7 +1341,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param groupKey Email or immutable ID of the group. If ID, it should match
  *    with id of group object
  *
- *  @returns GTLRDirectoryQuery_GroupsUpdate
+ *  @return GTLRDirectoryQuery_GroupsUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Group *)object
                        groupKey:(NSString *)groupKey;
@@ -1348,7 +1376,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param groupKey Email or immutable ID of the group
  *  @param memberKey Email or immutable ID of the member
  *
- *  @returns GTLRDirectoryQuery_MembersDelete
+ *  @return GTLRDirectoryQuery_MembersDelete
  */
 + (instancetype)queryWithGroupKey:(NSString *)groupKey
                         memberKey:(NSString *)memberKey;
@@ -1384,7 +1412,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param groupKey Email or immutable ID of the group
  *  @param memberKey Email or immutable ID of the member
  *
- *  @returns GTLRDirectoryQuery_MembersGet
+ *  @return GTLRDirectoryQuery_MembersGet
  */
 + (instancetype)queryWithGroupKey:(NSString *)groupKey
                         memberKey:(NSString *)memberKey;
@@ -1392,7 +1420,8 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
 @end
 
 /**
- *  Checks Membership of an user within a Group
+ *  Checks whether the given user is a member of the group. Membership can be
+ *  direct or nested.
  *
  *  Method: directory.members.hasMember
  *
@@ -1406,21 +1435,30 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
 // Previous library name was
 //   +[GTLQueryDirectory queryForMembersHasMemberWithgroupKey:memberKey:]
 
-/** Email or immutable Id of the group */
+/**
+ *  Identifies the group in the API request. The value can be the group's email
+ *  address, group alias, or the unique group ID.
+ */
 @property(nonatomic, copy, nullable) NSString *groupKey;
 
-/** Email or immutable Id of the member */
+/**
+ *  Identifies the user member in the API request. The value can be the user's
+ *  primary email address, alias, or unique ID.
+ */
 @property(nonatomic, copy, nullable) NSString *memberKey;
 
 /**
  *  Fetches a @c GTLRDirectory_MembersHasMember.
  *
- *  Checks Membership of an user within a Group
+ *  Checks whether the given user is a member of the group. Membership can be
+ *  direct or nested.
  *
- *  @param groupKey Email or immutable Id of the group
- *  @param memberKey Email or immutable Id of the member
+ *  @param groupKey Identifies the group in the API request. The value can be
+ *    the group's email address, group alias, or the unique group ID.
+ *  @param memberKey Identifies the user member in the API request. The value
+ *    can be the user's primary email address, alias, or unique ID.
  *
- *  @returns GTLRDirectoryQuery_MembersHasMember
+ *  @return GTLRDirectoryQuery_MembersHasMember
  */
 + (instancetype)queryWithGroupKey:(NSString *)groupKey
                         memberKey:(NSString *)memberKey;
@@ -1451,7 +1489,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_Member to include in the query.
  *  @param groupKey Email or immutable ID of the group
  *
- *  @returns GTLRDirectoryQuery_MembersInsert
+ *  @return GTLRDirectoryQuery_MembersInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Member *)object
                        groupKey:(NSString *)groupKey;
@@ -1476,6 +1514,9 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
 /** Email or immutable ID of the group */
 @property(nonatomic, copy, nullable) NSString *groupKey;
 
+/** Whether to list indirect memberships. Default: false. */
+@property(nonatomic, assign) BOOL includeDerivedMembership;
+
 /** Maximum number of results to return. Default is 200 */
 @property(nonatomic, assign) NSInteger maxResults;
 
@@ -1492,7 +1533,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param groupKey Email or immutable ID of the group
  *
- *  @returns GTLRDirectoryQuery_MembersList
+ *  @return GTLRDirectoryQuery_MembersList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -1540,7 +1581,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param memberKey Email or immutable ID of the user. If ID, it should match
  *    with id of member object
  *
- *  @returns GTLRDirectoryQuery_MembersPatch
+ *  @return GTLRDirectoryQuery_MembersPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Member *)object
                        groupKey:(NSString *)groupKey
@@ -1584,7 +1625,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param memberKey Email or immutable ID of the user. If ID, it should match
  *    with id of member object
  *
- *  @returns GTLRDirectoryQuery_MembersUpdate
+ *  @return GTLRDirectoryQuery_MembersUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Member *)object
                        groupKey:(NSString *)groupKey
@@ -1622,7 +1663,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param resourceId Immutable ID of Mobile Device
  *
- *  @returns GTLRDirectoryQuery_MobiledevicesAction
+ *  @return GTLRDirectoryQuery_MobiledevicesAction
  */
 + (instancetype)queryWithObject:(GTLRDirectory_MobileDeviceAction *)object
                      customerId:(NSString *)customerId
@@ -1657,7 +1698,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param resourceId Immutable ID of Mobile Device
  *
- *  @returns GTLRDirectoryQuery_MobiledevicesDelete
+ *  @return GTLRDirectoryQuery_MobiledevicesDelete
  */
 + (instancetype)queryWithCustomerId:(NSString *)customerId
                          resourceId:(NSString *)resourceId;
@@ -1704,7 +1745,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param resourceId Immutable ID of Mobile Device
  *
- *  @returns GTLRDirectoryQuery_MobiledevicesGet
+ *  @return GTLRDirectoryQuery_MobiledevicesGet
  */
 + (instancetype)queryWithCustomerId:(NSString *)customerId
                          resourceId:(NSString *)resourceId;
@@ -1766,7 +1807,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
 
 /**
  *  Search string in the format given at
- *  http://support.google.com/a/bin/answer.py?hl=en&answer=1408863#search
+ *  http://support.google.com/a/bin/answer.py?answer=1408863#search
  */
 @property(nonatomic, copy, nullable) NSString *query;
 
@@ -1789,7 +1830,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customerId Immutable ID of the G Suite account
  *
- *  @returns GTLRDirectoryQuery_MobiledevicesList
+ *  @return GTLRDirectoryQuery_MobiledevicesList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -1830,7 +1871,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    customerId is also returned as part of the Users resource.
  *  @param notificationId The unique ID of the notification.
  *
- *  @returns GTLRDirectoryQuery_NotificationsDelete
+ *  @return GTLRDirectoryQuery_NotificationsDelete
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                    notificationId:(NSString *)notificationId;
@@ -1867,7 +1908,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    customerId is also returned as part of the Users resource.
  *  @param notificationId The unique ID of the notification.
  *
- *  @returns GTLRDirectoryQuery_NotificationsGet
+ *  @return GTLRDirectoryQuery_NotificationsGet
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                    notificationId:(NSString *)notificationId;
@@ -1908,7 +1949,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customer The unique ID for the customer's G Suite account.
  *
- *  @returns GTLRDirectoryQuery_NotificationsList
+ *  @return GTLRDirectoryQuery_NotificationsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -1945,7 +1986,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer The unique ID for the customer's G Suite account.
  *  @param notificationId The unique ID of the notification.
  *
- *  @returns GTLRDirectoryQuery_NotificationsPatch
+ *  @return GTLRDirectoryQuery_NotificationsPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Notification *)object
                        customer:(NSString *)customer
@@ -1980,7 +2021,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer The unique ID for the customer's G Suite account.
  *  @param notificationId The unique ID of the notification.
  *
- *  @returns GTLRDirectoryQuery_NotificationsUpdate
+ *  @return GTLRDirectoryQuery_NotificationsUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Notification *)object
                        customer:(NSString *)customer
@@ -2015,7 +2056,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param orgUnitPath Full path of the organizational unit or its ID
  *
- *  @returns GTLRDirectoryQuery_OrgunitsDelete
+ *  @return GTLRDirectoryQuery_OrgunitsDelete
  */
 + (instancetype)queryWithCustomerId:(NSString *)customerId
                         orgUnitPath:(NSArray<NSString *> *)orgUnitPath;
@@ -2049,7 +2090,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param orgUnitPath Full path of the organizational unit or its ID
  *
- *  @returns GTLRDirectoryQuery_OrgunitsGet
+ *  @return GTLRDirectoryQuery_OrgunitsGet
  */
 + (instancetype)queryWithCustomerId:(NSString *)customerId
                         orgUnitPath:(NSArray<NSString *> *)orgUnitPath;
@@ -2079,7 +2120,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_OrgUnit to include in the query.
  *  @param customerId Immutable ID of the G Suite account
  *
- *  @returns GTLRDirectoryQuery_OrgunitsInsert
+ *  @return GTLRDirectoryQuery_OrgunitsInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_OrgUnit *)object
                      customerId:(NSString *)customerId;
@@ -2122,7 +2163,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customerId Immutable ID of the G Suite account
  *
- *  @returns GTLRDirectoryQuery_OrgunitsList
+ *  @return GTLRDirectoryQuery_OrgunitsList
  */
 + (instancetype)queryWithCustomerId:(NSString *)customerId;
 
@@ -2155,7 +2196,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param orgUnitPath Full path of the organizational unit or its ID
  *
- *  @returns GTLRDirectoryQuery_OrgunitsPatch
+ *  @return GTLRDirectoryQuery_OrgunitsPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_OrgUnit *)object
                      customerId:(NSString *)customerId
@@ -2190,7 +2231,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param orgUnitPath Full path of the organizational unit or its ID
  *
- *  @returns GTLRDirectoryQuery_OrgunitsUpdate
+ *  @return GTLRDirectoryQuery_OrgunitsUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_OrgUnit *)object
                      customerId:(NSString *)customerId
@@ -2221,7 +2262,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customer Immutable ID of the G Suite account.
  *
- *  @returns GTLRDirectoryQuery_PrivilegesList
+ *  @return GTLRDirectoryQuery_PrivilegesList
  */
 + (instancetype)queryWithCustomer:(NSString *)customer;
 
@@ -2241,7 +2282,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  Retrieves resolved app access settings of the logged in user.
  *
- *  @returns GTLRDirectoryQuery_ResolvedAppAccessSettingsGetSettings
+ *  @return GTLRDirectoryQuery_ResolvedAppAccessSettingsGetSettings
  */
 + (instancetype)query;
 
@@ -2261,9 +2302,256 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  Retrieves the list of apps trusted by the admin of the logged in user.
  *
- *  @returns GTLRDirectoryQuery_ResolvedAppAccessSettingsListTrustedApps
+ *  @return GTLRDirectoryQuery_ResolvedAppAccessSettingsListTrustedApps
  */
 + (instancetype)query;
+
+@end
+
+/**
+ *  Deletes a building.
+ *
+ *  Method: directory.resources.buildings.delete
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ */
+@interface GTLRDirectoryQuery_ResourcesBuildingsDelete : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesBuildingsDeleteWithcustomer:buildingId:]
+
+/** The ID of the building to delete. */
+@property(nonatomic, copy, nullable) NSString *buildingId;
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/**
+ *  Upon successful completion, the callback's object and error parameters will
+ *  be nil. This query does not fetch an object.
+ *
+ *  Deletes a building.
+ *
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *  @param buildingId The ID of the building to delete.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesBuildingsDelete
+ */
++ (instancetype)queryWithCustomer:(NSString *)customer
+                       buildingId:(NSString *)buildingId;
+
+@end
+
+/**
+ *  Retrieves a building.
+ *
+ *  Method: directory.resources.buildings.get
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendarReadonly
+ */
+@interface GTLRDirectoryQuery_ResourcesBuildingsGet : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesBuildingsGetWithcustomer:buildingId:]
+
+/** The unique ID of the building to retrieve. */
+@property(nonatomic, copy, nullable) NSString *buildingId;
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/**
+ *  Fetches a @c GTLRDirectory_Building.
+ *
+ *  Retrieves a building.
+ *
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *  @param buildingId The unique ID of the building to retrieve.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesBuildingsGet
+ */
++ (instancetype)queryWithCustomer:(NSString *)customer
+                       buildingId:(NSString *)buildingId;
+
+@end
+
+/**
+ *  Inserts a building.
+ *
+ *  Method: directory.resources.buildings.insert
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ */
+@interface GTLRDirectoryQuery_ResourcesBuildingsInsert : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesBuildingsInsertWithObject:customer:]
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/**
+ *  Fetches a @c GTLRDirectory_Building.
+ *
+ *  Inserts a building.
+ *
+ *  @param object The @c GTLRDirectory_Building to include in the query.
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesBuildingsInsert
+ */
++ (instancetype)queryWithObject:(GTLRDirectory_Building *)object
+                       customer:(NSString *)customer;
+
+@end
+
+/**
+ *  Retrieves a list of buildings for an account.
+ *
+ *  Method: directory.resources.buildings.list
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendarReadonly
+ */
+@interface GTLRDirectoryQuery_ResourcesBuildingsList : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesBuildingsListWithcustomer:]
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/**
+ *  Maximum number of results to return.
+ *
+ *  @note The documented range is 1..500.
+ */
+@property(nonatomic, assign) NSInteger maxResults;
+
+/** Token to specify the next page in the list. */
+@property(nonatomic, copy, nullable) NSString *pageToken;
+
+/**
+ *  Fetches a @c GTLRDirectory_Buildings.
+ *
+ *  Retrieves a list of buildings for an account.
+ *
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesBuildingsList
+ *
+ *  @note Automatic pagination will be done when @c shouldFetchNextPages is
+ *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
+ *        information.
+ */
++ (instancetype)queryWithCustomer:(NSString *)customer;
+
+@end
+
+/**
+ *  Updates a building. This method supports patch semantics.
+ *
+ *  Method: directory.resources.buildings.patch
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ */
+@interface GTLRDirectoryQuery_ResourcesBuildingsPatch : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesBuildingsPatchWithObject:customer:buildingId:]
+
+/** The ID of the building to update. */
+@property(nonatomic, copy, nullable) NSString *buildingId;
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/**
+ *  Fetches a @c GTLRDirectory_Building.
+ *
+ *  Updates a building. This method supports patch semantics.
+ *
+ *  @param object The @c GTLRDirectory_Building to include in the query.
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *  @param buildingId The ID of the building to update.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesBuildingsPatch
+ */
++ (instancetype)queryWithObject:(GTLRDirectory_Building *)object
+                       customer:(NSString *)customer
+                     buildingId:(NSString *)buildingId;
+
+@end
+
+/**
+ *  Updates a building.
+ *
+ *  Method: directory.resources.buildings.update
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ */
+@interface GTLRDirectoryQuery_ResourcesBuildingsUpdate : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesBuildingsUpdateWithObject:customer:buildingId:]
+
+/** The ID of the building to update. */
+@property(nonatomic, copy, nullable) NSString *buildingId;
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/**
+ *  Fetches a @c GTLRDirectory_Building.
+ *
+ *  Updates a building.
+ *
+ *  @param object The @c GTLRDirectory_Building to include in the query.
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *  @param buildingId The ID of the building to update.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesBuildingsUpdate
+ */
++ (instancetype)queryWithObject:(GTLRDirectory_Building *)object
+                       customer:(NSString *)customer
+                     buildingId:(NSString *)buildingId;
 
 @end
 
@@ -2300,7 +2588,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    your account's customer ID.
  *  @param calendarResourceId The unique ID of the calendar resource to delete.
  *
- *  @returns GTLRDirectoryQuery_ResourcesCalendarsDelete
+ *  @return GTLRDirectoryQuery_ResourcesCalendarsDelete
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                calendarResourceId:(NSString *)calendarResourceId;
@@ -2341,7 +2629,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param calendarResourceId The unique ID of the calendar resource to
  *    retrieve.
  *
- *  @returns GTLRDirectoryQuery_ResourcesCalendarsGet
+ *  @return GTLRDirectoryQuery_ResourcesCalendarsGet
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                calendarResourceId:(NSString *)calendarResourceId;
@@ -2377,7 +2665,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    account administrator, you can also use the my_customer alias to represent
  *    your account's customer ID.
  *
- *  @returns GTLRDirectoryQuery_ResourcesCalendarsInsert
+ *  @return GTLRDirectoryQuery_ResourcesCalendarsInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_CalendarResource *)object
                        customer:(NSString *)customer;
@@ -2411,8 +2699,29 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  */
 @property(nonatomic, assign) NSInteger maxResults;
 
+/**
+ *  Field(s) to sort results by in either ascending or descending order.
+ *  Supported fields include resourceId, resourceName, capacity, buildingId, and
+ *  floorName. If no order is specified, defaults to ascending. Should be of the
+ *  form "field [asc|desc], field [asc|desc], ...". For example buildingId,
+ *  capacity desc would return results sorted first by buildingId in ascending
+ *  order then by capacity in descending order.
+ */
+@property(nonatomic, copy, nullable) NSString *orderBy;
+
 /** Token to specify the next page in the list. */
 @property(nonatomic, copy, nullable) NSString *pageToken;
+
+/**
+ *  String query used to filter results. Should be of the form "field operator
+ *  value" where field can be any of supported fields and operators can be any
+ *  of supported operations. Operators include '=' for exact match and ':' for
+ *  prefix match or HAS match where applicable. For prefix match, the value
+ *  should always be followed by a *. Supported fields include
+ *  generatedResourceName, name, buildingId, featureInstances.feature.name. For
+ *  example buildingId=US-NYC-9TH AND featureInstances.feature.name:Phone.
+ */
+@property(nonatomic, copy, nullable) NSString *query;
 
 /**
  *  Fetches a @c GTLRDirectory_CalendarResources.
@@ -2423,7 +2732,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    account administrator, you can also use the my_customer alias to represent
  *    your account's customer ID.
  *
- *  @returns GTLRDirectoryQuery_ResourcesCalendarsList
+ *  @return GTLRDirectoryQuery_ResourcesCalendarsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -2472,7 +2781,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    your account's customer ID.
  *  @param calendarResourceId The unique ID of the calendar resource to update.
  *
- *  @returns GTLRDirectoryQuery_ResourcesCalendarsPatch
+ *  @return GTLRDirectoryQuery_ResourcesCalendarsPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_CalendarResource *)object
                        customer:(NSString *)customer
@@ -2519,11 +2828,300 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    your account's customer ID.
  *  @param calendarResourceId The unique ID of the calendar resource to update.
  *
- *  @returns GTLRDirectoryQuery_ResourcesCalendarsUpdate
+ *  @return GTLRDirectoryQuery_ResourcesCalendarsUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_CalendarResource *)object
                        customer:(NSString *)customer
              calendarResourceId:(NSString *)calendarResourceId;
+
+@end
+
+/**
+ *  Deletes a feature.
+ *
+ *  Method: directory.resources.features.delete
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ */
+@interface GTLRDirectoryQuery_ResourcesFeaturesDelete : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesFeaturesDeleteWithcustomer:featureKey:]
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/** The unique ID of the feature to delete. */
+@property(nonatomic, copy, nullable) NSString *featureKey;
+
+/**
+ *  Upon successful completion, the callback's object and error parameters will
+ *  be nil. This query does not fetch an object.
+ *
+ *  Deletes a feature.
+ *
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *  @param featureKey The unique ID of the feature to delete.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesFeaturesDelete
+ */
++ (instancetype)queryWithCustomer:(NSString *)customer
+                       featureKey:(NSString *)featureKey;
+
+@end
+
+/**
+ *  Retrieves a feature.
+ *
+ *  Method: directory.resources.features.get
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendarReadonly
+ */
+@interface GTLRDirectoryQuery_ResourcesFeaturesGet : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesFeaturesGetWithcustomer:featureKey:]
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/** The unique ID of the feature to retrieve. */
+@property(nonatomic, copy, nullable) NSString *featureKey;
+
+/**
+ *  Fetches a @c GTLRDirectory_Feature.
+ *
+ *  Retrieves a feature.
+ *
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *  @param featureKey The unique ID of the feature to retrieve.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesFeaturesGet
+ */
++ (instancetype)queryWithCustomer:(NSString *)customer
+                       featureKey:(NSString *)featureKey;
+
+@end
+
+/**
+ *  Inserts a feature.
+ *
+ *  Method: directory.resources.features.insert
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ */
+@interface GTLRDirectoryQuery_ResourcesFeaturesInsert : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesFeaturesInsertWithObject:customer:]
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/**
+ *  Fetches a @c GTLRDirectory_Feature.
+ *
+ *  Inserts a feature.
+ *
+ *  @param object The @c GTLRDirectory_Feature to include in the query.
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesFeaturesInsert
+ */
++ (instancetype)queryWithObject:(GTLRDirectory_Feature *)object
+                       customer:(NSString *)customer;
+
+@end
+
+/**
+ *  Retrieves a list of features for an account.
+ *
+ *  Method: directory.resources.features.list
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendarReadonly
+ */
+@interface GTLRDirectoryQuery_ResourcesFeaturesList : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesFeaturesListWithcustomer:]
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/**
+ *  Maximum number of results to return.
+ *
+ *  @note The documented range is 1..500.
+ */
+@property(nonatomic, assign) NSInteger maxResults;
+
+/** Token to specify the next page in the list. */
+@property(nonatomic, copy, nullable) NSString *pageToken;
+
+/**
+ *  Fetches a @c GTLRDirectory_Features.
+ *
+ *  Retrieves a list of features for an account.
+ *
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesFeaturesList
+ *
+ *  @note Automatic pagination will be done when @c shouldFetchNextPages is
+ *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
+ *        information.
+ */
++ (instancetype)queryWithCustomer:(NSString *)customer;
+
+@end
+
+/**
+ *  Updates a feature. This method supports patch semantics.
+ *
+ *  Method: directory.resources.features.patch
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ */
+@interface GTLRDirectoryQuery_ResourcesFeaturesPatch : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesFeaturesPatchWithObject:customer:featureKey:]
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/** The unique ID of the feature to update. */
+@property(nonatomic, copy, nullable) NSString *featureKey;
+
+/**
+ *  Fetches a @c GTLRDirectory_Feature.
+ *
+ *  Updates a feature. This method supports patch semantics.
+ *
+ *  @param object The @c GTLRDirectory_Feature to include in the query.
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *  @param featureKey The unique ID of the feature to update.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesFeaturesPatch
+ */
++ (instancetype)queryWithObject:(GTLRDirectory_Feature *)object
+                       customer:(NSString *)customer
+                     featureKey:(NSString *)featureKey;
+
+@end
+
+/**
+ *  Renames a feature.
+ *
+ *  Method: directory.resources.features.rename
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ */
+@interface GTLRDirectoryQuery_ResourcesFeaturesRename : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesFeaturesRenameWithObject:customer:oldName:]
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/** The unique ID of the feature to rename. */
+@property(nonatomic, copy, nullable) NSString *oldName;
+
+/**
+ *  Upon successful completion, the callback's object and error parameters will
+ *  be nil. This query does not fetch an object.
+ *
+ *  Renames a feature.
+ *
+ *  @param object The @c GTLRDirectory_FeatureRename to include in the query.
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *  @param oldName The unique ID of the feature to rename.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesFeaturesRename
+ */
++ (instancetype)queryWithObject:(GTLRDirectory_FeatureRename *)object
+                       customer:(NSString *)customer
+                        oldName:(NSString *)oldName;
+
+@end
+
+/**
+ *  Updates a feature.
+ *
+ *  Method: directory.resources.features.update
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDirectoryDirectoryResourceCalendar
+ */
+@interface GTLRDirectoryQuery_ResourcesFeaturesUpdate : GTLRDirectoryQuery
+// Previous library name was
+//   +[GTLQueryDirectory queryForResourcesFeaturesUpdateWithObject:customer:featureKey:]
+
+/**
+ *  The unique ID for the customer's G Suite account. As an account
+ *  administrator, you can also use the my_customer alias to represent your
+ *  account's customer ID.
+ */
+@property(nonatomic, copy, nullable) NSString *customer;
+
+/** The unique ID of the feature to update. */
+@property(nonatomic, copy, nullable) NSString *featureKey;
+
+/**
+ *  Fetches a @c GTLRDirectory_Feature.
+ *
+ *  Updates a feature.
+ *
+ *  @param object The @c GTLRDirectory_Feature to include in the query.
+ *  @param customer The unique ID for the customer's G Suite account. As an
+ *    account administrator, you can also use the my_customer alias to represent
+ *    your account's customer ID.
+ *  @param featureKey The unique ID of the feature to update.
+ *
+ *  @return GTLRDirectoryQuery_ResourcesFeaturesUpdate
+ */
++ (instancetype)queryWithObject:(GTLRDirectory_Feature *)object
+                       customer:(NSString *)customer
+                     featureKey:(NSString *)featureKey;
 
 @end
 
@@ -2554,7 +3152,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param roleAssignmentId Immutable ID of the role assignment.
  *
- *  @returns GTLRDirectoryQuery_RoleAssignmentsDelete
+ *  @return GTLRDirectoryQuery_RoleAssignmentsDelete
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                  roleAssignmentId:(NSString *)roleAssignmentId;
@@ -2588,7 +3186,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param roleAssignmentId Immutable ID of the role assignment.
  *
- *  @returns GTLRDirectoryQuery_RoleAssignmentsGet
+ *  @return GTLRDirectoryQuery_RoleAssignmentsGet
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                  roleAssignmentId:(NSString *)roleAssignmentId;
@@ -2618,7 +3216,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_RoleAssignment to include in the query.
  *  @param customer Immutable ID of the G Suite account.
  *
- *  @returns GTLRDirectoryQuery_RoleAssignmentsInsert
+ *  @return GTLRDirectoryQuery_RoleAssignmentsInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_RoleAssignment *)object
                        customer:(NSString *)customer;
@@ -2670,7 +3268,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customer Immutable ID of the G Suite account.
  *
- *  @returns GTLRDirectoryQuery_RoleAssignmentsList
+ *  @return GTLRDirectoryQuery_RoleAssignmentsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -2707,7 +3305,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param roleId Immutable ID of the role.
  *
- *  @returns GTLRDirectoryQuery_RolesDelete
+ *  @return GTLRDirectoryQuery_RolesDelete
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                            roleId:(NSString *)roleId;
@@ -2741,7 +3339,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param roleId Immutable ID of the role.
  *
- *  @returns GTLRDirectoryQuery_RolesGet
+ *  @return GTLRDirectoryQuery_RolesGet
  */
 + (instancetype)queryWithCustomer:(NSString *)customer
                            roleId:(NSString *)roleId;
@@ -2771,7 +3369,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_Role to include in the query.
  *  @param customer Immutable ID of the G Suite account.
  *
- *  @returns GTLRDirectoryQuery_RolesInsert
+ *  @return GTLRDirectoryQuery_RolesInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Role *)object
                        customer:(NSString *)customer;
@@ -2811,7 +3409,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customer Immutable ID of the G Suite account.
  *
- *  @returns GTLRDirectoryQuery_RolesList
+ *  @return GTLRDirectoryQuery_RolesList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -2848,7 +3446,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param roleId Immutable ID of the role.
  *
- *  @returns GTLRDirectoryQuery_RolesPatch
+ *  @return GTLRDirectoryQuery_RolesPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Role *)object
                        customer:(NSString *)customer
@@ -2883,7 +3481,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customer Immutable ID of the G Suite account.
  *  @param roleId Immutable ID of the role.
  *
- *  @returns GTLRDirectoryQuery_RolesUpdate
+ *  @return GTLRDirectoryQuery_RolesUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Role *)object
                        customer:(NSString *)customer
@@ -2918,7 +3516,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param schemaKey Name or immutable ID of the schema
  *
- *  @returns GTLRDirectoryQuery_SchemasDelete
+ *  @return GTLRDirectoryQuery_SchemasDelete
  */
 + (instancetype)queryWithCustomerId:(NSString *)customerId
                           schemaKey:(NSString *)schemaKey;
@@ -2952,7 +3550,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param schemaKey Name or immutable ID of the schema
  *
- *  @returns GTLRDirectoryQuery_SchemasGet
+ *  @return GTLRDirectoryQuery_SchemasGet
  */
 + (instancetype)queryWithCustomerId:(NSString *)customerId
                           schemaKey:(NSString *)schemaKey;
@@ -2982,7 +3580,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_Schema to include in the query.
  *  @param customerId Immutable ID of the G Suite account
  *
- *  @returns GTLRDirectoryQuery_SchemasInsert
+ *  @return GTLRDirectoryQuery_SchemasInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Schema *)object
                      customerId:(NSString *)customerId;
@@ -3012,7 +3610,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param customerId Immutable ID of the G Suite account
  *
- *  @returns GTLRDirectoryQuery_SchemasList
+ *  @return GTLRDirectoryQuery_SchemasList
  */
 + (instancetype)queryWithCustomerId:(NSString *)customerId;
 
@@ -3045,7 +3643,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param schemaKey Name or immutable ID of the schema.
  *
- *  @returns GTLRDirectoryQuery_SchemasPatch
+ *  @return GTLRDirectoryQuery_SchemasPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Schema *)object
                      customerId:(NSString *)customerId
@@ -3080,7 +3678,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param customerId Immutable ID of the G Suite account
  *  @param schemaKey Name or immutable ID of the schema.
  *
- *  @returns GTLRDirectoryQuery_SchemasUpdate
+ *  @return GTLRDirectoryQuery_SchemasUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Schema *)object
                      customerId:(NSString *)customerId
@@ -3119,7 +3717,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    user's primary email address, alias email address, or unique user ID.
  *  @param clientId The Client ID of the application the token is issued to.
  *
- *  @returns GTLRDirectoryQuery_TokensDelete
+ *  @return GTLRDirectoryQuery_TokensDelete
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey
                         clientId:(NSString *)clientId;
@@ -3156,7 +3754,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *    user's primary email address, alias email address, or unique user ID.
  *  @param clientId The Client ID of the application the token is issued to.
  *
- *  @returns GTLRDirectoryQuery_TokensGet
+ *  @return GTLRDirectoryQuery_TokensGet
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey
                         clientId:(NSString *)clientId;
@@ -3191,7 +3789,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param userKey Identifies the user in the API request. The value can be the
  *    user's primary email address, alias email address, or unique user ID.
  *
- *  @returns GTLRDirectoryQuery_TokensList
+ *  @return GTLRDirectoryQuery_TokensList
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 
@@ -3225,7 +3823,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param userKey Email or immutable ID of the user
  *  @param alias The alias to be removed
  *
- *  @returns GTLRDirectoryQuery_UsersAliasesDelete
+ *  @return GTLRDirectoryQuery_UsersAliasesDelete
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey
                            alias:(NSString *)alias;
@@ -3256,7 +3854,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_Alias to include in the query.
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_UsersAliasesInsert
+ *  @return GTLRDirectoryQuery_UsersAliasesInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Alias *)object
                         userKey:(NSString *)userKey;
@@ -3297,7 +3895,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_UsersAliasesList
+ *  @return GTLRDirectoryQuery_UsersAliasesList
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 
@@ -3338,7 +3936,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_Channel to include in the query.
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_UsersAliasesWatch
+ *  @return GTLRDirectoryQuery_UsersAliasesWatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Channel *)object
                         userKey:(NSString *)userKey;
@@ -3368,7 +3966,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_UsersDelete
+ *  @return GTLRDirectoryQuery_UsersDelete
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 
@@ -3433,7 +4031,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_UsersGet
+ *  @return GTLRDirectoryQuery_UsersGet
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 
@@ -3458,7 +4056,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param object The @c GTLRDirectory_User to include in the query.
  *
- *  @returns GTLRDirectoryQuery_UsersInsert
+ *  @return GTLRDirectoryQuery_UsersInsert
  */
 + (instancetype)queryWithObject:(GTLRDirectory_User *)object;
 
@@ -3587,7 +4185,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  Retrieve either deleted users or all users in a domain (paginated)
  *
- *  @returns GTLRDirectoryQuery_UsersList
+ *  @return GTLRDirectoryQuery_UsersList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -3621,7 +4219,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_UserMakeAdmin to include in the query.
  *  @param userKey Email or immutable ID of the user as admin
  *
- *  @returns GTLRDirectoryQuery_UsersMakeAdmin
+ *  @return GTLRDirectoryQuery_UsersMakeAdmin
  */
 + (instancetype)queryWithObject:(GTLRDirectory_UserMakeAdmin *)object
                         userKey:(NSString *)userKey;
@@ -3655,7 +4253,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param userKey Email or immutable ID of the user. If ID, it should match
  *    with id of user object
  *
- *  @returns GTLRDirectoryQuery_UsersPatch
+ *  @return GTLRDirectoryQuery_UsersPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_User *)object
                         userKey:(NSString *)userKey;
@@ -3685,7 +4283,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_UsersPhotosDelete
+ *  @return GTLRDirectoryQuery_UsersPhotosDelete
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 
@@ -3714,7 +4312,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_UsersPhotosGet
+ *  @return GTLRDirectoryQuery_UsersPhotosGet
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 
@@ -3743,7 +4341,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_UserPhoto to include in the query.
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_UsersPhotosPatch
+ *  @return GTLRDirectoryQuery_UsersPhotosPatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_UserPhoto *)object
                         userKey:(NSString *)userKey;
@@ -3773,7 +4371,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_UserPhoto to include in the query.
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_UsersPhotosUpdate
+ *  @return GTLRDirectoryQuery_UsersPhotosUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_UserPhoto *)object
                         userKey:(NSString *)userKey;
@@ -3804,7 +4402,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param object The @c GTLRDirectory_UserUndelete to include in the query.
  *  @param userKey The immutable id of the user
  *
- *  @returns GTLRDirectoryQuery_UsersUndelete
+ *  @return GTLRDirectoryQuery_UsersUndelete
  */
 + (instancetype)queryWithObject:(GTLRDirectory_UserUndelete *)object
                         userKey:(NSString *)userKey;
@@ -3838,7 +4436,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param userKey Email or immutable ID of the user. If ID, it should match
  *    with id of user object
  *
- *  @returns GTLRDirectoryQuery_UsersUpdate
+ *  @return GTLRDirectoryQuery_UsersUpdate
  */
 + (instancetype)queryWithObject:(GTLRDirectory_User *)object
                         userKey:(NSString *)userKey;
@@ -3970,7 +4568,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param object The @c GTLRDirectory_Channel to include in the query.
  *
- *  @returns GTLRDirectoryQuery_UsersWatch
+ *  @return GTLRDirectoryQuery_UsersWatch
  */
 + (instancetype)queryWithObject:(GTLRDirectory_Channel *)object;
 
@@ -3999,7 +4597,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_VerificationCodesGenerate
+ *  @return GTLRDirectoryQuery_VerificationCodesGenerate
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 
@@ -4028,7 +4626,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *
  *  @param userKey Email or immutable ID of the user
  *
- *  @returns GTLRDirectoryQuery_VerificationCodesInvalidate
+ *  @return GTLRDirectoryQuery_VerificationCodesInvalidate
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 
@@ -4062,7 +4660,7 @@ GTLR_EXTERN NSString * const kGTLRDirectoryViewTypeDomainPublic;
  *  @param userKey Identifies the user in the API request. The value can be the
  *    user's primary email address, alias email address, or unique user ID.
  *
- *  @returns GTLRDirectoryQuery_VerificationCodesList
+ *  @return GTLRDirectoryQuery_VerificationCodesList
  */
 + (instancetype)queryWithUserKey:(NSString *)userKey;
 

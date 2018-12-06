@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google People API (people/v1)
+//   People API (people/v1)
 // Description:
 //   Provides access to information about profiles and contacts.
 // Documentation:
@@ -52,6 +52,7 @@
 @class GTLRPeopleService_RelationshipInterest;
 @class GTLRPeopleService_RelationshipStatus;
 @class GTLRPeopleService_Residence;
+@class GTLRPeopleService_SipAddress;
 @class GTLRPeopleService_Skill;
 @class GTLRPeopleService_Source;
 @class GTLRPeopleService_Status;
@@ -348,8 +349,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, copy, nullable) NSString *streetAddress;
 
 /**
- *  The type of the address. The type can be custom or predefined.
- *  Possible values include, but are not limited to, the following:
+ *  The type of the address. The type can be custom or one of these predefined
+ *  values:
  *  * `home`
  *  * `work`
  *  * `other`
@@ -528,8 +529,7 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 
 /**
  *  The contact group ID for the contact group membership. The contact group
- *  ID can be custom or predefined. Possible values include, but are not
- *  limited to, the following:
+ *  ID can be custom or one of these predefined values:
  *  * `myContacts`
  *  * `starred`
  *  * A numerical ID for user-created groups.
@@ -626,14 +626,16 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 
 /**
  *  Day of month. Must be from 1 to 31 and valid for the year and month, or 0
- *  if specifying a year/month where the day is not significant.
+ *  if specifying a year by itself or a year and month where the day is not
+ *  significant.
  *
  *  Uses NSNumber of intValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *day;
 
 /**
- *  Month of year. Must be from 1 to 12.
+ *  Month of year. Must be from 1 to 12, or 0 if specifying a year without a
+ *  month and day.
  *
  *  Uses NSNumber of intValue.
  */
@@ -683,8 +685,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, strong, nullable) GTLRPeopleService_FieldMetadata *metadata;
 
 /**
- *  The type of the email address. The type can be custom or predefined.
- *  Possible values include, but are not limited to, the following:
+ *  The type of the email address. The type can be custom or one of these
+ *  predefined values:
  *  * `home`
  *  * `work`
  *  * `other`
@@ -728,8 +730,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, strong, nullable) GTLRPeopleService_FieldMetadata *metadata;
 
 /**
- *  The type of the event. The type can be custom or predefined.
- *  Possible values include, but are not limited to, the following:
+ *  The type of the event. The type can be custom or one of these predefined
+ *  values:
  *  * `anniversary`
  *  * `other`
  */
@@ -781,9 +783,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, strong, nullable) GTLRPeopleService_FieldMetadata *metadata;
 
 /**
- *  The gender for the person. The gender can be custom or predefined.
- *  Possible values include, but are not limited to, the
- *  following:
+ *  The gender for the person. The gender can be custom or one of these
+ *  predefined values:
  *  * `male`
  *  * `female`
  *  * `other`
@@ -826,8 +827,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, strong, nullable) GTLRPeopleService_FieldMetadata *metadata;
 
 /**
- *  The protocol of the IM client. The protocol can be custom or predefined.
- *  Possible values include, but are not limited to, the following:
+ *  The protocol of the IM client. The protocol can be custom or one of these
+ *  predefined values:
  *  * `aim`
  *  * `msn`
  *  * `yahoo`
@@ -841,8 +842,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, copy, nullable) NSString *protocol;
 
 /**
- *  The type of the IM client. The type can be custom or predefined.
- *  Possible values include, but are not limited to, the following:
+ *  The type of the IM client. The type can be custom or one of these
+ *  predefined values:
  *  * `home`
  *  * `work`
  *  * `other`
@@ -857,7 +858,6 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 
 /**
  *  One of the person's interests.
- *  **DEPRECATED** (Message will not be returned.)
  */
 @interface GTLRPeopleService_Interest : GTLRObject
 
@@ -982,7 +982,9 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 
 
 /**
- *  A request to modify an existing contact group's members.
+ *  A request to modify an existing contact group's members. Contacts can be
+ *  removed from any group but they can only be added to a user group or
+ *  myContacts or starred system groups.
  */
 @interface GTLRPeopleService_ModifyContactGroupMembersRequest : GTLRObject
 
@@ -1175,8 +1177,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, copy, nullable) NSString *title;
 
 /**
- *  The type of the organization. The type can be custom or predefined.
- *  Possible values include, but are not limited to, the following:
+ *  The type of the organization. The type can be custom or one of these
+ *  predefined values:
  *  * `work`
  *  * `school`
  */
@@ -1246,10 +1248,7 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 /** The person's instant messaging clients. */
 @property(nonatomic, strong, nullable) NSArray<GTLRPeopleService_ImClient *> *imClients;
 
-/**
- *  The person's interests.
- *  **DEPRECATED** (No values will be returned.)
- */
+/** The person's interests. */
 @property(nonatomic, strong, nullable) NSArray<GTLRPeopleService_Interest *> *interests;
 
 /** The person's locale preferences. */
@@ -1297,6 +1296,9 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
  *  `people/`<var>person_id</var>.
  */
 @property(nonatomic, copy, nullable) NSString *resourceName;
+
+/** The person's SIP addresses. */
+@property(nonatomic, strong, nullable) NSArray<GTLRPeopleService_SipAddress *> *sipAddresses;
 
 /** The person's skills. */
 @property(nonatomic, strong, nullable) NSArray<GTLRPeopleService_Skill *> *skills;
@@ -1415,8 +1417,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, strong, nullable) GTLRPeopleService_FieldMetadata *metadata;
 
 /**
- *  The type of the phone number. The type can be custom or predefined.
- *  Possible values include, but are not limited to, the following:
+ *  The type of the phone number. The type can be custom or one of these
+ *  predefined values:
  *  * `home`
  *  * `work`
  *  * `mobile`
@@ -1509,9 +1511,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, copy, nullable) NSString *person;
 
 /**
- *  The person's relation to the other person. The type can be custom or
- *  predefined.
- *  Possible values include, but are not limited to, the following values:
+ *  The person's relation to the other person. The type can be custom or one of
+ *  these predefined values:
  *  * `spouse`
  *  * `child`
  *  * `mother`
@@ -1549,8 +1550,7 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 
 /**
  *  The kind of relationship the person is looking for. The value can be custom
- *  or predefined. Possible values include, but are not limited to, the
- *  following values:
+ *  or one of these predefined values:
  *  * `friend`
  *  * `date`
  *  * `relationship`
@@ -1576,8 +1576,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, strong, nullable) GTLRPeopleService_FieldMetadata *metadata;
 
 /**
- *  The relationship status. The value can be custom or predefined.
- *  Possible values include, but are not limited to, the following:
+ *  The relationship status. The value can be custom or one of these
+ *  predefined values:
  *  * `single`
  *  * `inARelationship`
  *  * `engaged`
@@ -1610,6 +1610,41 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, strong, nullable) GTLRPeopleService_FieldMetadata *metadata;
 
 /** The address of the residence. */
+@property(nonatomic, copy, nullable) NSString *value;
+
+@end
+
+
+/**
+ *  A person's SIP address. Session Initial Protocol addresses are used for VoIP
+ *  communications to make voice or video calls over the internet.
+ */
+@interface GTLRPeopleService_SipAddress : GTLRObject
+
+/**
+ *  The read-only type of the SIP address translated and formatted in the
+ *  viewer's account locale or the `Accept-Language` HTTP header locale.
+ */
+@property(nonatomic, copy, nullable) NSString *formattedType;
+
+/** Metadata about the SIP address. */
+@property(nonatomic, strong, nullable) GTLRPeopleService_FieldMetadata *metadata;
+
+/**
+ *  The type of the SIP address. The type can be custom or or one of these
+ *  predefined values:
+ *  * `home`
+ *  * `work`
+ *  * `mobile`
+ *  * `other`
+ */
+@property(nonatomic, copy, nullable) NSString *type;
+
+/**
+ *  The SIP address in the
+ *  [RFC 3261 19.1](https://tools.ietf.org/html/rfc3261#section-19.1) SIP URI
+ *  format.
+ */
 @property(nonatomic, copy, nullable) NSString *value;
 
 @end
@@ -1782,7 +1817,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 
 
 /**
- *  A request to update an existing contact group. Only the name can be updated.
+ *  A request to update an existing user contact group. All updated fields will
+ *  be replaced.
  */
 @interface GTLRPeopleService_UpdateContactGroupRequest : GTLRObject
 
@@ -1807,8 +1843,8 @@ GTLR_EXTERN NSString * const kGTLRPeopleService_Source_Type_SourceTypeUnspecifie
 @property(nonatomic, strong, nullable) GTLRPeopleService_FieldMetadata *metadata;
 
 /**
- *  The type of the URL. The type can be custom or predefined.
- *  Possible values include, but are not limited to, the following:
+ *  The type of the URL. The type can be custom or one of these predefined
+ *  values:
  *  * `home`
  *  * `work`
  *  * `blog`

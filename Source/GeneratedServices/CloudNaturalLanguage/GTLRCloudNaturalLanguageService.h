@@ -2,11 +2,11 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Natural Language API (language/v1)
+//   Cloud Natural Language API (language/v1)
 // Description:
-//   Provides natural language understanding technologies to developers.
-//   Examples include sentiment analysis, entity recognition, entity sentiment
-//   analysis, and text annotations.
+//   Provides natural language understanding technologies, such as sentiment
+//   analysis, entity recognition, entity sentiment analysis, and other text
+//   annotations, to developers.
 // Documentation:
 //   https://cloud.google.com/natural-language/
 
@@ -50,11 +50,11 @@ GTLR_EXTERN NSString * const kGTLRAuthScopeCloudNaturalLanguageCloudPlatform;
 //
 
 /**
- *  Service for executing Google Cloud Natural Language API queries.
+ *  Service for executing Cloud Natural Language API queries.
  *
- *  Provides natural language understanding technologies to developers. Examples
- *  include sentiment analysis, entity recognition, entity sentiment analysis,
- *  and text annotations.
+ *  Provides natural language understanding technologies, such as sentiment
+ *  analysis, entity recognition, entity sentiment analysis, and other text
+ *  annotations, to developers.
  */
 @interface GTLRCloudNaturalLanguageService : GTLRService
 

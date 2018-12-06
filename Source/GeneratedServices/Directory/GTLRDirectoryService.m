@@ -4,9 +4,8 @@
 // API:
 //   Admin Directory API (admin/directory_v1)
 // Description:
-//   The Admin SDK Directory API lets you view and manage enterprise resources
-//   such as users and groups, administrative notifications, security features,
-//   and more.
+//   Manages enterprise resources such as users and groups, administrative
+//   notifications, security features, and more.
 // Documentation:
 //   https://developers.google.com/admin-sdk/directory/
 
@@ -87,8 +86,12 @@ NSString * const kGTLRAuthScopeDirectoryDirectoryUserSecurity  = @"https://www.g
     @"admin#directory#orgUnits" : [GTLRDirectory_OrgUnits class],
     @"admin#directory#privilege" : [GTLRDirectory_Privilege class],
     @"admin#directory#privileges" : [GTLRDirectory_Privileges class],
+    @"admin#directory#resources#buildings#Building" : [GTLRDirectory_Building class],
+    @"admin#directory#resources#buildings#buildingsList" : [GTLRDirectory_Buildings class],
     @"admin#directory#resources#calendars#CalendarResource" : [GTLRDirectory_CalendarResource class],
     @"admin#directory#resources#calendars#calendarResourcesList" : [GTLRDirectory_CalendarResources class],
+    @"admin#directory#resources#features#Feature" : [GTLRDirectory_Feature class],
+    @"admin#directory#resources#features#featuresList" : [GTLRDirectory_Features class],
     @"admin#directory#role" : [GTLRDirectory_Role class],
     @"admin#directory#roleAssignment" : [GTLRDirectory_RoleAssignment class],
     @"admin#directory#roleAssignments" : [GTLRDirectory_RoleAssignments class],

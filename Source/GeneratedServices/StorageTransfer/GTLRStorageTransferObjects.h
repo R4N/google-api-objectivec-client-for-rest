@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Storage Transfer API (storagetransfer/v1)
+//   Storage Transfer API (storagetransfer/v1)
 // Description:
 //   Transfers data from external data sources to a Google Cloud Storage bucket
 //   or between Google Cloud Storage buckets.
@@ -240,7 +240,8 @@ GTLR_EXTERN NSString * const kGTLRStorageTransfer_ErrorSummary_ErrorCode_Unknown
 /**
  *  This is a soft delete state. After a transfer job is set to this
  *  state, the job and all the transfer executions are subject to
- *  garbage collection.
+ *  garbage collection. Transfer jobs become eligible for garbage collection
+ *  30 days after their status is set to `DELETED`.
  *
  *  Value: "DELETED"
  */
@@ -327,8 +328,8 @@ GTLR_EXTERN NSString * const kGTLRStorageTransfer_TransferOperation_Status_Succe
 
 
 /**
- *  An AwsS3Data can be a data source, but not a data sink.
- *  In an AwsS3Data, an object's name is the S3 object's key name.
+ *  An AwsS3Data resource can be a data source, but not a data sink.
+ *  In an AwsS3Data resource, an object's name is the S3 object's key name.
  */
 @interface GTLRStorageTransfer_AwsS3Data : GTLRObject
 
@@ -352,27 +353,32 @@ GTLR_EXTERN NSString * const kGTLRStorageTransfer_TransferOperation_Status_Succe
 
 
 /**
- *  Represents a whole calendar date, e.g. date of birth. The time of day and
- *  time zone are either specified elsewhere or are not significant. The date
- *  is relative to the Proleptic Gregorian Calendar. The day may be 0 to
- *  represent a year and month where the day is not significant, e.g. credit
- *  card
- *  expiration date. The year may be 0 to represent a month and day independent
- *  of year, e.g. anniversary date. Related types are google.type.TimeOfDay
- *  and `google.protobuf.Timestamp`.
+ *  Represents a whole or partial calendar date, e.g. a birthday. The time of
+ *  day
+ *  and time zone are either specified elsewhere or are not significant. The
+ *  date
+ *  is relative to the Proleptic Gregorian Calendar. This can represent:
+ *  * A full date, with non-zero year, month and day values
+ *  * A month and day value, with a zero year, e.g. an anniversary
+ *  * A year on its own, with zero month and day values
+ *  * A year and month value, with a zero day, e.g. a credit card expiration
+ *  date
+ *  Related types are google.type.TimeOfDay and `google.protobuf.Timestamp`.
  */
 @interface GTLRStorageTransfer_Date : GTLRObject
 
 /**
  *  Day of month. Must be from 1 to 31 and valid for the year and month, or 0
- *  if specifying a year/month where the day is not significant.
+ *  if specifying a year by itself or a year and month where the day is not
+ *  significant.
  *
  *  Uses NSNumber of intValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *day;
 
 /**
- *  Month of year. Must be from 1 to 12.
+ *  Month of year. Must be from 1 to 12, or 0 if specifying a year without a
+ *  month and day.
  *
  *  Uses NSNumber of intValue.
  */
@@ -562,17 +568,16 @@ GTLR_EXTERN NSString * const kGTLRStorageTransfer_TransferOperation_Status_Succe
 
 
 /**
- *  In a GcsData, an object's name is the Google Cloud Storage object's name and
- *  its `lastModificationTime` refers to the object's updated time, which
- *  changes
- *  when the content or the metadata of the object is updated.
+ *  In a GcsData resource, an object's name is the Google Cloud Storage object's
+ *  name and its `lastModificationTime` refers to the object's updated time,
+ *  which changes when the content or the metadata of the object is updated.
  */
 @interface GTLRStorageTransfer_GcsData : GTLRObject
 
 /**
  *  Google Cloud Storage bucket name (see
  *  [Bucket Name
- *  Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+ *  Requirements](https://cloud.google.com/storage/docs/naming#requirements)).
  *  Required.
  */
 @property(nonatomic, copy, nullable) NSString *bucketName;
@@ -592,9 +597,10 @@ GTLR_EXTERN NSString * const kGTLRStorageTransfer_TransferOperation_Status_Succe
 
 
 /**
- *  An HttpData specifies a list of objects on the web to be transferred over
- *  HTTP. The information of the objects to be transferred is contained in a
- *  file referenced by a URL. The first line in the file must be
+ *  An HttpData resource specifies a list of objects on the web to be
+ *  transferred
+ *  over HTTP. The information of the objects to be transferred is contained in
+ *  a file referenced by a URL. The first line in the file must be
  *  "TsvHttpData-1.0", which specifies the format of the file. Subsequent lines
  *  specify the information of the list of objects, one object per list entry.
  *  Each entry has the following tab-delimited fields:
@@ -606,8 +612,7 @@ GTLR_EXTERN NSString * const kGTLRStorageTransfer_TransferOperation_Status_Succe
  *  URLs](https://cloud.google.com/storage/transfer/create-url-list).
  *  When transferring data based on a URL list, keep the following in mind:
  *  * When an object located at `http(s)://hostname:port/<URL-path>` is
- *  transferred
- *  to a data sink, the name of the object at the data sink is
+ *  transferred to a data sink, the name of the object at the data sink is
  *  `<hostname>/<URL-path>`.
  *  * If the specified size of an object does not match the actual size of the
  *  object fetched, the object will not be transferred.
@@ -1043,7 +1048,8 @@ GTLR_EXTERN NSString * const kGTLRStorageTransfer_TransferOperation_Status_Succe
 @property(nonatomic, strong, nullable) NSNumber *bytesFoundOnlyFromSink;
 
 /**
- *  Bytes in the data source that failed during the transfer.
+ *  Bytes in the data source that failed to be transferred or that failed to
+ *  be deleted after being transferred.
  *
  *  Uses NSNumber of longLongValue.
  */
@@ -1102,7 +1108,8 @@ GTLR_EXTERN NSString * const kGTLRStorageTransfer_TransferOperation_Status_Succe
 @property(nonatomic, strong, nullable) NSNumber *objectsFoundOnlyFromSink;
 
 /**
- *  Objects in the data source that failed during the transfer.
+ *  Objects in the data source that failed to be transferred or that failed
+ *  to be deleted after being transferred.
  *
  *  Uses NSNumber of longLongValue.
  */
@@ -1168,7 +1175,9 @@ GTLR_EXTERN NSString * const kGTLRStorageTransfer_TransferOperation_Status_Succe
  *    @arg @c kGTLRStorageTransfer_TransferJob_Status_Deleted This is a soft
  *        delete state. After a transfer job is set to this
  *        state, the job and all the transfer executions are subject to
- *        garbage collection. (Value: "DELETED")
+ *        garbage collection. Transfer jobs become eligible for garbage
+ *        collection
+ *        30 days after their status is set to `DELETED`. (Value: "DELETED")
  *    @arg @c kGTLRStorageTransfer_TransferJob_Status_Disabled New transfers
  *        will not be scheduled. (Value: "DISABLED")
  *    @arg @c kGTLRStorageTransfer_TransferJob_Status_Enabled New transfers will

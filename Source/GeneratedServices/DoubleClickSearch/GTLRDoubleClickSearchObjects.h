@@ -533,6 +533,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  columnName parameter is required. For saved columns only the savedColumnName
  *  parameter is required. Both columnName and savedColumnName cannot be set in
  *  the same stanza.
+ *  The maximum number of columns per request is 300.
  */
 @property(nonatomic, strong, nullable) NSArray<GTLRDoubleClickSearch_ReportApiColumnSpec *> *columns;
 
@@ -542,7 +543,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, copy, nullable) NSString *downloadFormat;
 
-/** A list of filters to be applied to the report. */
+/**
+ *  A list of filters to be applied to the report.
+ *  The maximum number of filters per request is 300.
+ */
 @property(nonatomic, strong, nullable) NSArray<GTLRDoubleClickSearch_ReportRequest_Filters_Item *> *filters;
 
 /**
@@ -573,6 +577,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Synchronous report only. A list of columns and directions defining sorting
  *  to be performed on the report rows.
+ *  The maximum number of orderings per request is 300.
  */
 @property(nonatomic, strong, nullable) NSArray<GTLRDoubleClickSearch_ReportRequest_OrderBy_Item *> *orderBy;
 
@@ -592,7 +597,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy, nullable) NSString *reportType;
 
 /**
- *  Synchronous report only. The maxinum number of rows to return; additional
+ *  Synchronous report only. The maximum number of rows to return; additional
  *  rows are dropped. Acceptable values are 0 to 10000, inclusive. Defaults to
  *  10000.
  *
@@ -654,6 +659,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  A list of values to filter the column value against.
+ *  The maximum number of filter values per request is 300.
  *
  *  Can be any valid JSON type.
  */

@@ -2,9 +2,9 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Ad Experience Report API (adexperiencereport/v1)
+//   Ad Experience Report API (adexperiencereport/v1)
 // Description:
-//   View Ad Experience Report data, and get a list of sites that have a
+//   Views Ad Experience Report data, and gets a list of sites that have a
 //   significant number of annoying ads.
 // Documentation:
 //   https://developers.google.com/ad-experience-report/

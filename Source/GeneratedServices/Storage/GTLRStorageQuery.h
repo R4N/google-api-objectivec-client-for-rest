@@ -216,7 +216,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_BucketAccessControlsDelete
+ *  @return GTLRStorageQuery_BucketAccessControlsDelete
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          entity:(NSString *)entity;
@@ -261,7 +261,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_BucketAccessControlsGet
+ *  @return GTLRStorageQuery_BucketAccessControlsGet
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          entity:(NSString *)entity;
@@ -299,7 +299,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    query.
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_BucketAccessControlsInsert
+ *  @return GTLRStorageQuery_BucketAccessControlsInsert
  */
 + (instancetype)queryWithObject:(GTLRStorage_BucketAccessControl *)object
                          bucket:(NSString *)bucket;
@@ -335,15 +335,14 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_BucketAccessControlsList
+ *  @return GTLRStorageQuery_BucketAccessControlsList
  */
 + (instancetype)queryWithBucket:(NSString *)bucket;
 
 @end
 
 /**
- *  Updates an ACL entry on the specified bucket. This method supports patch
- *  semantics.
+ *  Patches an ACL entry on the specified bucket.
  *
  *  Method: storage.bucketAccessControls.patch
  *
@@ -373,8 +372,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
 /**
  *  Fetches a @c GTLRStorage_BucketAccessControl.
  *
- *  Updates an ACL entry on the specified bucket. This method supports patch
- *  semantics.
+ *  Patches an ACL entry on the specified bucket.
  *
  *  @param object The @c GTLRStorage_BucketAccessControl to include in the
  *    query.
@@ -383,7 +381,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_BucketAccessControlsPatch
+ *  @return GTLRStorageQuery_BucketAccessControlsPatch
  */
 + (instancetype)queryWithObject:(GTLRStorage_BucketAccessControl *)object
                          bucket:(NSString *)bucket
@@ -431,7 +429,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_BucketAccessControlsUpdate
+ *  @return GTLRStorageQuery_BucketAccessControlsUpdate
  */
 + (instancetype)queryWithObject:(GTLRStorage_BucketAccessControl *)object
                          bucket:(NSString *)bucket
@@ -481,7 +479,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_BucketsDelete
+ *  @return GTLRStorageQuery_BucketsDelete
  */
 + (instancetype)queryWithBucket:(NSString *)bucket;
 
@@ -541,7 +539,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_BucketsGet
+ *  @return GTLRStorageQuery_BucketsGet
  */
 + (instancetype)queryWithBucket:(NSString *)bucket;
 
@@ -579,7 +577,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_BucketsGetIamPolicy
+ *  @return GTLRStorageQuery_BucketsGetIamPolicy
  */
 + (instancetype)queryWithBucket:(NSString *)bucket;
 
@@ -666,7 +664,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object The @c GTLRStorage_Bucket to include in the query.
  *  @param project A valid API project identifier.
  *
- *  @returns GTLRStorageQuery_BucketsInsert
+ *  @return GTLRStorageQuery_BucketsInsert
  */
 + (instancetype)queryWithObject:(GTLRStorage_Bucket *)object
                         project:(NSString *)project;
@@ -729,7 +727,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param project A valid API project identifier.
  *
- *  @returns GTLRStorageQuery_BucketsList
+ *  @return GTLRStorageQuery_BucketsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -740,9 +738,53 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
 @end
 
 /**
- *  Updates a bucket. Changes to the bucket will be readable immediately after
- *  writing, but configuration changes may take time to propagate. This method
- *  supports patch semantics.
+ *  Locks retention policy on a bucket.
+ *
+ *  Method: storage.buckets.lockRetentionPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeStorageCloudPlatform
+ *    @c kGTLRAuthScopeStorageDevstorageFullControl
+ *    @c kGTLRAuthScopeStorageDevstorageReadWrite
+ */
+@interface GTLRStorageQuery_BucketsLockRetentionPolicy : GTLRStorageQuery
+// Previous library name was
+//   +[GTLQueryStorage queryForBucketsLockRetentionPolicyWithbucket:ifMetagenerationMatch:]
+
+/** Name of a bucket. */
+@property(nonatomic, copy, nullable) NSString *bucket;
+
+/**
+ *  Makes the operation conditional on whether bucket's current metageneration
+ *  matches the given value.
+ */
+@property(nonatomic, assign) long long ifMetagenerationMatch;
+
+/**
+ *  The project to be billed for this request. Required for Requester Pays
+ *  buckets.
+ */
+@property(nonatomic, copy, nullable) NSString *userProject;
+
+/**
+ *  Fetches a @c GTLRStorage_Bucket.
+ *
+ *  Locks retention policy on a bucket.
+ *
+ *  @param bucket Name of a bucket.
+ *  @param ifMetagenerationMatch Makes the operation conditional on whether
+ *    bucket's current metageneration matches the given value.
+ *
+ *  @return GTLRStorageQuery_BucketsLockRetentionPolicy
+ */
++ (instancetype)queryWithBucket:(NSString *)bucket
+          ifMetagenerationMatch:(long long)ifMetagenerationMatch;
+
+@end
+
+/**
+ *  Patches a bucket. Changes to the bucket will be readable immediately after
+ *  writing, but configuration changes may take time to propagate.
  *
  *  Method: storage.buckets.patch
  *
@@ -830,14 +872,13 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
 /**
  *  Fetches a @c GTLRStorage_Bucket.
  *
- *  Updates a bucket. Changes to the bucket will be readable immediately after
- *  writing, but configuration changes may take time to propagate. This method
- *  supports patch semantics.
+ *  Patches a bucket. Changes to the bucket will be readable immediately after
+ *  writing, but configuration changes may take time to propagate.
  *
  *  @param object The @c GTLRStorage_Bucket to include in the query.
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_BucketsPatch
+ *  @return GTLRStorageQuery_BucketsPatch
  */
 + (instancetype)queryWithObject:(GTLRStorage_Bucket *)object
                          bucket:(NSString *)bucket;
@@ -875,7 +916,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object The @c GTLRStorage_Policy to include in the query.
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_BucketsSetIamPolicy
+ *  @return GTLRStorageQuery_BucketsSetIamPolicy
  */
 + (instancetype)queryWithObject:(GTLRStorage_Policy *)object
                          bucket:(NSString *)bucket;
@@ -920,7 +961,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param bucket Name of a bucket.
  *  @param permissions Permissions to test.
  *
- *  @returns GTLRStorageQuery_BucketsTestIamPermissions
+ *  @return GTLRStorageQuery_BucketsTestIamPermissions
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                     permissions:(NSArray<NSString *> *)permissions;
@@ -1023,7 +1064,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object The @c GTLRStorage_Bucket to include in the query.
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_BucketsUpdate
+ *  @return GTLRStorageQuery_BucketsUpdate
  */
 + (instancetype)queryWithObject:(GTLRStorage_Bucket *)object
                          bucket:(NSString *)bucket;
@@ -1054,7 +1095,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param object The @c GTLRStorage_Channel to include in the query.
  *
- *  @returns GTLRStorageQuery_ChannelsStop
+ *  @return GTLRStorageQuery_ChannelsStop
  */
 + (instancetype)queryWithObject:(GTLRStorage_Channel *)object;
 
@@ -1101,7 +1142,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_DefaultObjectAccessControlsDelete
+ *  @return GTLRStorageQuery_DefaultObjectAccessControlsDelete
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          entity:(NSString *)entity;
@@ -1148,7 +1189,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_DefaultObjectAccessControlsGet
+ *  @return GTLRStorageQuery_DefaultObjectAccessControlsGet
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          entity:(NSString *)entity;
@@ -1186,7 +1227,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    query.
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_DefaultObjectAccessControlsInsert
+ *  @return GTLRStorageQuery_DefaultObjectAccessControlsInsert
  */
 + (instancetype)queryWithObject:(GTLRStorage_ObjectAccessControl *)object
                          bucket:(NSString *)bucket;
@@ -1234,15 +1275,14 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param bucket Name of a bucket.
  *
- *  @returns GTLRStorageQuery_DefaultObjectAccessControlsList
+ *  @return GTLRStorageQuery_DefaultObjectAccessControlsList
  */
 + (instancetype)queryWithBucket:(NSString *)bucket;
 
 @end
 
 /**
- *  Updates a default object ACL entry on the specified bucket. This method
- *  supports patch semantics.
+ *  Patches a default object ACL entry on the specified bucket.
  *
  *  Method: storage.defaultObjectAccessControls.patch
  *
@@ -1272,8 +1312,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
 /**
  *  Fetches a @c GTLRStorage_ObjectAccessControl.
  *
- *  Updates a default object ACL entry on the specified bucket. This method
- *  supports patch semantics.
+ *  Patches a default object ACL entry on the specified bucket.
  *
  *  @param object The @c GTLRStorage_ObjectAccessControl to include in the
  *    query.
@@ -1282,7 +1321,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_DefaultObjectAccessControlsPatch
+ *  @return GTLRStorageQuery_DefaultObjectAccessControlsPatch
  */
 + (instancetype)queryWithObject:(GTLRStorage_ObjectAccessControl *)object
                          bucket:(NSString *)bucket
@@ -1330,7 +1369,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_DefaultObjectAccessControlsUpdate
+ *  @return GTLRStorageQuery_DefaultObjectAccessControlsUpdate
  */
 + (instancetype)queryWithObject:(GTLRStorage_ObjectAccessControl *)object
                          bucket:(NSString *)bucket
@@ -1373,7 +1412,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param bucket The parent bucket of the notification.
  *  @param notification ID of the notification to delete.
  *
- *  @returns GTLRStorageQuery_NotificationsDelete
+ *  @return GTLRStorageQuery_NotificationsDelete
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                    notification:(NSString *)notification;
@@ -1416,7 +1455,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param bucket The parent bucket of the notification.
  *  @param notification Notification ID
  *
- *  @returns GTLRStorageQuery_NotificationsGet
+ *  @return GTLRStorageQuery_NotificationsGet
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                    notification:(NSString *)notification;
@@ -1454,7 +1493,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object The @c GTLRStorage_Notification to include in the query.
  *  @param bucket The parent bucket of the notification.
  *
- *  @returns GTLRStorageQuery_NotificationsInsert
+ *  @return GTLRStorageQuery_NotificationsInsert
  */
 + (instancetype)queryWithObject:(GTLRStorage_Notification *)object
                          bucket:(NSString *)bucket;
@@ -1493,7 +1532,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param bucket Name of a Google Cloud Storage bucket.
  *
- *  @returns GTLRStorageQuery_NotificationsList
+ *  @return GTLRStorageQuery_NotificationsList
  */
 + (instancetype)queryWithBucket:(NSString *)bucket;
 
@@ -1554,7 +1593,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_ObjectAccessControlsDelete
+ *  @return GTLRStorageQuery_ObjectAccessControlsDelete
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          object:(NSString *)object
@@ -1614,7 +1653,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_ObjectAccessControlsGet
+ *  @return GTLRStorageQuery_ObjectAccessControlsGet
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          object:(NSString *)object
@@ -1667,7 +1706,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object_param Name of the object. For information about how to URL
  *    encode object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectAccessControlsInsert
+ *  @return GTLRStorageQuery_ObjectAccessControlsInsert
  */
 + (instancetype)queryWithObject:(GTLRStorage_ObjectAccessControl *)object
                          bucket:(NSString *)bucket
@@ -1718,7 +1757,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object Name of the object. For information about how to URL encode
  *    object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectAccessControlsList
+ *  @return GTLRStorageQuery_ObjectAccessControlsList
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          object:(NSString *)object;
@@ -1726,8 +1765,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
 @end
 
 /**
- *  Updates an ACL entry on the specified object. This method supports patch
- *  semantics.
+ *  Patches an ACL entry on the specified object.
  *
  *  Method: storage.objectAccessControls.patch
  *
@@ -1769,8 +1807,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
 /**
  *  Fetches a @c GTLRStorage_ObjectAccessControl.
  *
- *  Updates an ACL entry on the specified object. This method supports patch
- *  semantics.
+ *  Patches an ACL entry on the specified object.
  *
  *  @param object The @c GTLRStorage_ObjectAccessControl to include in the
  *    query.
@@ -1781,7 +1818,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_ObjectAccessControlsPatch
+ *  @return GTLRStorageQuery_ObjectAccessControlsPatch
  */
 + (instancetype)queryWithObject:(GTLRStorage_ObjectAccessControl *)object
                          bucket:(NSString *)bucket
@@ -1844,7 +1881,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    user-emailAddress, group-groupId, group-emailAddress, allUsers, or
  *    allAuthenticatedUsers.
  *
- *  @returns GTLRStorageQuery_ObjectAccessControlsUpdate
+ *  @return GTLRStorageQuery_ObjectAccessControlsUpdate
  */
 + (instancetype)queryWithObject:(GTLRStorage_ObjectAccessControl *)object
                          bucket:(NSString *)bucket
@@ -1868,7 +1905,10 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
 // Previous library name was
 //   +[GTLQueryStorage queryForObjectsComposeWithObject:destinationBucket:destinationObject:]
 
-/** Name of the bucket in which to store the new object. */
+/**
+ *  Name of the bucket containing the source objects. The destination object is
+ *  stored in this bucket.
+ */
 @property(nonatomic, copy, nullable) NSString *destinationBucket;
 
 /**
@@ -1934,12 +1974,12 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  bucket.
  *
  *  @param object The @c GTLRStorage_ComposeRequest to include in the query.
- *  @param destinationBucket Name of the bucket in which to store the new
- *    object.
+ *  @param destinationBucket Name of the bucket containing the source objects.
+ *    The destination object is stored in this bucket.
  *  @param destinationObject Name of the new object. For information about how
  *    to URL encode object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectsCompose
+ *  @return GTLRStorageQuery_ObjectsCompose
  */
 + (instancetype)queryWithObject:(GTLRStorage_ComposeRequest *)object
               destinationBucket:(NSString *)destinationBucket
@@ -2099,7 +2139,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    metadata is not otherwise provided. Overrides the object metadata's name
  *    value, if any.
  *
- *  @returns GTLRStorageQuery_ObjectsCopy
+ *  @return GTLRStorageQuery_ObjectsCopy
  */
 + (instancetype)queryWithObject:(GTLRStorage_Object *)object
                    sourceBucket:(NSString *)sourceBucket
@@ -2183,7 +2223,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object Name of the object. For information about how to URL encode
  *    object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectsDelete
+ *  @return GTLRStorageQuery_ObjectsDelete
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          object:(NSString *)object;
@@ -2273,7 +2313,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object Name of the object. For information about how to URL encode
  *    object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectsGet
+ *  @return GTLRStorageQuery_ObjectsGet
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          object:(NSString *)object;
@@ -2287,7 +2327,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object Name of the object. For information about how to URL encode
  *    object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectsGet
+ *  @return GTLRStorageQuery_ObjectsGet
  */
 + (instancetype)queryForMediaWithBucket:(NSString *)bucket
                                  object:(NSString *)object;
@@ -2340,7 +2380,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object Name of the object. For information about how to URL encode
  *    object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectsGetIamPolicy
+ *  @return GTLRStorageQuery_ObjectsGetIamPolicy
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          object:(NSString *)object;
@@ -2469,7 +2509,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param uploadParameters The media to include in this query. Accepted MIME
  *    type: * / *
  *
- *  @returns GTLRStorageQuery_ObjectsInsert
+ *  @return GTLRStorageQuery_ObjectsInsert
  */
 + (instancetype)queryWithObject:(GTLRStorage_Object *)object
                          bucket:(NSString *)bucket
@@ -2504,6 +2544,12 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  omitted.
  */
 @property(nonatomic, copy, nullable) NSString *delimiter;
+
+/**
+ *  If true, objects that end in exactly one instance of delimiter will have
+ *  their metadata included in items in addition to prefixes.
+ */
+@property(nonatomic, assign) BOOL includeTrailingDelimiter;
 
 /**
  *  Maximum number of items plus prefixes to return in a single page of
@@ -2553,7 +2599,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param bucket Name of the bucket in which to look for objects.
  *
- *  @returns GTLRStorageQuery_ObjectsList
+ *  @return GTLRStorageQuery_ObjectsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -2664,7 +2710,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object_param Name of the object. For information about how to URL
  *    encode object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectsPatch
+ *  @return GTLRStorageQuery_ObjectsPatch
  */
 + (instancetype)queryWithObject:(GTLRStorage_Object *)object
                          bucket:(NSString *)bucket
@@ -2852,7 +2898,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    value, if any. For information about how to URL encode object names to be
  *    path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectsRewrite
+ *  @return GTLRStorageQuery_ObjectsRewrite
  */
 + (instancetype)queryWithObject:(GTLRStorage_Object *)object
                    sourceBucket:(NSString *)sourceBucket
@@ -2907,7 +2953,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object_param Name of the object. For information about how to URL
  *    encode object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectsSetIamPolicy
+ *  @return GTLRStorageQuery_ObjectsSetIamPolicy
  */
 + (instancetype)queryWithObject:(GTLRStorage_Policy *)object
                          bucket:(NSString *)bucket
@@ -2967,7 +3013,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *    object names to be path safe, see Encoding URI Path Parts.
  *  @param permissions Permissions to test.
  *
- *  @returns GTLRStorageQuery_ObjectsTestIamPermissions
+ *  @return GTLRStorageQuery_ObjectsTestIamPermissions
  */
 + (instancetype)queryWithBucket:(NSString *)bucket
                          object:(NSString *)object
@@ -3079,7 +3125,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object_param Name of the object. For information about how to URL
  *    encode object names to be path safe, see Encoding URI Path Parts.
  *
- *  @returns GTLRStorageQuery_ObjectsUpdate
+ *  @return GTLRStorageQuery_ObjectsUpdate
  */
 + (instancetype)queryWithObject:(GTLRStorage_Object *)object
                          bucket:(NSString *)bucket
@@ -3114,6 +3160,12 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  omitted.
  */
 @property(nonatomic, copy, nullable) NSString *delimiter;
+
+/**
+ *  If true, objects that end in exactly one instance of delimiter will have
+ *  their metadata included in items in addition to prefixes.
+ */
+@property(nonatomic, assign) BOOL includeTrailingDelimiter;
 
 /**
  *  Maximum number of items plus prefixes to return in a single page of
@@ -3164,7 +3216,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *  @param object The @c GTLRStorage_Channel to include in the query.
  *  @param bucket Name of the bucket in which to look for objects.
  *
- *  @returns GTLRStorageQuery_ObjectsWatchAll
+ *  @return GTLRStorageQuery_ObjectsWatchAll
  */
 + (instancetype)queryWithObject:(GTLRStorage_Channel *)object
                          bucket:(NSString *)bucket;
@@ -3202,7 +3254,7 @@ GTLR_EXTERN NSString * const kGTLRStorageProjectionNoAcl;
  *
  *  @param projectId Project ID
  *
- *  @returns GTLRStorageQuery_ProjectsServiceAccountGet
+ *  @return GTLRStorageQuery_ProjectsServiceAccountGet
  */
 + (instancetype)queryWithProjectId:(NSString *)projectId;
 

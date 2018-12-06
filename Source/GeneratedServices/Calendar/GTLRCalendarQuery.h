@@ -81,6 +81,29 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByStartTime;
 GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 
 // ----------------------------------------------------------------------------
+// sendUpdates
+
+/**
+ *  Notifications are sent to all guests.
+ *
+ *  Value: "all"
+ */
+GTLR_EXTERN NSString * const kGTLRCalendarSendUpdatesAll;
+/**
+ *  Notifications are sent to non-Google Calendar guests only.
+ *
+ *  Value: "externalOnly"
+ */
+GTLR_EXTERN NSString * const kGTLRCalendarSendUpdatesExternalOnly;
+/**
+ *  No notifications are sent. This value should only be used for migration use
+ *  cases (note that in most migration cases the import method should be used).
+ *
+ *  Value: "none"
+ */
+GTLR_EXTERN NSString * const kGTLRCalendarSendUpdatesNone;
+
+// ----------------------------------------------------------------------------
 // Query Classes
 //
 
@@ -127,7 +150,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param ruleId ACL rule identifier.
  *
- *  @returns GTLRCalendarQuery_AclDelete
+ *  @return GTLRCalendarQuery_AclDelete
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId
                              ruleId:(NSString *)ruleId;
@@ -167,7 +190,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param ruleId ACL rule identifier.
  *
- *  @returns GTLRCalendarQuery_AclGet
+ *  @return GTLRCalendarQuery_AclGet
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId
                              ruleId:(NSString *)ruleId;
@@ -209,7 +232,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_AclInsert
+ *  @return GTLRCalendarQuery_AclInsert
  */
 + (instancetype)queryWithObject:(GTLRCalendar_AclRule *)object
                      calendarId:(NSString *)calendarId;
@@ -275,7 +298,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_AclList
+ *  @return GTLRCalendarQuery_AclList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -324,7 +347,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param ruleId ACL rule identifier.
  *
- *  @returns GTLRCalendarQuery_AclPatch
+ *  @return GTLRCalendarQuery_AclPatch
  */
 + (instancetype)queryWithObject:(GTLRCalendar_AclRule *)object
                      calendarId:(NSString *)calendarId
@@ -371,7 +394,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param ruleId ACL rule identifier.
  *
- *  @returns GTLRCalendarQuery_AclUpdate
+ *  @return GTLRCalendarQuery_AclUpdate
  */
 + (instancetype)queryWithObject:(GTLRCalendar_AclRule *)object
                      calendarId:(NSString *)calendarId
@@ -439,7 +462,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_AclWatch
+ *  @return GTLRCalendarQuery_AclWatch
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Channel *)object
                      calendarId:(NSString *)calendarId;
@@ -447,7 +470,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @end
 
 /**
- *  Deletes an entry on the user's calendar list.
+ *  Removes a calendar from the user's calendar list.
  *
  *  Method: calendar.calendarList.delete
  *
@@ -469,20 +492,20 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *  Upon successful completion, the callback's object and error parameters will
  *  be nil. This query does not fetch an object.
  *
- *  Deletes an entry on the user's calendar list.
+ *  Removes a calendar from the user's calendar list.
  *
  *  @param calendarId Calendar identifier. To retrieve calendar IDs call the
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_CalendarListDelete
+ *  @return GTLRCalendarQuery_CalendarListDelete
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId;
 
 @end
 
 /**
- *  Returns an entry on the user's calendar list.
+ *  Returns a calendar from the user's calendar list.
  *
  *  Method: calendar.calendarList.get
  *
@@ -504,20 +527,20 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 /**
  *  Fetches a @c GTLRCalendar_CalendarListEntry.
  *
- *  Returns an entry on the user's calendar list.
+ *  Returns a calendar from the user's calendar list.
  *
  *  @param calendarId Calendar identifier. To retrieve calendar IDs call the
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_CalendarListGet
+ *  @return GTLRCalendarQuery_CalendarListGet
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId;
 
 @end
 
 /**
- *  Adds an entry to the user's calendar list.
+ *  Inserts an existing calendar into the user's calendar list.
  *
  *  Method: calendar.calendarList.insert
  *
@@ -539,18 +562,18 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 /**
  *  Fetches a @c GTLRCalendar_CalendarListEntry.
  *
- *  Adds an entry to the user's calendar list.
+ *  Inserts an existing calendar into the user's calendar list.
  *
  *  @param object The @c GTLRCalendar_CalendarListEntry to include in the query.
  *
- *  @returns GTLRCalendarQuery_CalendarListInsert
+ *  @return GTLRCalendarQuery_CalendarListInsert
  */
 + (instancetype)queryWithObject:(GTLRCalendar_CalendarListEntry *)object;
 
 @end
 
 /**
- *  Returns entries on the user's calendar list.
+ *  Returns the calendars on the user's calendar list.
  *
  *  Method: calendar.calendarList.list
  *
@@ -618,9 +641,9 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 /**
  *  Fetches a @c GTLRCalendar_CalendarList.
  *
- *  Returns entries on the user's calendar list.
+ *  Returns the calendars on the user's calendar list.
  *
- *  @returns GTLRCalendarQuery_CalendarListList
+ *  @return GTLRCalendarQuery_CalendarListList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -631,8 +654,8 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @end
 
 /**
- *  Updates an entry on the user's calendar list. This method supports patch
- *  semantics.
+ *  Updates an existing calendar on the user's calendar list. This method
+ *  supports patch semantics.
  *
  *  Method: calendar.calendarList.patch
  *
@@ -661,15 +684,15 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 /**
  *  Fetches a @c GTLRCalendar_CalendarListEntry.
  *
- *  Updates an entry on the user's calendar list. This method supports patch
- *  semantics.
+ *  Updates an existing calendar on the user's calendar list. This method
+ *  supports patch semantics.
  *
  *  @param object The @c GTLRCalendar_CalendarListEntry to include in the query.
  *  @param calendarId Calendar identifier. To retrieve calendar IDs call the
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_CalendarListPatch
+ *  @return GTLRCalendarQuery_CalendarListPatch
  */
 + (instancetype)queryWithObject:(GTLRCalendar_CalendarListEntry *)object
                      calendarId:(NSString *)calendarId;
@@ -677,7 +700,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @end
 
 /**
- *  Updates an entry on the user's calendar list.
+ *  Updates an existing calendar on the user's calendar list.
  *
  *  Method: calendar.calendarList.update
  *
@@ -706,14 +729,14 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 /**
  *  Fetches a @c GTLRCalendar_CalendarListEntry.
  *
- *  Updates an entry on the user's calendar list.
+ *  Updates an existing calendar on the user's calendar list.
  *
  *  @param object The @c GTLRCalendar_CalendarListEntry to include in the query.
  *  @param calendarId Calendar identifier. To retrieve calendar IDs call the
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_CalendarListUpdate
+ *  @return GTLRCalendarQuery_CalendarListUpdate
  */
 + (instancetype)queryWithObject:(GTLRCalendar_CalendarListEntry *)object
                      calendarId:(NSString *)calendarId;
@@ -793,7 +816,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  @param object The @c GTLRCalendar_Channel to include in the query.
  *
- *  @returns GTLRCalendarQuery_CalendarListWatch
+ *  @return GTLRCalendarQuery_CalendarListWatch
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Channel *)object;
 
@@ -830,7 +853,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_CalendarsClear
+ *  @return GTLRCalendarQuery_CalendarsClear
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId;
 
@@ -867,7 +890,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_CalendarsDelete
+ *  @return GTLRCalendarQuery_CalendarsDelete
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId;
 
@@ -902,7 +925,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_CalendarsGet
+ *  @return GTLRCalendarQuery_CalendarsGet
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId;
 
@@ -927,7 +950,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  @param object The @c GTLRCalendar_Calendar to include in the query.
  *
- *  @returns GTLRCalendarQuery_CalendarsInsert
+ *  @return GTLRCalendarQuery_CalendarsInsert
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Calendar *)object;
 
@@ -962,7 +985,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_CalendarsPatch
+ *  @return GTLRCalendarQuery_CalendarsPatch
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Calendar *)object
                      calendarId:(NSString *)calendarId;
@@ -998,7 +1021,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_CalendarsUpdate
+ *  @return GTLRCalendarQuery_CalendarsUpdate
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Calendar *)object
                      calendarId:(NSString *)calendarId;
@@ -1012,7 +1035,10 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
+ *    @c kGTLRAuthScopeCalendarEventsReadonly
  *    @c kGTLRAuthScopeCalendarReadonly
+ *    @c kGTLRAuthScopeCalendarSettingsReadonly
  */
 @interface GTLRCalendarQuery_ChannelsStop : GTLRCalendarQuery
 // Previous library name was
@@ -1026,7 +1052,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  @param object The @c GTLRCalendar_Channel to include in the query.
  *
- *  @returns GTLRCalendarQuery_ChannelsStop
+ *  @return GTLRCalendarQuery_ChannelsStop
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Channel *)object;
 
@@ -1050,7 +1076,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Returns the color definitions for calendars and events.
  *
- *  @returns GTLRCalendarQuery_ColorsGet
+ *  @return GTLRCalendarQuery_ColorsGet
  */
 + (instancetype)query;
 
@@ -1063,6 +1089,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
  */
 @interface GTLRCalendarQuery_EventsDelete : GTLRCalendarQuery
 // Previous library name was
@@ -1079,10 +1106,26 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @property(nonatomic, copy, nullable) NSString *eventId;
 
 /**
- *  Whether to send notifications about the deletion of the event. Optional. The
- *  default is False.
+ *  Deprecated. Please use sendUpdates instead.
+ *  Whether to send notifications about the deletion of the event. Note that
+ *  some emails might still be sent even if you set the value to false. The
+ *  default is false.
  */
 @property(nonatomic, assign) BOOL sendNotifications;
+
+/**
+ *  Guests who should receive notifications about the deletion of the event.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCalendarSendUpdatesAll Notifications are sent to all guests.
+ *        (Value: "all")
+ *    @arg @c kGTLRCalendarSendUpdatesExternalOnly Notifications are sent to
+ *        non-Google Calendar guests only. (Value: "externalOnly")
+ *    @arg @c kGTLRCalendarSendUpdatesNone No notifications are sent. This value
+ *        should only be used for migration use cases (note that in most
+ *        migration cases the import method should be used). (Value: "none")
+ */
+@property(nonatomic, copy, nullable) NSString *sendUpdates;
 
 /**
  *  Upon successful completion, the callback's object and error parameters will
@@ -1095,7 +1138,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param eventId Event identifier.
  *
- *  @returns GTLRCalendarQuery_EventsDelete
+ *  @return GTLRCalendarQuery_EventsDelete
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId
                             eventId:(NSString *)eventId;
@@ -1109,6 +1152,8 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
+ *    @c kGTLRAuthScopeCalendarEventsReadonly
  *    @c kGTLRAuthScopeCalendarReadonly
  */
 @interface GTLRCalendarQuery_EventsGet : GTLRCalendarQuery
@@ -1157,7 +1202,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param eventId Event identifier.
  *
- *  @returns GTLRCalendarQuery_EventsGet
+ *  @return GTLRCalendarQuery_EventsGet
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId
                             eventId:(NSString *)eventId;
@@ -1172,6 +1217,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
  */
 @interface GTLRCalendarQuery_EventsImport : GTLRCalendarQuery
 // Previous library name was
@@ -1183,6 +1229,17 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *  in user, use the "primary" keyword.
  */
 @property(nonatomic, copy, nullable) NSString *calendarId;
+
+/**
+ *  Version number of conference data supported by the API client. Version 0
+ *  assumes no conference data support and ignores conference data in the
+ *  event's body. Version 1 enables support for copying of ConferenceData as
+ *  well as for creating new conferences using the createRequest field of
+ *  conferenceData. The default is 0.
+ *
+ *  @note The documented range is 0..1.
+ */
+@property(nonatomic, assign) NSInteger conferenceDataVersion;
 
 /**
  *  Whether API client performing operation supports event attachments.
@@ -1201,7 +1258,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_EventsImport
+ *  @return GTLRCalendarQuery_EventsImport
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Event *)object
                      calendarId:(NSString *)calendarId;
@@ -1215,6 +1272,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
  */
 @interface GTLRCalendarQuery_EventsInsert : GTLRCalendarQuery
 // Previous library name was
@@ -1228,6 +1286,17 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @property(nonatomic, copy, nullable) NSString *calendarId;
 
 /**
+ *  Version number of conference data supported by the API client. Version 0
+ *  assumes no conference data support and ignores conference data in the
+ *  event's body. Version 1 enables support for copying of ConferenceData as
+ *  well as for creating new conferences using the createRequest field of
+ *  conferenceData. The default is 0.
+ *
+ *  @note The documented range is 0..1.
+ */
+@property(nonatomic, assign) NSInteger conferenceDataVersion;
+
+/**
  *  The maximum number of attendees to include in the response. If there are
  *  more than the specified number of attendees, only the participant is
  *  returned. Optional.
@@ -1235,10 +1304,27 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @property(nonatomic, assign) NSInteger maxAttendees;
 
 /**
- *  Whether to send notifications about the creation of the new event. Optional.
- *  The default is False.
+ *  Deprecated. Please use sendUpdates instead.
+ *  Whether to send notifications about the creation of the new event. Note that
+ *  some emails might still be sent even if you set the value to false. The
+ *  default is false.
  */
 @property(nonatomic, assign) BOOL sendNotifications;
+
+/**
+ *  Whether to send notifications about the creation of the new event. Note that
+ *  some emails might still be sent. The default is false.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCalendarSendUpdatesAll Notifications are sent to all guests.
+ *        (Value: "all")
+ *    @arg @c kGTLRCalendarSendUpdatesExternalOnly Notifications are sent to
+ *        non-Google Calendar guests only. (Value: "externalOnly")
+ *    @arg @c kGTLRCalendarSendUpdatesNone No notifications are sent. This value
+ *        should only be used for migration use cases (note that in most
+ *        migration cases the import method should be used). (Value: "none")
+ */
+@property(nonatomic, copy, nullable) NSString *sendUpdates;
 
 /**
  *  Whether API client performing operation supports event attachments.
@@ -1256,7 +1342,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_EventsInsert
+ *  @return GTLRCalendarQuery_EventsInsert
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Event *)object
                      calendarId:(NSString *)calendarId;
@@ -1270,6 +1356,8 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
+ *    @c kGTLRAuthScopeCalendarEventsReadonly
  *    @c kGTLRAuthScopeCalendarReadonly
  */
 @interface GTLRCalendarQuery_EventsInstances : GTLRCalendarQuery
@@ -1351,7 +1439,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param eventId Recurring event identifier.
  *
- *  @returns GTLRCalendarQuery_EventsInstances
+ *  @return GTLRCalendarQuery_EventsInstances
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -1369,6 +1457,8 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
+ *    @c kGTLRAuthScopeCalendarEventsReadonly
  *    @c kGTLRAuthScopeCalendarReadonly
  */
 @interface GTLRCalendarQuery_EventsList : GTLRCalendarQuery
@@ -1539,7 +1629,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_EventsList
+ *  @return GTLRCalendarQuery_EventsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -1556,6 +1646,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
  */
 @interface GTLRCalendarQuery_EventsMove : GTLRCalendarQuery
 // Previous library name was
@@ -1576,10 +1667,27 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @property(nonatomic, copy, nullable) NSString *eventId;
 
 /**
+ *  Deprecated. Please use sendUpdates instead.
  *  Whether to send notifications about the change of the event's organizer.
- *  Optional. The default is False.
+ *  Note that some emails might still be sent even if you set the value to
+ *  false. The default is false.
  */
 @property(nonatomic, assign) BOOL sendNotifications;
+
+/**
+ *  Guests who should receive notifications about the change of the event's
+ *  organizer.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCalendarSendUpdatesAll Notifications are sent to all guests.
+ *        (Value: "all")
+ *    @arg @c kGTLRCalendarSendUpdatesExternalOnly Notifications are sent to
+ *        non-Google Calendar guests only. (Value: "externalOnly")
+ *    @arg @c kGTLRCalendarSendUpdatesNone No notifications are sent. This value
+ *        should only be used for migration use cases (note that in most
+ *        migration cases the import method should be used). (Value: "none")
+ */
+@property(nonatomic, copy, nullable) NSString *sendUpdates;
 
 /**
  *  Fetches a @c GTLRCalendar_Event.
@@ -1592,7 +1700,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *  @param destination Calendar identifier of the target calendar where the
  *    event is to be moved to.
  *
- *  @returns GTLRCalendarQuery_EventsMove
+ *  @return GTLRCalendarQuery_EventsMove
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId
                             eventId:(NSString *)eventId
@@ -1607,6 +1715,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
  */
 @interface GTLRCalendarQuery_EventsPatch : GTLRCalendarQuery
 // Previous library name was
@@ -1628,6 +1737,17 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  */
 @property(nonatomic, copy, nullable) NSString *calendarId;
 
+/**
+ *  Version number of conference data supported by the API client. Version 0
+ *  assumes no conference data support and ignores conference data in the
+ *  event's body. Version 1 enables support for copying of ConferenceData as
+ *  well as for creating new conferences using the createRequest field of
+ *  conferenceData. The default is 0.
+ *
+ *  @note The documented range is 0..1.
+ */
+@property(nonatomic, assign) NSInteger conferenceDataVersion;
+
 /** Event identifier. */
 @property(nonatomic, copy, nullable) NSString *eventId;
 
@@ -1639,10 +1759,27 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @property(nonatomic, assign) NSInteger maxAttendees;
 
 /**
- *  Whether to send notifications about the event update (e.g. attendee's
- *  responses, title changes, etc.). Optional. The default is False.
+ *  Deprecated. Please use sendUpdates instead.
+ *  Whether to send notifications about the event update (for example,
+ *  description changes, etc.). Note that some emails might still be sent even
+ *  if you set the value to false. The default is false.
  */
 @property(nonatomic, assign) BOOL sendNotifications;
+
+/**
+ *  Guests who should receive notifications about the event update (for example,
+ *  title changes, etc.).
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCalendarSendUpdatesAll Notifications are sent to all guests.
+ *        (Value: "all")
+ *    @arg @c kGTLRCalendarSendUpdatesExternalOnly Notifications are sent to
+ *        non-Google Calendar guests only. (Value: "externalOnly")
+ *    @arg @c kGTLRCalendarSendUpdatesNone No notifications are sent. This value
+ *        should only be used for migration use cases (note that in most
+ *        migration cases the import method should be used). (Value: "none")
+ */
+@property(nonatomic, copy, nullable) NSString *sendUpdates;
 
 /**
  *  Whether API client performing operation supports event attachments.
@@ -1661,7 +1798,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param eventId Event identifier.
  *
- *  @returns GTLRCalendarQuery_EventsPatch
+ *  @return GTLRCalendarQuery_EventsPatch
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Event *)object
                      calendarId:(NSString *)calendarId
@@ -1676,6 +1813,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
  */
 @interface GTLRCalendarQuery_EventsQuickAdd : GTLRCalendarQuery
 // Previous library name was
@@ -1689,10 +1827,26 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @property(nonatomic, copy, nullable) NSString *calendarId;
 
 /**
- *  Whether to send notifications about the creation of the event. Optional. The
- *  default is False.
+ *  Deprecated. Please use sendUpdates instead.
+ *  Whether to send notifications about the creation of the event. Note that
+ *  some emails might still be sent even if you set the value to false. The
+ *  default is false.
  */
 @property(nonatomic, assign) BOOL sendNotifications;
+
+/**
+ *  Guests who should receive notifications about the creation of the new event.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCalendarSendUpdatesAll Notifications are sent to all guests.
+ *        (Value: "all")
+ *    @arg @c kGTLRCalendarSendUpdatesExternalOnly Notifications are sent to
+ *        non-Google Calendar guests only. (Value: "externalOnly")
+ *    @arg @c kGTLRCalendarSendUpdatesNone No notifications are sent. This value
+ *        should only be used for migration use cases (note that in most
+ *        migration cases the import method should be used). (Value: "none")
+ */
+@property(nonatomic, copy, nullable) NSString *sendUpdates;
 
 /** The text describing the event to be created. */
 @property(nonatomic, copy, nullable) NSString *text;
@@ -1707,7 +1861,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param text The text describing the event to be created.
  *
- *  @returns GTLRCalendarQuery_EventsQuickAdd
+ *  @return GTLRCalendarQuery_EventsQuickAdd
  */
 + (instancetype)queryWithCalendarId:(NSString *)calendarId
                                text:(NSString *)text;
@@ -1721,6 +1875,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
  */
 @interface GTLRCalendarQuery_EventsUpdate : GTLRCalendarQuery
 // Previous library name was
@@ -1742,6 +1897,17 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  */
 @property(nonatomic, copy, nullable) NSString *calendarId;
 
+/**
+ *  Version number of conference data supported by the API client. Version 0
+ *  assumes no conference data support and ignores conference data in the
+ *  event's body. Version 1 enables support for copying of ConferenceData as
+ *  well as for creating new conferences using the createRequest field of
+ *  conferenceData. The default is 0.
+ *
+ *  @note The documented range is 0..1.
+ */
+@property(nonatomic, assign) NSInteger conferenceDataVersion;
+
 /** Event identifier. */
 @property(nonatomic, copy, nullable) NSString *eventId;
 
@@ -1753,10 +1919,27 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
 @property(nonatomic, assign) NSInteger maxAttendees;
 
 /**
- *  Whether to send notifications about the event update (e.g. attendee's
- *  responses, title changes, etc.). Optional. The default is False.
+ *  Deprecated. Please use sendUpdates instead.
+ *  Whether to send notifications about the event update (for example,
+ *  description changes, etc.). Note that some emails might still be sent even
+ *  if you set the value to false. The default is false.
  */
 @property(nonatomic, assign) BOOL sendNotifications;
+
+/**
+ *  Guests who should receive notifications about the event update (for example,
+ *  title changes, etc.).
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCalendarSendUpdatesAll Notifications are sent to all guests.
+ *        (Value: "all")
+ *    @arg @c kGTLRCalendarSendUpdatesExternalOnly Notifications are sent to
+ *        non-Google Calendar guests only. (Value: "externalOnly")
+ *    @arg @c kGTLRCalendarSendUpdatesNone No notifications are sent. This value
+ *        should only be used for migration use cases (note that in most
+ *        migration cases the import method should be used). (Value: "none")
+ */
+@property(nonatomic, copy, nullable) NSString *sendUpdates;
 
 /**
  *  Whether API client performing operation supports event attachments.
@@ -1775,7 +1958,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    the currently logged in user, use the "primary" keyword.
  *  @param eventId Event identifier.
  *
- *  @returns GTLRCalendarQuery_EventsUpdate
+ *  @return GTLRCalendarQuery_EventsUpdate
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Event *)object
                      calendarId:(NSString *)calendarId
@@ -1790,6 +1973,8 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
+ *    @c kGTLRAuthScopeCalendarEvents
+ *    @c kGTLRAuthScopeCalendarEventsReadonly
  *    @c kGTLRAuthScopeCalendarReadonly
  */
 @interface GTLRCalendarQuery_EventsWatch : GTLRCalendarQuery
@@ -1961,7 +2146,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *    calendarList.list method. If you want to access the primary calendar of
  *    the currently logged in user, use the "primary" keyword.
  *
- *  @returns GTLRCalendarQuery_EventsWatch
+ *  @return GTLRCalendarQuery_EventsWatch
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Channel *)object
                      calendarId:(NSString *)calendarId;
@@ -1988,7 +2173,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  @param object The @c GTLRCalendar_FreeBusyRequest to include in the query.
  *
- *  @returns GTLRCalendarQuery_FreebusyQuery
+ *  @return GTLRCalendarQuery_FreebusyQuery
  */
 + (instancetype)queryWithObject:(GTLRCalendar_FreeBusyRequest *)object;
 
@@ -2002,6 +2187,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
  *    @c kGTLRAuthScopeCalendarReadonly
+ *    @c kGTLRAuthScopeCalendarSettingsReadonly
  */
 @interface GTLRCalendarQuery_SettingsGet : GTLRCalendarQuery
 // Previous library name was
@@ -2017,7 +2203,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  @param setting The id of the user setting.
  *
- *  @returns GTLRCalendarQuery_SettingsGet
+ *  @return GTLRCalendarQuery_SettingsGet
  */
 + (instancetype)queryWithSetting:(NSString *)setting;
 
@@ -2031,6 +2217,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
  *    @c kGTLRAuthScopeCalendarReadonly
+ *    @c kGTLRAuthScopeCalendarSettingsReadonly
  */
 @interface GTLRCalendarQuery_SettingsList : GTLRCalendarQuery
 // Previous library name was
@@ -2063,7 +2250,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  Returns all user settings for the authenticated user.
  *
- *  @returns GTLRCalendarQuery_SettingsList
+ *  @return GTLRCalendarQuery_SettingsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -2081,6 +2268,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *  Authorization scope(s):
  *    @c kGTLRAuthScopeCalendar
  *    @c kGTLRAuthScopeCalendarReadonly
+ *    @c kGTLRAuthScopeCalendarSettingsReadonly
  */
 @interface GTLRCalendarQuery_SettingsWatch : GTLRCalendarQuery
 // Previous library name was
@@ -2115,7 +2303,7 @@ GTLR_EXTERN NSString * const kGTLRCalendarOrderByUpdated;
  *
  *  @param object The @c GTLRCalendar_Channel to include in the query.
  *
- *  @returns GTLRCalendarQuery_SettingsWatch
+ *  @return GTLRCalendarQuery_SettingsWatch
  */
 + (instancetype)queryWithObject:(GTLRCalendar_Channel *)object;
 

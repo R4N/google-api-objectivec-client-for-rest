@@ -15,6 +15,49 @@
 // ----------------------------------------------------------------------------
 // Constants
 
+// GTLRMonitoring_Aggregation.crossSeriesReducer
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceCount = @"REDUCE_COUNT";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceCountFalse = @"REDUCE_COUNT_FALSE";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceCountTrue = @"REDUCE_COUNT_TRUE";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceFractionTrue = @"REDUCE_FRACTION_TRUE";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceMax = @"REDUCE_MAX";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceMean = @"REDUCE_MEAN";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceMin = @"REDUCE_MIN";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceNone = @"REDUCE_NONE";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReducePercentile05 = @"REDUCE_PERCENTILE_05";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReducePercentile50 = @"REDUCE_PERCENTILE_50";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReducePercentile95 = @"REDUCE_PERCENTILE_95";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReducePercentile99 = @"REDUCE_PERCENTILE_99";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceStddev = @"REDUCE_STDDEV";
+NSString * const kGTLRMonitoring_Aggregation_CrossSeriesReducer_ReduceSum = @"REDUCE_SUM";
+
+// GTLRMonitoring_Aggregation.perSeriesAligner
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignCount = @"ALIGN_COUNT";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignCountFalse = @"ALIGN_COUNT_FALSE";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignCountTrue = @"ALIGN_COUNT_TRUE";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignDelta = @"ALIGN_DELTA";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignFractionTrue = @"ALIGN_FRACTION_TRUE";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignInterpolate = @"ALIGN_INTERPOLATE";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignMax = @"ALIGN_MAX";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignMean = @"ALIGN_MEAN";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignMin = @"ALIGN_MIN";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignNextOlder = @"ALIGN_NEXT_OLDER";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignNone = @"ALIGN_NONE";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignPercentChange = @"ALIGN_PERCENT_CHANGE";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignPercentile05 = @"ALIGN_PERCENTILE_05";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignPercentile50 = @"ALIGN_PERCENTILE_50";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignPercentile95 = @"ALIGN_PERCENTILE_95";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignPercentile99 = @"ALIGN_PERCENTILE_99";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignRate = @"ALIGN_RATE";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignStddev = @"ALIGN_STDDEV";
+NSString * const kGTLRMonitoring_Aggregation_PerSeriesAligner_AlignSum = @"ALIGN_SUM";
+
+// GTLRMonitoring_AlertPolicy.combiner
+NSString * const kGTLRMonitoring_AlertPolicy_Combiner_And      = @"AND";
+NSString * const kGTLRMonitoring_AlertPolicy_Combiner_AndWithMatchingResource = @"AND_WITH_MATCHING_RESOURCE";
+NSString * const kGTLRMonitoring_AlertPolicy_Combiner_CombineUnspecified = @"COMBINE_UNSPECIFIED";
+NSString * const kGTLRMonitoring_AlertPolicy_Combiner_Or       = @"OR";
+
 // GTLRMonitoring_CollectdValue.dataSourceType
 NSString * const kGTLRMonitoring_CollectdValue_DataSourceType_Absolute = @"ABSOLUTE";
 NSString * const kGTLRMonitoring_CollectdValue_DataSourceType_Counter = @"COUNTER";
@@ -69,6 +112,33 @@ NSString * const kGTLRMonitoring_MetricDescriptor_ValueType_Money = @"MONEY";
 NSString * const kGTLRMonitoring_MetricDescriptor_ValueType_String = @"STRING";
 NSString * const kGTLRMonitoring_MetricDescriptor_ValueType_ValueTypeUnspecified = @"VALUE_TYPE_UNSPECIFIED";
 
+// GTLRMonitoring_MetricDescriptorMetadata.launchStage
+NSString * const kGTLRMonitoring_MetricDescriptorMetadata_LaunchStage_Alpha = @"ALPHA";
+NSString * const kGTLRMonitoring_MetricDescriptorMetadata_LaunchStage_Beta = @"BETA";
+NSString * const kGTLRMonitoring_MetricDescriptorMetadata_LaunchStage_Deprecated = @"DEPRECATED";
+NSString * const kGTLRMonitoring_MetricDescriptorMetadata_LaunchStage_EarlyAccess = @"EARLY_ACCESS";
+NSString * const kGTLRMonitoring_MetricDescriptorMetadata_LaunchStage_Ga = @"GA";
+NSString * const kGTLRMonitoring_MetricDescriptorMetadata_LaunchStage_LaunchStageUnspecified = @"LAUNCH_STAGE_UNSPECIFIED";
+
+// GTLRMonitoring_MetricThreshold.comparison
+NSString * const kGTLRMonitoring_MetricThreshold_Comparison_ComparisonEq = @"COMPARISON_EQ";
+NSString * const kGTLRMonitoring_MetricThreshold_Comparison_ComparisonGe = @"COMPARISON_GE";
+NSString * const kGTLRMonitoring_MetricThreshold_Comparison_ComparisonGt = @"COMPARISON_GT";
+NSString * const kGTLRMonitoring_MetricThreshold_Comparison_ComparisonLe = @"COMPARISON_LE";
+NSString * const kGTLRMonitoring_MetricThreshold_Comparison_ComparisonLt = @"COMPARISON_LT";
+NSString * const kGTLRMonitoring_MetricThreshold_Comparison_ComparisonNe = @"COMPARISON_NE";
+NSString * const kGTLRMonitoring_MetricThreshold_Comparison_ComparisonUnspecified = @"COMPARISON_UNSPECIFIED";
+
+// GTLRMonitoring_NotificationChannel.verificationStatus
+NSString * const kGTLRMonitoring_NotificationChannel_VerificationStatus_Unverified = @"UNVERIFIED";
+NSString * const kGTLRMonitoring_NotificationChannel_VerificationStatus_VerificationStatusUnspecified = @"VERIFICATION_STATUS_UNSPECIFIED";
+NSString * const kGTLRMonitoring_NotificationChannel_VerificationStatus_Verified = @"VERIFIED";
+
+// GTLRMonitoring_NotificationChannelDescriptor.supportedTiers
+NSString * const kGTLRMonitoring_NotificationChannelDescriptor_SupportedTiers_ServiceTierBasic = @"SERVICE_TIER_BASIC";
+NSString * const kGTLRMonitoring_NotificationChannelDescriptor_SupportedTiers_ServiceTierPremium = @"SERVICE_TIER_PREMIUM";
+NSString * const kGTLRMonitoring_NotificationChannelDescriptor_SupportedTiers_ServiceTierUnspecified = @"SERVICE_TIER_UNSPECIFIED";
+
 // GTLRMonitoring_ResourceGroup.resourceType
 NSString * const kGTLRMonitoring_ResourceGroup_ResourceType_AwsElbLoadBalancer = @"AWS_ELB_LOAD_BALANCER";
 NSString * const kGTLRMonitoring_ResourceGroup_ResourceType_Instance = @"INSTANCE";
@@ -106,6 +176,58 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Europe   = @"EUROPE";
 NSString * const kGTLRMonitoring_UptimeCheckIp_Region_RegionUnspecified = @"REGION_UNSPECIFIED";
 NSString * const kGTLRMonitoring_UptimeCheckIp_Region_SouthAmerica = @"SOUTH_AMERICA";
 NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_Aggregation
+//
+
+@implementation GTLRMonitoring_Aggregation
+@dynamic alignmentPeriod, crossSeriesReducer, groupByFields, perSeriesAligner;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"groupByFields" : [NSString class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_AlertPolicy
+//
+
+@implementation GTLRMonitoring_AlertPolicy
+@dynamic combiner, conditions, creationRecord, displayName, documentation,
+         enabled, mutationRecord, name, notificationChannels, userLabels;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"conditions" : [GTLRMonitoring_Condition class],
+    @"notificationChannels" : [NSString class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_AlertPolicy_UserLabels
+//
+
+@implementation GTLRMonitoring_AlertPolicy_UserLabels
+
++ (Class)classForAdditionalProperties {
+  return [NSString class];
+}
+
+@end
+
 
 // ----------------------------------------------------------------------------
 //
@@ -200,6 +322,16 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRMonitoring_Condition
+//
+
+@implementation GTLRMonitoring_Condition
+@dynamic conditionAbsent, conditionThreshold, displayName, name;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRMonitoring_ContentMatcher
 //
 
@@ -268,13 +400,49 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 //
 
 @implementation GTLRMonitoring_Distribution
-@dynamic bucketCounts, bucketOptions, count, mean, range, sumOfSquaredDeviation;
+@dynamic bucketCounts, bucketOptions, count, exemplars, mean, range,
+         sumOfSquaredDeviation;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
-    @"bucketCounts" : [NSNumber class]
+    @"bucketCounts" : [NSNumber class],
+    @"exemplars" : [GTLRMonitoring_Exemplar class]
   };
   return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_Documentation
+//
+
+@implementation GTLRMonitoring_Documentation
+@dynamic content, mimeType;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_DroppedLabels
+//
+
+@implementation GTLRMonitoring_DroppedLabels
+@dynamic label;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_DroppedLabels_Label
+//
+
+@implementation GTLRMonitoring_DroppedLabels_Label
+
++ (Class)classForAdditionalProperties {
+  return [NSString class];
 }
 
 @end
@@ -286,6 +454,38 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 //
 
 @implementation GTLRMonitoring_Empty
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_Exemplar
+//
+
+@implementation GTLRMonitoring_Exemplar
+@dynamic attachments, timestamp, value;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"attachments" : [GTLRMonitoring_Exemplar_Attachments_Item class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_Exemplar_Attachments_Item
+//
+
+@implementation GTLRMonitoring_Exemplar_Attachments_Item
+
++ (Class)classForAdditionalProperties {
+  return [NSObject class];
+}
+
 @end
 
 
@@ -344,6 +544,26 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRMonitoring_GetNotificationChannelVerificationCodeRequest
+//
+
+@implementation GTLRMonitoring_GetNotificationChannelVerificationCodeRequest
+@dynamic expireTime;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_GetNotificationChannelVerificationCodeResponse
+//
+
+@implementation GTLRMonitoring_GetNotificationChannelVerificationCodeResponse
+@dynamic code, expireTime;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRMonitoring_Group
 //
 
@@ -382,7 +602,7 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 //
 
 @implementation GTLRMonitoring_InternalChecker
-@dynamic checkerId, displayName, gcpZone, network, projectId;
+@dynamic displayName, gcpZone, name, network, peerProjectId;
 @end
 
 
@@ -408,6 +628,28 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 
 @implementation GTLRMonitoring_Linear
 @dynamic numFiniteBuckets, offset, width;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_ListAlertPoliciesResponse
+//
+
+@implementation GTLRMonitoring_ListAlertPoliciesResponse
+@dynamic alertPolicies, nextPageToken;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"alertPolicies" : [GTLRMonitoring_AlertPolicy class]
+  };
+  return map;
+}
+
++ (NSString *)collectionItemsKey {
+  return @"alertPolicies";
+}
+
 @end
 
 
@@ -501,21 +743,62 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 
 // ----------------------------------------------------------------------------
 //
-//   GTLRMonitoring_ListTimeSeriesResponse
+//   GTLRMonitoring_ListNotificationChannelDescriptorsResponse
 //
 
-@implementation GTLRMonitoring_ListTimeSeriesResponse
-@dynamic nextPageToken, timeSeries;
+@implementation GTLRMonitoring_ListNotificationChannelDescriptorsResponse
+@dynamic channelDescriptors, nextPageToken;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
-    @"timeSeries" : [GTLRMonitoring_TimeSeries class]
+    @"channelDescriptors" : [GTLRMonitoring_NotificationChannelDescriptor class]
   };
   return map;
 }
 
 + (NSString *)collectionItemsKey {
-  return @"timeSeries";
+  return @"channelDescriptors";
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_ListNotificationChannelsResponse
+//
+
+@implementation GTLRMonitoring_ListNotificationChannelsResponse
+@dynamic nextPageToken, notificationChannels;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"notificationChannels" : [GTLRMonitoring_NotificationChannel class]
+  };
+  return map;
+}
+
++ (NSString *)collectionItemsKey {
+  return @"notificationChannels";
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_ListTimeSeriesResponse
+//
+
+@implementation GTLRMonitoring_ListTimeSeriesResponse
+@dynamic executionErrors, nextPageToken, timeSeries;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"executionErrors" : [GTLRMonitoring_Status class],
+    @"timeSeries" : [GTLRMonitoring_TimeSeries class]
+  };
+  return map;
 }
 
 @end
@@ -527,7 +810,7 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 //
 
 @implementation GTLRMonitoring_ListUptimeCheckConfigsResponse
-@dynamic nextPageToken, uptimeCheckConfigs;
+@dynamic nextPageToken, totalSize, uptimeCheckConfigs;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -591,12 +874,30 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRMonitoring_MetricAbsence
+//
+
+@implementation GTLRMonitoring_MetricAbsence
+@dynamic aggregations, duration, filter, trigger;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"aggregations" : [GTLRMonitoring_Aggregation class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRMonitoring_MetricDescriptor
 //
 
 @implementation GTLRMonitoring_MetricDescriptor
-@dynamic descriptionProperty, displayName, labels, metricKind, name, type, unit,
-         valueType;
+@dynamic descriptionProperty, displayName, labels, metadata, metricKind, name,
+         type, unit, valueType;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"descriptionProperty" : @"description" };
@@ -605,6 +906,36 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
     @"labels" : [GTLRMonitoring_LabelDescriptor class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_MetricDescriptorMetadata
+//
+
+@implementation GTLRMonitoring_MetricDescriptorMetadata
+@dynamic ingestDelay, launchStage, samplePeriod;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_MetricThreshold
+//
+
+@implementation GTLRMonitoring_MetricThreshold
+@dynamic aggregations, comparison, denominatorAggregations, denominatorFilter,
+         duration, filter, thresholdValue, trigger;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"aggregations" : [GTLRMonitoring_Aggregation class],
+    @"denominatorAggregations" : [GTLRMonitoring_Aggregation class]
   };
   return map;
 }
@@ -651,6 +982,121 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
     @"labels" : [GTLRMonitoring_LabelDescriptor class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_MonitoredResourceMetadata
+//
+
+@implementation GTLRMonitoring_MonitoredResourceMetadata
+@dynamic systemLabels, userLabels;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_MonitoredResourceMetadata_SystemLabels
+//
+
+@implementation GTLRMonitoring_MonitoredResourceMetadata_SystemLabels
+
++ (Class)classForAdditionalProperties {
+  return [NSObject class];
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_MonitoredResourceMetadata_UserLabels
+//
+
+@implementation GTLRMonitoring_MonitoredResourceMetadata_UserLabels
+
++ (Class)classForAdditionalProperties {
+  return [NSString class];
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_MutationRecord
+//
+
+@implementation GTLRMonitoring_MutationRecord
+@dynamic mutatedBy, mutateTime;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_NotificationChannel
+//
+
+@implementation GTLRMonitoring_NotificationChannel
+@dynamic descriptionProperty, displayName, enabled, labels, name, type,
+         userLabels, verificationStatus;
+
++ (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
+  return @{ @"descriptionProperty" : @"description" };
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_NotificationChannel_Labels
+//
+
+@implementation GTLRMonitoring_NotificationChannel_Labels
+
++ (Class)classForAdditionalProperties {
+  return [NSString class];
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_NotificationChannel_UserLabels
+//
+
+@implementation GTLRMonitoring_NotificationChannel_UserLabels
+
++ (Class)classForAdditionalProperties {
+  return [NSString class];
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_NotificationChannelDescriptor
+//
+
+@implementation GTLRMonitoring_NotificationChannelDescriptor
+@dynamic descriptionProperty, displayName, labels, name, supportedTiers, type;
+
++ (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
+  return @{ @"descriptionProperty" : @"description" };
+}
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"labels" : [GTLRMonitoring_LabelDescriptor class],
+    @"supportedTiers" : [NSString class]
   };
   return map;
 }
@@ -714,11 +1160,30 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRMonitoring_SendNotificationChannelVerificationCodeRequest
+//
+
+@implementation GTLRMonitoring_SendNotificationChannelVerificationCodeRequest
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRMonitoring_SourceContext
 //
 
 @implementation GTLRMonitoring_SourceContext
 @dynamic fileName;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_SpanContext
+//
+
+@implementation GTLRMonitoring_SpanContext
+@dynamic spanName;
 @end
 
 
@@ -780,7 +1245,7 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 //
 
 @implementation GTLRMonitoring_TimeSeries
-@dynamic metric, metricKind, points, resource, valueType;
+@dynamic metadata, metric, metricKind, points, resource, valueType;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -789,6 +1254,16 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
   return map;
 }
 
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_Trigger
+//
+
+@implementation GTLRMonitoring_Trigger
+@dynamic count, percent;
 @end
 
 
@@ -828,7 +1303,7 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 //
 
 @implementation GTLRMonitoring_UptimeCheckConfig
-@dynamic contentMatchers, displayName, httpCheck, internalCheckers,
+@dynamic contentMatchers, displayName, httpCheck, internalCheckers, isInternal,
          monitoredResource, name, period, resourceGroup, selectedRegions,
          tcpCheck, timeout;
 
@@ -851,4 +1326,14 @@ NSString * const kGTLRMonitoring_UptimeCheckIp_Region_Usa      = @"USA";
 
 @implementation GTLRMonitoring_UptimeCheckIp
 @dynamic ipAddress, location, region;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRMonitoring_VerifyNotificationChannelRequest
+//
+
+@implementation GTLRMonitoring_VerifyNotificationChannelRequest
+@dynamic code;
 @end

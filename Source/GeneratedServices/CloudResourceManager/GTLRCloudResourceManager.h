@@ -2,10 +2,10 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Resource Manager API (cloudresourcemanager/v1)
+//   Cloud Resource Manager API (cloudresourcemanager/v2)
 // Description:
-//   The Google Cloud Resource Manager API provides methods for creating,
-//   reading, and updating project metadata.
+//   Creates, reads, and updates metadata for Google Cloud Platform resource
+//   containers.
 // Documentation:
 //   https://cloud.google.com/resource-manager
 

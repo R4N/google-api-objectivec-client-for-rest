@@ -4,8 +4,7 @@
 // API:
 //   Service Consumer Management API (serviceconsumermanagement/v1)
 // Description:
-//   Provides management methods for configuring service producer resources on
-//   Google Cloud.
+//   Manages the service consumers of a Service Infrastructure service.
 // Documentation:
 //   https://cloud.google.com/service-consumer-management/docs/overview
 
@@ -23,7 +22,6 @@
 @class GTLRServiceConsumerManagement_Authentication;
 @class GTLRServiceConsumerManagement_AuthenticationRule;
 @class GTLRServiceConsumerManagement_AuthorizationConfig;
-@class GTLRServiceConsumerManagement_AuthorizationRule;
 @class GTLRServiceConsumerManagement_AuthProvider;
 @class GTLRServiceConsumerManagement_AuthRequirement;
 @class GTLRServiceConsumerManagement_Backend;
@@ -34,7 +32,6 @@
 @class GTLRServiceConsumerManagement_Context;
 @class GTLRServiceConsumerManagement_ContextRule;
 @class GTLRServiceConsumerManagement_Control;
-@class GTLRServiceConsumerManagement_CustomAuthRequirements;
 @class GTLRServiceConsumerManagement_CustomError;
 @class GTLRServiceConsumerManagement_CustomErrorRule;
 @class GTLRServiceConsumerManagement_CustomHttpPattern;
@@ -51,10 +48,9 @@
 @class GTLRServiceConsumerManagement_LogDescriptor;
 @class GTLRServiceConsumerManagement_Logging;
 @class GTLRServiceConsumerManagement_LoggingDestination;
-@class GTLRServiceConsumerManagement_MediaDownload;
-@class GTLRServiceConsumerManagement_MediaUpload;
 @class GTLRServiceConsumerManagement_Method;
 @class GTLRServiceConsumerManagement_MetricDescriptor;
+@class GTLRServiceConsumerManagement_MetricDescriptorMetadata;
 @class GTLRServiceConsumerManagement_MetricRule;
 @class GTLRServiceConsumerManagement_MetricRule_MetricCosts;
 @class GTLRServiceConsumerManagement_Mixin;
@@ -89,8 +85,6 @@
 @class GTLRServiceConsumerManagement_Type;
 @class GTLRServiceConsumerManagement_Usage;
 @class GTLRServiceConsumerManagement_UsageRule;
-@class GTLRServiceConsumerManagement_Visibility;
-@class GTLRServiceConsumerManagement_VisibilityRule;
 
 // Generated comments include content from the discovery document; avoid them
 // causing warnings since clang's checks are some what arbitrary.
@@ -399,6 +393,67 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_MetricDescriptor_Val
 GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_MetricDescriptor_ValueType_ValueTypeUnspecified;
 
 // ----------------------------------------------------------------------------
+// GTLRServiceConsumerManagement_MetricDescriptorMetadata.launchStage
+
+/**
+ *  Alpha is a limited availability test for releases before they are cleared
+ *  for widespread use. By Alpha, all significant design issues are resolved
+ *  and we are in the process of verifying functionality. Alpha customers
+ *  need to apply for access, agree to applicable terms, and have their
+ *  projects whitelisted. Alpha releases don’t have to be feature complete,
+ *  no SLAs are provided, and there are no technical support obligations, but
+ *  they will be far enough along that customers can actually use them in
+ *  test environments or for limited-use tests -- just like they would in
+ *  normal production cases.
+ *
+ *  Value: "ALPHA"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Alpha;
+/**
+ *  Beta is the point at which we are ready to open a release for any
+ *  customer to use. There are no SLA or technical support obligations in a
+ *  Beta release. Products will be complete from a feature perspective, but
+ *  may have some open outstanding issues. Beta releases are suitable for
+ *  limited production use cases.
+ *
+ *  Value: "BETA"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Beta;
+/**
+ *  Deprecated features are scheduled to be shut down and removed. For more
+ *  information, see the “Deprecation Policy” section of our [Terms of
+ *  Service](https://cloud.google.com/terms/)
+ *  and the [Google Cloud Platform Subject to the Deprecation
+ *  Policy](https://cloud.google.com/terms/deprecation) documentation.
+ *
+ *  Value: "DEPRECATED"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Deprecated;
+/**
+ *  Early Access features are limited to a closed group of testers. To use
+ *  these features, you must sign up in advance and sign a Trusted Tester
+ *  agreement (which includes confidentiality provisions). These features may
+ *  be unstable, changed in backward-incompatible ways, and are not
+ *  guaranteed to be released.
+ *
+ *  Value: "EARLY_ACCESS"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_EarlyAccess;
+/**
+ *  GA features are open to all developers and are considered stable and
+ *  fully qualified for production use.
+ *
+ *  Value: "GA"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Ga;
+/**
+ *  Do not use this default value.
+ *
+ *  Value: "LAUNCH_STAGE_UNSPECIFIED"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_LaunchStageUnspecified;
+
+// ----------------------------------------------------------------------------
 // GTLRServiceConsumerManagement_TenantResource.status
 
 /**
@@ -449,7 +504,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxProto3;
 
 /**
- *  Request to add a newly created and configured tenant project to tenancy
+ *  Request to add a newly created and configured tenant project to a tenancy
  *  unit.
  */
 @interface GTLRServiceConsumerManagement_AddTenantProjectRequest : GTLRObject
@@ -576,19 +631,11 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 @interface GTLRServiceConsumerManagement_AuthenticationRule : GTLRObject
 
 /**
- *  Whether to allow requests without a credential. The credential can be
- *  an OAuth token, Google cookies (first-party auth) or EndUserCreds.
- *  For requests without credentials, if the service control environment is
- *  specified, each incoming request **must** be associated with a service
- *  consumer. This can be done by passing an API key that belongs to a consumer
- *  project.
+ *  If true, the service accepts API keys without any other credential.
  *
  *  Uses NSNumber of boolValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *allowWithoutCredential;
-
-/** Configuration for custom authentication. */
-@property(nonatomic, strong, nullable) GTLRServiceConsumerManagement_CustomAuthRequirements *customAuth;
 
 /** The requirements for OAuth credentials. */
 @property(nonatomic, strong, nullable) GTLRServiceConsumerManagement_OAuthRequirements *oauth;
@@ -621,42 +668,6 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  firebaserules.googleapis.com.
  */
 @property(nonatomic, copy, nullable) NSString *provider;
-
-@end
-
-
-/**
- *  Authorization rule for API services.
- *  It specifies the permission(s) required for an API element for the overall
- *  API request to succeed. It is typically used to mark request message fields
- *  that contain the name of the resource and indicates the permissions that
- *  will be checked on that resource.
- *  For example:
- *  package google.storage.v1;
- *  message CopyObjectRequest {
- *  string source = 1 [
- *  (google.api.authz).permissions = "storage.objects.get"];
- *  string destination = 2 [
- *  (google.api.authz).permissions =
- *  "storage.objects.create,storage.objects.update"];
- *  }
- */
-@interface GTLRServiceConsumerManagement_AuthorizationRule : GTLRObject
-
-/**
- *  The required permissions. The acceptable values vary depend on the
- *  authorization system used. For Google APIs, it should be a comma-separated
- *  Google IAM permission values. When multiple permissions are listed, the
- *  semantics is not defined by the system. Additional documentation must
- *  be provided manually.
- */
-@property(nonatomic, copy, nullable) NSString *permissions;
-
-/**
- *  Selects the API elements to which this rule applies.
- *  Refer to selector for syntax details.
- */
-@property(nonatomic, copy, nullable) NSString *selector;
 
 @end
 
@@ -798,6 +809,14 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 @property(nonatomic, strong, nullable) NSNumber *minDeadline;
 
 /**
+ *  The number of seconds to wait for the completion of a long running
+ *  operation. The default is no deadline.
+ *
+ *  Uses NSNumber of doubleValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *operationDeadline;
+
+/**
  *  Selects the methods to which this rule applies.
  *  Refer to selector for syntax details.
  */
@@ -841,7 +860,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 
 
 /**
- *  Describes billing configuration for new a Tenant Project
+ *  Describes billing configuration for a new tenant project.
  */
 @interface GTLRServiceConsumerManagement_BillingConfig : GTLRObject
 
@@ -896,6 +915,22 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  `google.rpc.context.OriginContext`.
  *  Available context types are defined in package
  *  `google.rpc.context`.
+ *  This also provides mechanism to whitelist any protobuf message extension
+ *  that
+ *  can be sent in grpc metadata using “x-goog-ext-<extension_id>-bin” and
+ *  “x-goog-ext-<extension_id>-jspb” format. For example, list any service
+ *  specific protobuf types that can appear in grpc metadata as follows in your
+ *  yaml file:
+ *  Example:
+ *  context:
+ *  rules:
+ *  - selector: "google.example.library.v1.LibraryService.CreateBook"
+ *  allowed_request_extensions:
+ *  - google.foo.v1.NewExtension
+ *  allowed_response_extensions:
+ *  - google.foo.v1.NewExtension
+ *  You can also specify extension ID instead of fully qualified extension name
+ *  here.
  */
 @interface GTLRServiceConsumerManagement_Context : GTLRObject
 
@@ -913,6 +948,18 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  element.
  */
 @interface GTLRServiceConsumerManagement_ContextRule : GTLRObject
+
+/**
+ *  A list of full type names or extension IDs of extensions allowed in grpc
+ *  side channel from client to backend.
+ */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *allowedRequestExtensions;
+
+/**
+ *  A list of full type names or extension IDs of extensions allowed in grpc
+ *  side channel from backend to client.
+ */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *allowedResponseExtensions;
 
 /** A list of full type names of provided contexts. */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *provided;
@@ -951,30 +998,15 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 @interface GTLRServiceConsumerManagement_CreateTenancyUnitRequest : GTLRObject
 
 /**
- *  Optional producer provided identifier of the tenancy unit
- *  Must be no longer than 40 characters and preferably URI friendly
- *  If it is not provided, UID for the tenancy unit will be auto generated
+ *  Optional producer provided identifier of the tenancy unit.
+ *  Must be no longer than 40 characters and preferably URI friendly.
+ *  If it is not provided, a UID for the tenancy unit will be auto generated.
  *  It must be unique across a service.
  *  If the tenancy unit already exists for the service and consumer pair,
- *  CreateTenancyUnit will return existing tenancy unit if provided identifier
- *  is identical or empty, otherwise the call will fail.
+ *  `CreateTenancyUnit` will return the existing tenancy unit if the provided
+ *  identifier is identical or empty, otherwise the call will fail.
  */
 @property(nonatomic, copy, nullable) NSString *tenancyUnitId;
-
-@end
-
-
-/**
- *  Configuration for a custom authentication provider.
- */
-@interface GTLRServiceConsumerManagement_CustomAuthRequirements : GTLRObject
-
-/**
- *  A configuration string containing connection information for the
- *  authentication provider, typically formatted as a SmartService string
- *  (go/smartservice).
- */
-@property(nonatomic, copy, nullable) NSString *provider;
 
 @end
 
@@ -1081,9 +1113,6 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  <pre><code>&#91;display text]&#91;fully.qualified.proto.name]</code></pre>
  *  Text can be excluded from doc using the following notation:
  *  <pre><code>&#40;-- internal comment --&#41;</code></pre>
- *  Comments can be made conditional using a visibility label. The below
- *  text will be only rendered if the `BETA` label is available:
- *  <pre><code>&#40;--BETA: comment for BETA users --&#41;</code></pre>
  *  A few directives are available in documentation. Note that
  *  directives must appear on a single line to be properly
  *  identified. The `include` directive includes a markdown file from
@@ -1439,79 +1468,82 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 
 
 /**
- *  `HttpRule` defines the mapping of an RPC method to one or more HTTP
- *  REST API methods. The mapping specifies how different portions of the RPC
- *  request message are mapped to URL path, URL query parameters, and
- *  HTTP request body. The mapping is typically specified as an
- *  `google.api.http` annotation on the RPC method,
- *  see "google/api/annotations.proto" for details.
- *  The mapping consists of a field specifying the path template and
- *  method kind. The path template can refer to fields in the request
- *  message, as in the example below which describes a REST GET
- *  operation on a resource collection of messages:
+ *  # gRPC Transcoding
+ *  gRPC Transcoding is a feature for mapping between a gRPC method and one or
+ *  more HTTP REST endpoints. It allows developers to build a single API service
+ *  that supports both gRPC APIs and REST APIs. Many systems, including [Google
+ *  APIs](https://github.com/googleapis/googleapis),
+ *  [Cloud Endpoints](https://cloud.google.com/endpoints), [gRPC
+ *  Gateway](https://github.com/grpc-ecosystem/grpc-gateway),
+ *  and [Envoy](https://github.com/envoyproxy/envoy) proxy support this feature
+ *  and use it for large scale production services.
+ *  `HttpRule` defines the schema of the gRPC/REST mapping. The mapping
+ *  specifies
+ *  how different portions of the gRPC request message are mapped to the URL
+ *  path, URL query parameters, and HTTP request body. It also controls how the
+ *  gRPC response message is mapped to the HTTP response body. `HttpRule` is
+ *  typically specified as an `google.api.http` annotation on the gRPC method.
+ *  Each mapping specifies a URL path template and an HTTP method. The path
+ *  template may refer to one or more fields in the gRPC request message, as
+ *  long
+ *  as each field is a non-repeated field with a primitive (non-message) type.
+ *  The path template controls how fields of the request message are mapped to
+ *  the URL path.
+ *  Example:
  *  service Messaging {
  *  rpc GetMessage(GetMessageRequest) returns (Message) {
- *  option (google.api.http).get = "/v1/messages/{message_id}/{sub.subfield}";
+ *  option (google.api.http) = {
+ *  get: "/v1/{name=messages/ *}"
+ *  };
  *  }
  *  }
  *  message GetMessageRequest {
- *  message SubMessage {
- *  string subfield = 1;
- *  }
- *  string message_id = 1; // mapped to the URL
- *  SubMessage sub = 2; // `sub.subfield` is url-mapped
+ *  string name = 1; // Mapped to URL path.
  *  }
  *  message Message {
- *  string text = 1; // content of the resource
+ *  string text = 1; // The resource content.
  *  }
- *  The same http annotation can alternatively be expressed inside the
- *  `GRPC API Configuration` YAML file.
- *  http:
- *  rules:
- *  - selector: <proto_package_name>.Messaging.GetMessage
- *  get: /v1/messages/{message_id}/{sub.subfield}
- *  This definition enables an automatic, bidrectional mapping of HTTP
- *  JSON to RPC. Example:
- *  HTTP | RPC
+ *  This enables an HTTP REST to gRPC mapping as below:
+ *  HTTP | gRPC
  *  -----|-----
- *  `GET /v1/messages/123456/foo` | `GetMessage(message_id: "123456" sub:
- *  SubMessage(subfield: "foo"))`
- *  In general, not only fields but also field paths can be referenced
- *  from a path pattern. Fields mapped to the path pattern cannot be
- *  repeated and must have a primitive (non-message) type.
- *  Any fields in the request message which are not bound by the path
- *  pattern automatically become (optional) HTTP query
- *  parameters. Assume the following definition of the request message:
+ *  `GET /v1/messages/123456` | `GetMessage(name: "messages/123456")`
+ *  Any fields in the request message which are not bound by the path template
+ *  automatically become HTTP query parameters if there is no HTTP request body.
+ *  For example:
  *  service Messaging {
  *  rpc GetMessage(GetMessageRequest) returns (Message) {
- *  option (google.api.http).get = "/v1/messages/{message_id}";
+ *  option (google.api.http) = {
+ *  get:"/v1/messages/{message_id}"
+ *  };
  *  }
  *  }
  *  message GetMessageRequest {
  *  message SubMessage {
  *  string subfield = 1;
  *  }
- *  string message_id = 1; // mapped to the URL
- *  int64 revision = 2; // becomes a parameter
- *  SubMessage sub = 3; // `sub.subfield` becomes a parameter
+ *  string message_id = 1; // Mapped to URL path.
+ *  int64 revision = 2; // Mapped to URL query parameter `revision`.
+ *  SubMessage sub = 3; // Mapped to URL query parameter `sub.subfield`.
  *  }
  *  This enables a HTTP JSON to RPC mapping as below:
- *  HTTP | RPC
+ *  HTTP | gRPC
  *  -----|-----
  *  `GET /v1/messages/123456?revision=2&sub.subfield=foo` |
  *  `GetMessage(message_id: "123456" revision: 2 sub: SubMessage(subfield:
  *  "foo"))`
- *  Note that fields which are mapped to HTTP parameters must have a
- *  primitive type or a repeated primitive type. Message types are not
- *  allowed. In the case of a repeated type, the parameter can be
- *  repeated in the URL, as in `...?param=A&param=B`.
- *  For HTTP method kinds which allow a request body, the `body` field
+ *  Note that fields which are mapped to URL query parameters must have a
+ *  primitive type or a repeated primitive type or a non-repeated message type.
+ *  In the case of a repeated type, the parameter can be repeated in the URL
+ *  as `...?param=A&param=B`. In the case of a message type, each field of the
+ *  message is mapped to a separate parameter, such as
+ *  `...?foo.a=A&foo.b=B&foo.c=C`.
+ *  For HTTP methods that allow a request body, the `body` field
  *  specifies the mapping. Consider a REST update method on the
  *  message resource collection:
  *  service Messaging {
  *  rpc UpdateMessage(UpdateMessageRequest) returns (Message) {
  *  option (google.api.http) = {
- *  put: "/v1/messages/{message_id}"
+ *  patch: "/v1/messages/{message_id}"
  *  body: "message"
  *  };
  *  }
@@ -1523,9 +1555,9 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  The following HTTP JSON to RPC mapping is enabled, where the
  *  representation of the JSON in the request body is determined by
  *  protos JSON encoding:
- *  HTTP | RPC
+ *  HTTP | gRPC
  *  -----|-----
- *  `PUT /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id:
+ *  `PATCH /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id:
  *  "123456" message { text: "Hi!" })`
  *  The special name `*` can be used in the body mapping to define that
  *  every field not bound by the path template should be mapped to the
@@ -1534,7 +1566,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  service Messaging {
  *  rpc UpdateMessage(Message) returns (Message) {
  *  option (google.api.http) = {
- *  put: "/v1/messages/{message_id}"
+ *  patch: "/v1/messages/{message_id}"
  *  body: "*"
  *  };
  *  }
@@ -1544,13 +1576,13 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  string text = 2;
  *  }
  *  The following HTTP JSON to RPC mapping is enabled:
- *  HTTP | RPC
+ *  HTTP | gRPC
  *  -----|-----
- *  `PUT /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id:
+ *  `PATCH /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id:
  *  "123456" text: "Hi!")`
  *  Note that when using `*` in the body mapping, it is not possible to
  *  have HTTP parameters, as all fields not bound by the path end in
- *  the body. This makes this option more rarely used in practice of
+ *  the body. This makes this option more rarely used in practice when
  *  defining REST APIs. The common usage of `*` is in custom methods
  *  which don't use the URL at all for transferring data.
  *  It is possible to define multiple HTTP methods for one RPC by using
@@ -1569,58 +1601,100 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  string message_id = 1;
  *  string user_id = 2;
  *  }
- *  This enables the following two alternative HTTP JSON to RPC
- *  mappings:
- *  HTTP | RPC
+ *  This enables the following two alternative HTTP JSON to RPC mappings:
+ *  HTTP | gRPC
  *  -----|-----
  *  `GET /v1/messages/123456` | `GetMessage(message_id: "123456")`
  *  `GET /v1/users/me/messages/123456` | `GetMessage(user_id: "me" message_id:
  *  "123456")`
- *  # Rules for HTTP mapping
- *  The rules for mapping HTTP path, query parameters, and body fields
- *  to the request message are as follows:
- *  1. The `body` field specifies either `*` or a field path, or is
- *  omitted. If omitted, it indicates there is no HTTP request body.
- *  2. Leaf fields (recursive expansion of nested messages in the
- *  request) can be classified into three types:
- *  (a) Matched in the URL template.
- *  (b) Covered by body (if body is `*`, everything except (a) fields;
- *  else everything under the body field)
- *  (c) All other fields.
- *  3. URL query parameters found in the HTTP request are mapped to (c) fields.
- *  4. Any body sent with an HTTP request can contain only (b) fields.
- *  The syntax of the path template is as follows:
+ *  ## Rules for HTTP mapping
+ *  1. Leaf request fields (recursive expansion nested messages in the request
+ *  message) are classified into three categories:
+ *  - Fields referred by the path template. They are passed via the URL path.
+ *  - Fields referred by the HttpRule.body. They are passed via the HTTP
+ *  request body.
+ *  - All other fields are passed via the URL query parameters, and the
+ *  parameter name is the field path in the request message. A repeated
+ *  field can be represented as multiple query parameters under the same
+ *  name.
+ *  2. If HttpRule.body is "*", there is no URL query parameter, all fields
+ *  are passed via URL path and HTTP request body.
+ *  3. If HttpRule.body is omitted, there is no HTTP request body, all
+ *  fields are passed via URL path and URL query parameters.
+ *  ### Path template syntax
  *  Template = "/" Segments [ Verb ] ;
  *  Segments = Segment { "/" Segment } ;
  *  Segment = "*" | "**" | LITERAL | Variable ;
  *  Variable = "{" FieldPath [ "=" Segments ] "}" ;
  *  FieldPath = IDENT { "." IDENT } ;
  *  Verb = ":" LITERAL ;
- *  The syntax `*` matches a single path segment. The syntax `**` matches zero
- *  or more path segments, which must be the last part of the path except the
- *  `Verb`. The syntax `LITERAL` matches literal text in the path.
+ *  The syntax `*` matches a single URL path segment. The syntax `**` matches
+ *  zero or more URL path segments, which must be the last part of the URL path
+ *  except the `Verb`.
  *  The syntax `Variable` matches part of the URL path as specified by its
  *  template. A variable template must not contain other variables. If a
  *  variable
  *  matches a single path segment, its template may be omitted, e.g. `{var}`
  *  is equivalent to `{var=*}`.
+ *  The syntax `LITERAL` matches literal text in the URL path. If the `LITERAL`
+ *  contains any reserved character, such characters should be percent-encoded
+ *  before the matching.
  *  If a variable contains exactly one path segment, such as `"{var}"` or
- *  `"{var=*}"`, when such a variable is expanded into a URL path, all
- *  characters
- *  except `[-_.~0-9a-zA-Z]` are percent-encoded. Such variables show up in the
- *  Discovery Document as `{var}`.
- *  If a variable contains one or more path segments, such as `"{var=foo/ *}"`
- *  or `"{var=**}"`, when such a variable is expanded into a URL path, all
- *  characters except `[-_.~/0-9a-zA-Z]` are percent-encoded. Such variables
- *  show up in the Discovery Document as `{+var}`.
- *  NOTE: While the single segment variable matches the semantics of
- *  [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.2
- *  Simple String Expansion, the multi segment variable **does not** match
- *  RFC 6570 Reserved Expansion. The reason is that the Reserved Expansion
+ *  `"{var=*}"`, when such a variable is expanded into a URL path on the client
+ *  side, all characters except `[-_.~0-9a-zA-Z]` are percent-encoded. The
+ *  server side does the reverse decoding. Such variables show up in the
+ *  [Discovery
+ *  Document](https://developers.google.com/discovery/v1/reference/apis)
+ *  as `{var}`.
+ *  If a variable contains multiple path segments, such as `"{var=foo/ *}"`
+ *  or `"{var=**}"`, when such a variable is expanded into a URL path on the
+ *  client side, all characters except `[-_.~/0-9a-zA-Z]` are percent-encoded.
+ *  The server side does the reverse decoding, except "%2F" and "%2f" are left
+ *  unchanged. Such variables show up in the
+ *  [Discovery
+ *  Document](https://developers.google.com/discovery/v1/reference/apis)
+ *  as `{+var}`.
+ *  ## Using gRPC API Service Configuration
+ *  gRPC API Service Configuration (service config) is a configuration language
+ *  for configuring a gRPC service to become a user-facing product. The
+ *  service config is simply the YAML representation of the `google.api.Service`
+ *  proto message.
+ *  As an alternative to annotating your proto file, you can configure gRPC
+ *  transcoding in your service config YAML files. You do this by specifying a
+ *  `HttpRule` that maps the gRPC method to a REST endpoint, achieving the same
+ *  effect as the proto annotation. This can be particularly useful if you
+ *  have a proto that is reused in multiple services. Note that any transcoding
+ *  specified in the service config will override any matching transcoding
+ *  configuration in the proto.
+ *  Example:
+ *  http:
+ *  rules:
+ *  # Selects a gRPC method and applies HttpRule to it.
+ *  - selector: example.v1.Messaging.GetMessage
+ *  get: /v1/messages/{message_id}/{sub.subfield}
+ *  ## Special notes
+ *  When gRPC Transcoding is used to map a gRPC to JSON REST endpoints, the
+ *  proto to JSON conversion must follow the [proto3
+ *  specification](https://developers.google.com/protocol-buffers/docs/proto3#json).
+ *  While the single segment variable follows the semantics of
+ *  [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.2 Simple String
+ *  Expansion, the multi segment variable **does not** follow RFC 6570 Section
+ *  3.2.3 Reserved Expansion. The reason is that the Reserved Expansion
  *  does not expand special characters like `?` and `#`, which would lead
- *  to invalid URLs.
- *  NOTE: the field paths in variables and in the `body` must not refer to
- *  repeated fields or map fields.
+ *  to invalid URLs. As the result, gRPC Transcoding uses a custom encoding
+ *  for multi segment variables.
+ *  The path variables **must not** refer to any repeated or mapped field,
+ *  because client libraries are not capable of handling such variable
+ *  expansion.
+ *  The path variables **must not** capture the leading "/" character. The
+ *  reason
+ *  is that the most common use case "{var}" does not capture the leading "/"
+ *  character. For consistency, all path variables must share the same behavior.
+ *  Repeated message fields must not be mapped to URL query parameters, because
+ *  no client library can support such complicated mapping.
+ *  If an API needs to use a JSON array for request or response body, it can map
+ *  the request or response body to a repeated field. However, some gRPC
+ *  Transcoding implementations may not support this feature.
  */
 @interface GTLRServiceConsumerManagement_HttpRule : GTLRObject
 
@@ -1632,18 +1706,11 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 @property(nonatomic, strong, nullable) NSArray<GTLRServiceConsumerManagement_HttpRule *> *additionalBindings;
 
 /**
- *  Specifies the permission(s) required for an API element for the overall
- *  API request to succeed. It is typically used to mark request message fields
- *  that contain the name of the resource and indicates the permissions that
- *  will be checked on that resource.
- */
-@property(nonatomic, strong, nullable) NSArray<GTLRServiceConsumerManagement_AuthorizationRule *> *authorizations;
-
-/**
- *  The name of the request field whose value is mapped to the HTTP body, or
- *  `*` for mapping all fields not captured by the path pattern to the HTTP
- *  body. NOTE: the referred field must not be a repeated field and must be
- *  present at the top-level of request message type.
+ *  The name of the request field whose value is mapped to the HTTP request
+ *  body, or `*` for mapping all request fields not captured by the path
+ *  pattern to the HTTP body, or omitted for not having any HTTP request body.
+ *  NOTE: the referred field must be present at the top-level of the request
+ *  message type.
  */
 @property(nonatomic, copy, nullable) NSString *body;
 
@@ -1656,88 +1723,40 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 @property(nonatomic, strong, nullable) GTLRServiceConsumerManagement_CustomHttpPattern *custom;
 
 /**
- *  Used for deleting a resource.
+ *  Maps to HTTP DELETE. Used for deleting a resource.
  *
  *  Remapped to 'deleteProperty' to avoid language reserved word 'delete'.
  */
 @property(nonatomic, copy, nullable) NSString *deleteProperty;
 
-/** Used for listing and getting information about resources. */
+/**
+ *  Maps to HTTP GET. Used for listing and getting information about
+ *  resources.
+ */
 @property(nonatomic, copy, nullable) NSString *get;
 
-/**
- *  Use this only for Scotty Requests. Do not use this for bytestream methods.
- *  For media support, add instead [][google.bytestream.RestByteStream] as an
- *  API to your configuration.
- */
-@property(nonatomic, strong, nullable) GTLRServiceConsumerManagement_MediaDownload *mediaDownload;
-
-/**
- *  Use this only for Scotty Requests. Do not use this for media support using
- *  Bytestream, add instead
- *  [][google.bytestream.RestByteStream] as an API to your
- *  configuration for Bytestream methods.
- */
-@property(nonatomic, strong, nullable) GTLRServiceConsumerManagement_MediaUpload *mediaUpload;
-
-/** Used for updating a resource. */
+/** Maps to HTTP PATCH. Used for updating a resource. */
 @property(nonatomic, copy, nullable) NSString *patch;
 
-/** Used for creating a resource. */
+/**
+ *  Maps to HTTP POST. Used for creating a resource or performing an action.
+ */
 @property(nonatomic, copy, nullable) NSString *post;
 
-/** Used for updating a resource. */
+/** Maps to HTTP PUT. Used for replacing a resource. */
 @property(nonatomic, copy, nullable) NSString *put;
 
 /**
- *  The name of the response field whose value is mapped to the HTTP body of
- *  response. Other response fields are ignored. This field is optional. When
- *  not set, the response message will be used as HTTP body of response.
- *  NOTE: the referred field must be not a repeated field and must be present
- *  at the top-level of response message type.
+ *  Optional. The name of the response field whose value is mapped to the HTTP
+ *  response body. When omitted, the entire response message will be used
+ *  as the HTTP response body.
+ *  NOTE: The referred field must be present at the top-level of the response
+ *  message type.
  */
 @property(nonatomic, copy, nullable) NSString *responseBody;
 
 /**
- *  DO NOT USE. This is an experimental field.
- *  Optional. The REST collection name is by default derived from the URL
- *  pattern. If specified, this field overrides the default collection name.
- *  Example:
- *  rpc AddressesAggregatedList(AddressesAggregatedListRequest)
- *  returns (AddressesAggregatedListResponse) {
- *  option (google.api.http) = {
- *  get: "/v1/projects/{project_id}/aggregated/addresses"
- *  rest_collection: "projects.addresses"
- *  };
- *  }
- *  This method has the automatically derived collection name
- *  "projects.aggregated". Because, semantically, this rpc is actually an
- *  operation on the "projects.addresses" collection, the `rest_collection`
- *  field is configured to override the derived collection name.
- */
-@property(nonatomic, copy, nullable) NSString *restCollection;
-
-/**
- *  DO NOT USE. This is an experimental field.
- *  Optional. The rest method name is by default derived from the URL
- *  pattern. If specified, this field overrides the default method name.
- *  Example:
- *  rpc CreateResource(CreateResourceRequest)
- *  returns (CreateResourceResponse) {
- *  option (google.api.http) = {
- *  post: "/v1/resources",
- *  body: "resource",
- *  rest_method_name: "insert"
- *  };
- *  }
- *  This method has the automatically derived rest method name
- *  "create", but for backwards compatibility with apiary, it is specified as
- *  insert.
- */
-@property(nonatomic, copy, nullable) NSString *restMethodName;
-
-/**
- *  Selects methods to which this rule applies.
+ *  Selects a method to which this rule applies.
  *  Refer to selector for syntax details.
  */
 @property(nonatomic, copy, nullable) NSString *selector;
@@ -1814,7 +1833,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 @property(nonatomic, copy, nullable) NSString *nextPageToken;
 
 /**
- *  Tenancy Units matching the request.
+ *  Tenancy units matching the request.
  *
  *  @note This property is used to support NSFastEnumeration and indexed
  *        subscripting on this class.
@@ -1941,121 +1960,6 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 
 
 /**
- *  Defines the Media configuration for a service in case of a download.
- *  Use this only for Scotty Requests. Do not use this for media support using
- *  Bytestream, add instead [][google.bytestream.RestByteStream] as an API to
- *  your configuration for Bytestream methods.
- */
-@interface GTLRServiceConsumerManagement_MediaDownload : GTLRObject
-
-/**
- *  A boolean that determines whether a notification for the completion of a
- *  download should be sent to the backend.
- *
- *  Uses NSNumber of boolValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *completeNotification;
-
-/**
- *  DO NOT USE FIELDS BELOW THIS LINE UNTIL THIS WARNING IS REMOVED.
- *  Specify name of the download service if one is used for download.
- */
-@property(nonatomic, copy, nullable) NSString *downloadService;
-
-/** Name of the Scotty dropzone to use for the current API. */
-@property(nonatomic, copy, nullable) NSString *dropzone;
-
-/**
- *  Whether download is enabled.
- *
- *  Uses NSNumber of boolValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *enabled;
-
-/**
- *  Optional maximum acceptable size for direct download.
- *  The size is specified in bytes.
- *
- *  Uses NSNumber of longLongValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *maxDirectDownloadSize;
-
-/**
- *  A boolean that determines if direct download from ESF should be used for
- *  download of this media.
- *
- *  Uses NSNumber of boolValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *useDirectDownload;
-
-@end
-
-
-/**
- *  Defines the Media configuration for a service in case of an upload.
- *  Use this only for Scotty Requests. Do not use this for media support using
- *  Bytestream, add instead [][google.bytestream.RestByteStream] as an API to
- *  your configuration for Bytestream methods.
- */
-@interface GTLRServiceConsumerManagement_MediaUpload : GTLRObject
-
-/**
- *  A boolean that determines whether a notification for the completion of an
- *  upload should be sent to the backend. These notifications will not be seen
- *  by the client and will not consume quota.
- *
- *  Uses NSNumber of boolValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *completeNotification;
-
-/** Name of the Scotty dropzone to use for the current API. */
-@property(nonatomic, copy, nullable) NSString *dropzone;
-
-/**
- *  Whether upload is enabled.
- *
- *  Uses NSNumber of boolValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *enabled;
-
-/**
- *  Optional maximum acceptable size for an upload.
- *  The size is specified in bytes.
- *
- *  Uses NSNumber of longLongValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *maxSize;
-
-/**
- *  An array of mimetype patterns. Esf will only accept uploads that match one
- *  of the given patterns.
- */
-@property(nonatomic, strong, nullable) NSArray<NSString *> *mimeTypes;
-
-/**
- *  Whether to receive a notification for progress changes of media upload.
- *
- *  Uses NSNumber of boolValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *progressNotification;
-
-/**
- *  Whether to receive a notification on the start of media upload.
- *
- *  Uses NSNumber of boolValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *startNotification;
-
-/**
- *  DO NOT USE FIELDS BELOW THIS LINE UNTIL THIS WARNING IS REMOVED.
- *  Specify name of the upload service if one is used for upload.
- */
-@property(nonatomic, copy, nullable) NSString *uploadService;
-
-@end
-
-
-/**
  *  Method represents a method of an API interface.
  */
 @interface GTLRServiceConsumerManagement_Method : GTLRObject
@@ -2132,6 +2036,9 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  */
 @property(nonatomic, strong, nullable) NSArray<GTLRServiceConsumerManagement_LabelDescriptor *> *labels;
 
+/** Optional. Metadata which can be used to guide usage of the metric. */
+@property(nonatomic, strong, nullable) GTLRServiceConsumerManagement_MetricDescriptorMetadata *metadata;
+
 /**
  *  Whether the metric records instantaneous values, changes to a value, etc.
  *  Some combinations of `metric_kind` and `value_type` might not be supported.
@@ -2157,10 +2064,11 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 
 /**
  *  The metric type, including its DNS name prefix. The type is not
- *  URL-encoded. All user-defined custom metric types have the DNS name
- *  `custom.googleapis.com`. Metric types should use a natural hierarchical
- *  grouping. For example:
+ *  URL-encoded. All user-defined metric types have the DNS name
+ *  `custom.googleapis.com` or `external.googleapis.com`. Metric types should
+ *  use a natural hierarchical grouping. For example:
  *  "custom.googleapis.com/invoice/paid/amount"
+ *  "external.googleapis.com/prometheus/up"
  *  "appengine.googleapis.com/http/server/response_latencies"
  */
 @property(nonatomic, copy, nullable) NSString *type;
@@ -2199,13 +2107,12 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  * `Gi` gibi (2**30)
  *  * `Ti` tebi (2**40)
  *  **Grammar**
- *  The grammar includes the dimensionless unit `1`, such as `1/s`.
  *  The grammar also includes these connectors:
  *  * `/` division (as an infix operator, e.g. `1/s`).
  *  * `.` multiplication (as an infix operator, e.g. `GBy.d`)
  *  The grammar for a unit is as follows:
  *  Expression = Component { "." Component } { "/" Component } ;
- *  Component = [ PREFIX ] UNIT [ Annotation ]
+ *  Component = ( [ PREFIX ] UNIT | "%" ) [ Annotation ]
  *  | Annotation
  *  | "1"
  *  ;
@@ -2216,6 +2123,9 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  `{requests}/s == 1/s`, `By{transmitted}/s == By/s`.
  *  * `NAME` is a sequence of non-blank printable ASCII characters not
  *  containing '{' or '}'.
+ *  * `1` represents dimensionless value 1, such as in `1/s`.
+ *  * `%` represents dimensionless value 1/100, and annotates values giving
+ *  a percentage.
  */
 @property(nonatomic, copy, nullable) NSString *unit;
 
@@ -2245,6 +2155,78 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *        Do not use this default value. (Value: "VALUE_TYPE_UNSPECIFIED")
  */
 @property(nonatomic, copy, nullable) NSString *valueType;
+
+@end
+
+
+/**
+ *  Additional annotations that can be used to guide the usage of a metric.
+ */
+@interface GTLRServiceConsumerManagement_MetricDescriptorMetadata : GTLRObject
+
+/**
+ *  The delay of data points caused by ingestion. Data points older than this
+ *  age are guaranteed to be ingested and available to be read, excluding
+ *  data loss due to errors.
+ */
+@property(nonatomic, strong, nullable) GTLRDuration *ingestDelay;
+
+/**
+ *  The launch stage of the metric definition.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Alpha
+ *        Alpha is a limited availability test for releases before they are
+ *        cleared
+ *        for widespread use. By Alpha, all significant design issues are
+ *        resolved
+ *        and we are in the process of verifying functionality. Alpha customers
+ *        need to apply for access, agree to applicable terms, and have their
+ *        projects whitelisted. Alpha releases don’t have to be feature
+ *        complete,
+ *        no SLAs are provided, and there are no technical support obligations,
+ *        but
+ *        they will be far enough along that customers can actually use them in
+ *        test environments or for limited-use tests -- just like they would in
+ *        normal production cases. (Value: "ALPHA")
+ *    @arg @c kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Beta
+ *        Beta is the point at which we are ready to open a release for any
+ *        customer to use. There are no SLA or technical support obligations in
+ *        a
+ *        Beta release. Products will be complete from a feature perspective,
+ *        but
+ *        may have some open outstanding issues. Beta releases are suitable for
+ *        limited production use cases. (Value: "BETA")
+ *    @arg @c kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Deprecated
+ *        Deprecated features are scheduled to be shut down and removed. For
+ *        more
+ *        information, see the “Deprecation Policy” section of our [Terms of
+ *        Service](https://cloud.google.com/terms/)
+ *        and the [Google Cloud Platform Subject to the Deprecation
+ *        Policy](https://cloud.google.com/terms/deprecation) documentation.
+ *        (Value: "DEPRECATED")
+ *    @arg @c kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_EarlyAccess
+ *        Early Access features are limited to a closed group of testers. To use
+ *        these features, you must sign up in advance and sign a Trusted Tester
+ *        agreement (which includes confidentiality provisions). These features
+ *        may
+ *        be unstable, changed in backward-incompatible ways, and are not
+ *        guaranteed to be released. (Value: "EARLY_ACCESS")
+ *    @arg @c kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_Ga
+ *        GA features are open to all developers and are considered stable and
+ *        fully qualified for production use. (Value: "GA")
+ *    @arg @c kGTLRServiceConsumerManagement_MetricDescriptorMetadata_LaunchStage_LaunchStageUnspecified
+ *        Do not use this default value. (Value: "LAUNCH_STAGE_UNSPECIFIED")
+ */
+@property(nonatomic, copy, nullable) NSString *launchStage;
+
+/**
+ *  The sampling period of metric data points. For metrics which are written
+ *  periodically, consecutive data points are stored at this time interval,
+ *  excluding data loss due to errors. Metrics with a higher granularity have
+ *  a smaller sampling period.
+ */
+@property(nonatomic, strong, nullable) GTLRDuration *samplePeriod;
 
 @end
 
@@ -2701,7 +2683,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 
 /**
  *  Uses the same format as in IAM policy.
- *  `member` must include both prefix and id. E.g., `user:{emailId}`,
+ *  `member` must include both prefix and ID. For example, `user:{emailId}`,
  *  `serviceAccount:{emailId}`, `group:{emailId}`.
  */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *members;
@@ -2726,6 +2708,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  quota checks at runtime.
  *  An example quota configuration in yaml format:
  *  quota:
+ *  limits:
  *  - name: apiWriteQpsPerProject
  *  metric: library.googleapis.com/write_calls
  *  unit: "1/min/{project}" # rate limit for consumer projects
@@ -3020,7 +3003,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 /**
  *  A unique ID for a specific instance of this message, typically assigned
  *  by the client for tracking purpose. If empty, the server may choose to
- *  generate one instead.
+ *  generate one instead. Must be no longer than 60 characters.
  *
  *  identifier property maps to 'id' in JSON (to avoid Objective C's 'id').
  */
@@ -3090,9 +3073,6 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 /** Configuration controlling usage of this service. */
 @property(nonatomic, strong, nullable) GTLRServiceConsumerManagement_Usage *usage;
 
-/** API visibility configuration. */
-@property(nonatomic, strong, nullable) GTLRServiceConsumerManagement_Visibility *visibility;
-
 @end
 
 
@@ -3106,11 +3086,12 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  *  The email format of the service account will be
  *  "<account-id>\@<tenant-project-id>.iam.gserviceaccount.com".
  *  This account id has to be unique within tenant project and producers
- *  have to guarantee it.
+ *  have to guarantee it. And it must be 6-30 characters long, and matches the
+ *  regular expression `[a-z]([-a-z0-9]*[a-z0-9])`.
  */
 @property(nonatomic, copy, nullable) NSString *accountId;
 
-/** Roles for the service account above on tenant project. */
+/** Roles for the associated service account for the tenant project. */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *tenantProjectRoles;
 
 @end
@@ -3333,8 +3314,8 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 @interface GTLRServiceConsumerManagement_TenancyUnit : GTLRObject
 
 /**
- *  \@OutputOnly Cloud resource One Platform Name of the consumer of this
- *  service. For example 'projects/123456'.
+ *  \@OutputOnly Cloud resource name of the consumer of this service.
+ *  For example 'projects/123456'.
  */
 @property(nonatomic, copy, nullable) NSString *consumer;
 
@@ -3353,7 +3334,10 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  */
 @property(nonatomic, copy, nullable) NSString *service;
 
-/** Resources constituting the tenancy unit. */
+/**
+ *  Resources constituting the tenancy unit.
+ *  There can be at most 512 tenant resources in a tenancy unit.
+ */
 @property(nonatomic, strong, nullable) NSArray<GTLRServiceConsumerManagement_TenantResource *> *tenantResources;
 
 @end
@@ -3368,11 +3352,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
  */
 @interface GTLRServiceConsumerManagement_TenantProjectConfig : GTLRObject
 
-/**
- *  Billing account properties.
- *  It may be specified explicitly, or created from the specified group
- *  during provisioning
- */
+/** Billing account properties. Billing account must be specified. */
 @property(nonatomic, strong, nullable) GTLRServiceConsumerManagement_BillingConfig *billingConfig;
 
 /**
@@ -3393,7 +3373,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 /**
  *  Google Cloud API names of services that will be activated on this project
  *  during provisioning. If any of these services can not be activated,
- *  addTenantProject method will fail.
+ *  request will fail.
  *  For example: 'compute.googleapis.com','cloudfunctions.googleapis.com'
  */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *services;
@@ -3418,15 +3398,17 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 
 /**
  *  Describes policy settings that need to be applied to a newly
- *  created Tenant Project.
+ *  created tenant project.
  */
 @interface GTLRServiceConsumerManagement_TenantProjectPolicy : GTLRObject
 
 /**
- *  Additional policy bindings to be applied on the tenant
- *  project.
- *  At least one owner must be set in the bindings. Among the list of members
- *  as owners, at least one of them must be either `user` or `group` based.
+ *  Policy bindings to be applied to the tenant project, in addition to the
+ *  'roles/owner' role granted to the Service Consumer Management service
+ *  account.
+ *  At least one binding must have the role `roles/owner`. Among the list of
+ *  members for `roles/owner`, at least one of them must be either `user` or
+ *  `group` type.
  */
 @property(nonatomic, strong, nullable) NSArray<GTLRServiceConsumerManagement_PolicyBinding *> *policyBindings;
 
@@ -3440,7 +3422,7 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 
 /**
  *  \@OutputOnly Identifier of the tenant resource.
- *  For cloud projects it is in the form 'projects/{number}'.
+ *  For cloud projects, it is in the form 'projects/{number}'.
  *  For example 'projects/123456'.
  */
 @property(nonatomic, copy, nullable) NSString *resource;
@@ -3559,7 +3541,8 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 @interface GTLRServiceConsumerManagement_UsageRule : GTLRObject
 
 /**
- *  True, if the method allows unregistered calls; false otherwise.
+ *  If true, the selected method allows unregistered calls, e.g. calls
+ *  that don't identify any user or application.
  *
  *  Uses NSNumber of boolValue.
  */
@@ -3573,74 +3556,14 @@ GTLR_EXTERN NSString * const kGTLRServiceConsumerManagement_Type_Syntax_SyntaxPr
 @property(nonatomic, copy, nullable) NSString *selector;
 
 /**
- *  True, if the method should skip service control. If so, no control plane
- *  feature (like quota and billing) will be enabled.
- *  This flag is used by ESP to allow some Endpoints customers to bypass
- *  Google internal checks.
+ *  If true, the selected method should skip service control and the control
+ *  plane features, such as quota and billing, will not be available.
+ *  This flag is used by Google Cloud Endpoints to bypass checks for internal
+ *  methods, such as service health check methods.
  *
  *  Uses NSNumber of boolValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *skipServiceControl;
-
-@end
-
-
-/**
- *  `Visibility` defines restrictions for the visibility of service
- *  elements. Restrictions are specified using visibility labels
- *  (e.g., TRUSTED_TESTER) that are elsewhere linked to users and projects.
- *  Users and projects can have access to more than one visibility label. The
- *  effective visibility for multiple labels is the union of each label's
- *  elements, plus any unrestricted elements.
- *  If an element and its parents have no restrictions, visibility is
- *  unconditionally granted.
- *  Example:
- *  visibility:
- *  rules:
- *  - selector: google.calendar.Calendar.EnhancedSearch
- *  restriction: TRUSTED_TESTER
- *  - selector: google.calendar.Calendar.Delegate
- *  restriction: GOOGLE_INTERNAL
- *  Here, all methods are publicly visible except for the restricted methods
- *  EnhancedSearch and Delegate.
- */
-@interface GTLRServiceConsumerManagement_Visibility : GTLRObject
-
-/**
- *  A list of visibility rules that apply to individual API elements.
- *  **NOTE:** All service configuration rules follow "last one wins" order.
- */
-@property(nonatomic, strong, nullable) NSArray<GTLRServiceConsumerManagement_VisibilityRule *> *rules;
-
-@end
-
-
-/**
- *  A visibility rule provides visibility configuration for an individual API
- *  element.
- */
-@interface GTLRServiceConsumerManagement_VisibilityRule : GTLRObject
-
-/**
- *  A comma-separated list of visibility labels that apply to the `selector`.
- *  Any of the listed labels can be used to grant the visibility.
- *  If a rule has multiple labels, removing one of the labels but not all of
- *  them can break clients.
- *  Example:
- *  visibility:
- *  rules:
- *  - selector: google.calendar.Calendar.EnhancedSearch
- *  restriction: GOOGLE_INTERNAL, TRUSTED_TESTER
- *  Removing GOOGLE_INTERNAL from this restriction will break clients that
- *  rely on this method and only had access to it through GOOGLE_INTERNAL.
- */
-@property(nonatomic, copy, nullable) NSString *restriction;
-
-/**
- *  Selects methods, messages, fields, enums, etc. to which this rule applies.
- *  Refer to selector for syntax details.
- */
-@property(nonatomic, copy, nullable) NSString *selector;
 
 @end
 

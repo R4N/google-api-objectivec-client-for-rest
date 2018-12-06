@@ -252,7 +252,7 @@
 //
 
 @implementation GTLRStreetViewPublish_Place
-@dynamic placeId;
+@dynamic languageCode, name, placeId;
 @end
 
 
@@ -262,7 +262,7 @@
 //
 
 @implementation GTLRStreetViewPublish_Pose
-@dynamic altitude, heading, latLngPair, level, pitch, roll;
+@dynamic accuracyMeters, altitude, heading, latLngPair, level, pitch, roll;
 @end
 
 

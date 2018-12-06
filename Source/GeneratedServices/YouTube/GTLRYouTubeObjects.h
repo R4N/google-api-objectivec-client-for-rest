@@ -65,8 +65,6 @@
 @class GTLRYouTube_CommentThreadReplies;
 @class GTLRYouTube_CommentThreadSnippet;
 @class GTLRYouTube_ContentRating;
-@class GTLRYouTube_FanFundingEvent;
-@class GTLRYouTube_FanFundingEventSnippet;
 @class GTLRYouTube_GeoPoint;
 @class GTLRYouTube_GuideCategory;
 @class GTLRYouTube_GuideCategorySnippet;
@@ -111,6 +109,8 @@
 @class GTLRYouTube_LocalizedProperty;
 @class GTLRYouTube_LocalizedString;
 @class GTLRYouTube_MonitorStreamInfo;
+@class GTLRYouTube_Nonprofit;
+@class GTLRYouTube_NonprofitId;
 @class GTLRYouTube_PageInfo;
 @class GTLRYouTube_Playlist;
 @class GTLRYouTube_Playlist_Localizations;
@@ -283,6 +283,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_CaptionSnippet_TrackKind_Standard;
 // ----------------------------------------------------------------------------
 // GTLRYouTube_CdnSettings.frameRate
 
+/** Value: "variable" */
+GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_FrameRate_Variable;
 /** Value: "30fps" */
 GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_FrameRate_X30fps;
 /** Value: "60fps" */
@@ -299,6 +301,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_IngestionType_Rtmp;
 // ----------------------------------------------------------------------------
 // GTLRYouTube_CdnSettings.resolution
 
+/** Value: "variable" */
+GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_Resolution_Variable;
 /** Value: "1080p" */
 GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_Resolution_X1080p;
 /** Value: "1440p" */
@@ -393,6 +397,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_ChannelStatus_PrivacyStatus_Private;
 GTLR_EXTERN NSString * const kGTLRYouTube_ChannelStatus_PrivacyStatus_Public;
 /** Value: "unlisted" */
 GTLR_EXTERN NSString * const kGTLRYouTube_ChannelStatus_PrivacyStatus_Unlisted;
+/** Value: "unlisted_new" */
+GTLR_EXTERN NSString * const kGTLRYouTube_ChannelStatus_PrivacyStatus_UnlistedNew;
 
 // ----------------------------------------------------------------------------
 // GTLRYouTube_CommentSnippet.moderationStatus
@@ -1055,6 +1061,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_ContentRating_IfcoRating_IfcoUnrated;
 
 /** Value: "ilfilm12" */
 GTLR_EXTERN NSString * const kGTLRYouTube_ContentRating_IlfilmRating_Ilfilm12;
+/** Value: "ilfilm14" */
+GTLR_EXTERN NSString * const kGTLRYouTube_ContentRating_IlfilmRating_Ilfilm14;
 /** Value: "ilfilm16" */
 GTLR_EXTERN NSString * const kGTLRYouTube_ContentRating_IlfilmRating_Ilfilm16;
 /** Value: "ilfilm18" */
@@ -1711,6 +1719,16 @@ GTLR_EXTERN NSString * const kGTLRYouTube_LiveBroadcastContentDetails_Projection
 GTLR_EXTERN NSString * const kGTLRYouTube_LiveBroadcastContentDetails_Projection_X360;
 
 // ----------------------------------------------------------------------------
+// GTLRYouTube_LiveBroadcastContentDetails.stereoLayout
+
+/** Value: "left_right" */
+GTLR_EXTERN NSString * const kGTLRYouTube_LiveBroadcastContentDetails_StereoLayout_LeftRight;
+/** Value: "mono" */
+GTLR_EXTERN NSString * const kGTLRYouTube_LiveBroadcastContentDetails_StereoLayout_Mono;
+/** Value: "top_bottom" */
+GTLR_EXTERN NSString * const kGTLRYouTube_LiveBroadcastContentDetails_StereoLayout_TopBottom;
+
+// ----------------------------------------------------------------------------
 // GTLRYouTube_LiveBroadcastStatus.lifeCycleStatus
 
 /** Value: "abandoned" */
@@ -1755,6 +1773,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_LiveBroadcastStatus_PrivacyStatus_Priv
 GTLR_EXTERN NSString * const kGTLRYouTube_LiveBroadcastStatus_PrivacyStatus_Public;
 /** Value: "unlisted" */
 GTLR_EXTERN NSString * const kGTLRYouTube_LiveBroadcastStatus_PrivacyStatus_Unlisted;
+/** Value: "unlisted_new" */
+GTLR_EXTERN NSString * const kGTLRYouTube_LiveBroadcastStatus_PrivacyStatus_UnlistedNew;
 
 // ----------------------------------------------------------------------------
 // GTLRYouTube_LiveBroadcastStatus.recordingStatus
@@ -1935,6 +1955,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_PlaylistItemStatus_PrivacyStatus_Priva
 GTLR_EXTERN NSString * const kGTLRYouTube_PlaylistItemStatus_PrivacyStatus_Public;
 /** Value: "unlisted" */
 GTLR_EXTERN NSString * const kGTLRYouTube_PlaylistItemStatus_PrivacyStatus_Unlisted;
+/** Value: "unlisted_new" */
+GTLR_EXTERN NSString * const kGTLRYouTube_PlaylistItemStatus_PrivacyStatus_UnlistedNew;
 
 // ----------------------------------------------------------------------------
 // GTLRYouTube_PlaylistStatus.privacyStatus
@@ -1945,6 +1967,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_PlaylistStatus_PrivacyStatus_Private;
 GTLR_EXTERN NSString * const kGTLRYouTube_PlaylistStatus_PrivacyStatus_Public;
 /** Value: "unlisted" */
 GTLR_EXTERN NSString * const kGTLRYouTube_PlaylistStatus_PrivacyStatus_Unlisted;
+/** Value: "unlisted_new" */
+GTLR_EXTERN NSString * const kGTLRYouTube_PlaylistStatus_PrivacyStatus_UnlistedNew;
 
 // ----------------------------------------------------------------------------
 // GTLRYouTube_PromotedItemId.type
@@ -2121,6 +2145,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoStatus_PrivacyStatus_Private;
 GTLR_EXTERN NSString * const kGTLRYouTube_VideoStatus_PrivacyStatus_Public;
 /** Value: "unlisted" */
 GTLR_EXTERN NSString * const kGTLRYouTube_VideoStatus_PrivacyStatus_Unlisted;
+/** Value: "unlisted_new" */
+GTLR_EXTERN NSString * const kGTLRYouTube_VideoStatus_PrivacyStatus_UnlistedNew;
 
 // ----------------------------------------------------------------------------
 // GTLRYouTube_VideoStatus.rejectionReason
@@ -2955,6 +2981,7 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *  The frame rate of the inbound video data.
  *
  *  Likely values:
+ *    @arg @c kGTLRYouTube_CdnSettings_FrameRate_Variable Value "variable"
  *    @arg @c kGTLRYouTube_CdnSettings_FrameRate_X30fps Value "30fps"
  *    @arg @c kGTLRYouTube_CdnSettings_FrameRate_X60fps Value "60fps"
  */
@@ -2979,6 +3006,7 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *  The resolution of the inbound video data.
  *
  *  Likely values:
+ *    @arg @c kGTLRYouTube_CdnSettings_Resolution_Variable Value "variable"
  *    @arg @c kGTLRYouTube_CdnSettings_Resolution_X1080p Value "1080p"
  *    @arg @c kGTLRYouTube_CdnSettings_Resolution_X1440p Value "1440p"
  *    @arg @c kGTLRYouTube_CdnSettings_Resolution_X2160p Value "2160p"
@@ -3671,7 +3699,6 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
 
 /**
  *  Basic details about a channel, including title, description and thumbnails.
- *  Next available id: 15.
  */
 @interface GTLRYouTube_ChannelSnippet : GTLRObject
 
@@ -3792,6 +3819,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *    @arg @c kGTLRYouTube_ChannelStatus_PrivacyStatus_Private Value "private"
  *    @arg @c kGTLRYouTube_ChannelStatus_PrivacyStatus_Public Value "public"
  *    @arg @c kGTLRYouTube_ChannelStatus_PrivacyStatus_Unlisted Value "unlisted"
+ *    @arg @c kGTLRYouTube_ChannelStatus_PrivacyStatus_UnlistedNew Value
+ *        "unlisted_new"
  */
 @property(nonatomic, copy, nullable) NSString *privacyStatus;
 
@@ -4682,6 +4711,7 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *
  *  Likely values:
  *    @arg @c kGTLRYouTube_ContentRating_IlfilmRating_Ilfilm12 Value "ilfilm12"
+ *    @arg @c kGTLRYouTube_ContentRating_IlfilmRating_Ilfilm14 Value "ilfilm14"
  *    @arg @c kGTLRYouTube_ContentRating_IlfilmRating_Ilfilm16 Value "ilfilm16"
  *    @arg @c kGTLRYouTube_ContentRating_IlfilmRating_Ilfilm18 Value "ilfilm18"
  *    @arg @c kGTLRYouTube_ContentRating_IlfilmRating_IlfilmAa Value "ilfilmAa"
@@ -5234,122 +5264,6 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *        "ytAgeRestricted"
  */
 @property(nonatomic, copy, nullable) NSString *ytRating;
-
-@end
-
-
-/**
- *  A fanFundingEvent resource represents a fan funding event on a YouTube
- *  channel. Fan funding events occur when a user gives one-time monetary
- *  support to the channel owner.
- */
-@interface GTLRYouTube_FanFundingEvent : GTLRObject
-
-/** Etag of this resource. */
-@property(nonatomic, copy, nullable) NSString *ETag;
-
-/**
- *  The ID that YouTube assigns to uniquely identify the fan funding event.
- *
- *  identifier property maps to 'id' in JSON (to avoid Objective C's 'id').
- */
-@property(nonatomic, copy, nullable) NSString *identifier;
-
-/**
- *  Identifies what kind of resource this is. Value: the fixed string
- *  "youtube#fanFundingEvent".
- */
-@property(nonatomic, copy, nullable) NSString *kind;
-
-/** The snippet object contains basic details about the fan funding event. */
-@property(nonatomic, strong, nullable) GTLRYouTube_FanFundingEventSnippet *snippet;
-
-@end
-
-
-/**
- *  GTLRYouTube_FanFundingEventListResponse
- *
- *  @note This class supports NSFastEnumeration and indexed subscripting over
- *        its "items" property. If returned as the result of a query, it should
- *        support automatic pagination (when @c shouldFetchNextPages is
- *        enabled).
- */
-@interface GTLRYouTube_FanFundingEventListResponse : GTLRCollectionObject
-
-/** Etag of this resource. */
-@property(nonatomic, copy, nullable) NSString *ETag;
-
-/** Serialized EventId of the request which produced this response. */
-@property(nonatomic, copy, nullable) NSString *eventId;
-
-/**
- *  A list of fan funding events that match the request criteria.
- *
- *  @note This property is used to support NSFastEnumeration and indexed
- *        subscripting on this class.
- */
-@property(nonatomic, strong, nullable) NSArray<GTLRYouTube_FanFundingEvent *> *items;
-
-/**
- *  Identifies what kind of resource this is. Value: the fixed string
- *  "youtube#fanFundingEventListResponse".
- */
-@property(nonatomic, copy, nullable) NSString *kind;
-
-/**
- *  The token that can be used as the value of the pageToken parameter to
- *  retrieve the next page in the result set.
- */
-@property(nonatomic, copy, nullable) NSString *nextPageToken;
-
-@property(nonatomic, strong, nullable) GTLRYouTube_PageInfo *pageInfo;
-@property(nonatomic, strong, nullable) GTLRYouTube_TokenPagination *tokenPagination;
-
-/** The visitorId identifies the visitor. */
-@property(nonatomic, copy, nullable) NSString *visitorId;
-
-@end
-
-
-/**
- *  GTLRYouTube_FanFundingEventSnippet
- */
-@interface GTLRYouTube_FanFundingEventSnippet : GTLRObject
-
-/**
- *  The amount of funding in micros of fund_currency. e.g., 1 is represented
- *
- *  Uses NSNumber of unsignedLongLongValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *amountMicros;
-
-/** Channel id where the funding event occurred. */
-@property(nonatomic, copy, nullable) NSString *channelId;
-
-/** The text contents of the comment left by the user. */
-@property(nonatomic, copy, nullable) NSString *commentText;
-
-/**
- *  The date and time when the funding occurred. The value is specified in ISO
- *  8601 (YYYY-MM-DDThh:mm:ss.sZ) format.
- */
-@property(nonatomic, strong, nullable) GTLRDateTime *createdAt;
-
-/** The currency in which the fund was made. ISO 4217. */
-@property(nonatomic, copy, nullable) NSString *currency;
-
-/**
- *  A rendered string that displays the fund amount and currency (e.g.,
- *  "$1.00"). The string is rendered for the given language.
- */
-@property(nonatomic, copy, nullable) NSString *displayString;
-
-/**
- *  Details about the supporter. Only filled if the event was made public by the
- *  user.
- */
-@property(nonatomic, strong, nullable) GTLRYouTube_ChannelProfileDetails *supporterDetails;
 
 @end
 
@@ -5989,6 +5903,13 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
 @property(nonatomic, copy, nullable) NSString *closedCaptionsType;
 
 /**
+ *  This setting indicates whether auto start is enabled for this broadcast.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *enableAutoStart;
+
+/**
  *  This setting indicates whether HTTP POST closed captioning is enabled for
  *  this broadcast. The ingestion URL of the closed captions is returned through
  *  the liveStreams API. This is mutually exclusive with using the
@@ -6103,6 +6024,19 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *  Uses NSNumber of boolValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *startWithSlate;
+
+/**
+ *  stereoLayout
+ *
+ *  Likely values:
+ *    @arg @c kGTLRYouTube_LiveBroadcastContentDetails_StereoLayout_LeftRight
+ *        Value "left_right"
+ *    @arg @c kGTLRYouTube_LiveBroadcastContentDetails_StereoLayout_Mono Value
+ *        "mono"
+ *    @arg @c kGTLRYouTube_LiveBroadcastContentDetails_StereoLayout_TopBottom
+ *        Value "top_bottom"
+ */
+@property(nonatomic, copy, nullable) NSString *stereoLayout;
 
 @end
 
@@ -6334,6 +6268,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *        "public"
  *    @arg @c kGTLRYouTube_LiveBroadcastStatus_PrivacyStatus_Unlisted Value
  *        "unlisted"
+ *    @arg @c kGTLRYouTube_LiveBroadcastStatus_PrivacyStatus_UnlistedNew Value
+ *        "unlisted_new"
  */
 @property(nonatomic, copy, nullable) NSString *privacyStatus;
 
@@ -7362,6 +7298,30 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
 
 
 /**
+ *  Nonprofit information.
+ */
+@interface GTLRYouTube_Nonprofit : GTLRObject
+
+/** Id of the nonprofit. */
+@property(nonatomic, strong, nullable) GTLRYouTube_NonprofitId *nonprofitId;
+
+/** Legal name of the nonprofit. */
+@property(nonatomic, copy, nullable) NSString *nonprofitLegalName;
+
+@end
+
+
+/**
+ *  GTLRYouTube_NonprofitId
+ */
+@interface GTLRYouTube_NonprofitId : GTLRObject
+
+@property(nonatomic, copy, nullable) NSString *value;
+
+@end
+
+
+/**
  *  Paging details for lists of resources, including total number of items
  *  available and number of resources returned in a single page.
  */
@@ -7702,6 +7662,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *        "public"
  *    @arg @c kGTLRYouTube_PlaylistItemStatus_PrivacyStatus_Unlisted Value
  *        "unlisted"
+ *    @arg @c kGTLRYouTube_PlaylistItemStatus_PrivacyStatus_UnlistedNew Value
+ *        "unlisted_new"
  */
 @property(nonatomic, copy, nullable) NSString *privacyStatus;
 
@@ -7851,6 +7813,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *    @arg @c kGTLRYouTube_PlaylistStatus_PrivacyStatus_Public Value "public"
  *    @arg @c kGTLRYouTube_PlaylistStatus_PrivacyStatus_Unlisted Value
  *        "unlisted"
+ *    @arg @c kGTLRYouTube_PlaylistStatus_PrivacyStatus_UnlistedNew Value
+ *        "unlisted_new"
  */
 @property(nonatomic, copy, nullable) NSString *privacyStatus;
 
@@ -8140,13 +8104,6 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
 @property(nonatomic, copy, nullable) NSString *ETag;
 
 /**
- *  The ID that YouTube assigns to uniquely identify the sponsor.
- *
- *  identifier property maps to 'id' in JSON (to avoid Objective C's 'id').
- */
-@property(nonatomic, copy, nullable) NSString *identifier;
-
-/**
  *  Identifies what kind of resource this is. Value: the fixed string
  *  "youtube#sponsor".
  */
@@ -8210,6 +8167,13 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
 
 /** The id of the channel being sponsored. */
 @property(nonatomic, copy, nullable) NSString *channelId;
+
+/**
+ *  The cumulative time a user has been a sponsor in months.
+ *
+ *  Uses NSNumber of intValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *cumulativeDurationMonths;
 
 /** Details about the sponsor. */
 @property(nonatomic, strong, nullable) GTLRYouTube_ChannelProfileDetails *sponsorDetails;
@@ -8528,12 +8492,25 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
 @property(nonatomic, copy, nullable) NSString *displayString;
 
 /**
+ *  True if this event is a Super Chat for Good purchase.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *isSuperChatForGood;
+
+/**
  *  The tier for the paid message, which is based on the amount of money spent
  *  to purchase the message.
  *
  *  Uses NSNumber of unsignedIntValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *messageType;
+
+/**
+ *  If this event is a Super Chat for Good purchase, this field will contain
+ *  information about the charity the purchase is donated to.
+ */
+@property(nonatomic, strong, nullable) GTLRYouTube_Nonprofit *nonprofit;
 
 /** Details about the supporter. */
 @property(nonatomic, strong, nullable) GTLRYouTube_ChannelProfileDetails *supporterDetails;
@@ -8698,7 +8675,7 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
 @property(nonatomic, strong, nullable) GTLRYouTube_VideoPlayer *player;
 
 /**
- *  The processingProgress object encapsulates information about YouTube's
+ *  The processingDetails object encapsulates information about YouTube's
  *  progress in processing the uploaded video file. The properties in the object
  *  identify the current processing status and an estimate of the time remaining
  *  until YouTube finishes processing the video. This part also indicates
@@ -9882,6 +9859,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *    @arg @c kGTLRYouTube_VideoStatus_PrivacyStatus_Private Value "private"
  *    @arg @c kGTLRYouTube_VideoStatus_PrivacyStatus_Public Value "public"
  *    @arg @c kGTLRYouTube_VideoStatus_PrivacyStatus_Unlisted Value "unlisted"
+ *    @arg @c kGTLRYouTube_VideoStatus_PrivacyStatus_UnlistedNew Value
+ *        "unlisted_new"
  */
 @property(nonatomic, copy, nullable) NSString *privacyStatus;
 

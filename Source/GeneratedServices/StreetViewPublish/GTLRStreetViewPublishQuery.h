@@ -108,7 +108,7 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *
  *  @param object The @c GTLRStreetViewPublish_Photo to include in the query.
  *
- *  @returns GTLRStreetViewPublishQuery_PhotoCreate
+ *  @return GTLRStreetViewPublishQuery_PhotoCreate
  */
 + (instancetype)queryWithObject:(GTLRStreetViewPublish_Photo *)object;
 
@@ -144,7 +144,7 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *
  *  @param photoId Required. ID of the Photo.
  *
- *  @returns GTLRStreetViewPublishQuery_PhotoDelete
+ *  @return GTLRStreetViewPublishQuery_PhotoDelete
  */
 + (instancetype)queryWithPhotoId:(NSString *)photoId;
 
@@ -158,6 +158,8 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *  create the requested Photo.
  *  * google.rpc.Code.NOT_FOUND if the requested
  *  Photo does not exist.
+ *  * google.rpc.Code.UNAVAILABLE if the requested
+ *  Photo is still being indexed.
  *
  *  Method: streetviewpublish.photo.get
  *
@@ -167,6 +169,15 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
 @interface GTLRStreetViewPublishQuery_PhotoGet : GTLRStreetViewPublishQuery
 // Previous library name was
 //   +[GTLQueryStreetViewPublish queryForPhotoGetWithphotoId:]
+
+/**
+ *  The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+ *  information, see
+ *  http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+ *  If language_code is unspecified, the user's language preference for Google
+ *  services will be used.
+ */
+@property(nonatomic, copy, nullable) NSString *languageCode;
 
 /** Required. ID of the Photo. */
 @property(nonatomic, copy, nullable) NSString *photoId;
@@ -192,10 +203,12 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *  create the requested Photo.
  *  * google.rpc.Code.NOT_FOUND if the requested
  *  Photo does not exist.
+ *  * google.rpc.Code.UNAVAILABLE if the requested
+ *  Photo is still being indexed.
  *
  *  @param photoId Required. ID of the Photo.
  *
- *  @returns GTLRStreetViewPublishQuery_PhotoGet
+ *  @return GTLRStreetViewPublishQuery_PhotoGet
  */
 + (instancetype)queryWithPhotoId:(NSString *)photoId;
 
@@ -249,7 +262,7 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *  @param object The @c GTLRStreetViewPublish_BatchDeletePhotosRequest to
  *    include in the query.
  *
- *  @returns GTLRStreetViewPublishQuery_PhotosBatchDelete
+ *  @return GTLRStreetViewPublishQuery_PhotosBatchDelete
  */
 + (instancetype)queryWithObject:(GTLRStreetViewPublish_BatchDeletePhotosRequest *)object;
 
@@ -280,6 +293,15 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
 @interface GTLRStreetViewPublishQuery_PhotosBatchGet : GTLRStreetViewPublishQuery
 // Previous library name was
 //   +[GTLQueryStreetViewPublish queryForPhotosBatchGet]
+
+/**
+ *  The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+ *  information, see
+ *  http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+ *  If language_code is unspecified, the user's language preference for Google
+ *  services will be used.
+ */
+@property(nonatomic, copy, nullable) NSString *languageCode;
 
 /**
  *  Required. IDs of the Photos. For HTTP
@@ -318,7 +340,7 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *  GetPhoto
  *  for specific failures that can occur per photo.
  *
- *  @returns GTLRStreetViewPublishQuery_PhotosBatchGet
+ *  @return GTLRStreetViewPublishQuery_PhotosBatchGet
  */
 + (instancetype)query;
 
@@ -390,7 +412,7 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *  @param object The @c GTLRStreetViewPublish_BatchUpdatePhotosRequest to
  *    include in the query.
  *
- *  @returns GTLRStreetViewPublishQuery_PhotosBatchUpdate
+ *  @return GTLRStreetViewPublishQuery_PhotosBatchUpdate
  */
 + (instancetype)queryWithObject:(GTLRStreetViewPublish_BatchUpdatePhotosRequest *)object;
 
@@ -399,6 +421,8 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
 /**
  *  Lists all the Photos that belong to
  *  the user.
+ *  <aside class="note"><b>Note:</b> Recently created photos that are still
+ *  being indexed are not returned in the response.</aside>
  *
  *  Method: streetviewpublish.photos.list
  *
@@ -414,6 +438,15 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *  The only filter supported at the moment is `placeId`.
  */
 @property(nonatomic, copy, nullable) NSString *filter;
+
+/**
+ *  The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+ *  information, see
+ *  http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+ *  If language_code is unspecified, the user's language preference for Google
+ *  services will be used.
+ */
+@property(nonatomic, copy, nullable) NSString *languageCode;
 
 /**
  *  The maximum number of photos to return.
@@ -449,8 +482,10 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *
  *  Lists all the Photos that belong to
  *  the user.
+ *  <aside class="note"><b>Note:</b> Recently created photos that are still
+ *  being indexed are not returned in the response.</aside>
  *
- *  @returns GTLRStreetViewPublishQuery_PhotosList
+ *  @return GTLRStreetViewPublishQuery_PhotosList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -509,7 +544,7 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *
  *  @param object The @c GTLRStreetViewPublish_Empty to include in the query.
  *
- *  @returns GTLRStreetViewPublishQuery_PhotoStartUpload
+ *  @return GTLRStreetViewPublishQuery_PhotoStartUpload
  */
 + (instancetype)queryWithObject:(GTLRStreetViewPublish_Empty *)object;
 
@@ -532,6 +567,8 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *  create the requested photo.
  *  * google.rpc.Code.INVALID_ARGUMENT if the request is malformed.
  *  * google.rpc.Code.NOT_FOUND if the requested photo does not exist.
+ *  * google.rpc.Code.UNAVAILABLE if the requested
+ *  Photo is still being indexed.
  *
  *  Method: streetviewpublish.photo.update
  *
@@ -596,11 +633,13 @@ GTLR_EXTERN NSString * const kGTLRStreetViewPublishViewIncludeDownloadUrl;
  *  create the requested photo.
  *  * google.rpc.Code.INVALID_ARGUMENT if the request is malformed.
  *  * google.rpc.Code.NOT_FOUND if the requested photo does not exist.
+ *  * google.rpc.Code.UNAVAILABLE if the requested
+ *  Photo is still being indexed.
  *
  *  @param object The @c GTLRStreetViewPublish_Photo to include in the query.
  *  @param identifier Required. A unique identifier for a photo.
  *
- *  @returns GTLRStreetViewPublishQuery_PhotoUpdate
+ *  @return GTLRStreetViewPublishQuery_PhotoUpdate
  */
 + (instancetype)queryWithObject:(GTLRStreetViewPublish_Photo *)object
                      identifier:(NSString *)identifier;

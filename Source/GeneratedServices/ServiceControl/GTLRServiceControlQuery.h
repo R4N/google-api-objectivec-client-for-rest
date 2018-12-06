@@ -2,10 +2,10 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Service Control API (servicecontrol/v1)
+//   Service Control API (servicecontrol/v1)
 // Description:
-//   Google Service Control provides control plane functionality to managed
-//   services, such as logging, monitoring, and status checks.
+//   Provides control plane functionality to managed services, such as logging,
+//   monitoring, and status checks.
 // Documentation:
 //   https://cloud.google.com/service-control/
 
@@ -21,10 +21,7 @@
 
 @class GTLRServiceControl_AllocateQuotaRequest;
 @class GTLRServiceControl_CheckRequest;
-@class GTLRServiceControl_EndReconciliationRequest;
-@class GTLRServiceControl_ReleaseQuotaRequest;
 @class GTLRServiceControl_ReportRequest;
-@class GTLRServiceControl_StartReconciliationRequest;
 
 // Generated comments include content from the discovery document; avoid them
 // causing warnings since clang's checks are some what arbitrary.
@@ -91,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    `"pubsub.googleapis.com"`.
  *    See google.api.Service for the definition of a service name.
  *
- *  @returns GTLRServiceControlQuery_ServicesAllocateQuota
+ *  @return GTLRServiceControlQuery_ServicesAllocateQuota
  */
 + (instancetype)queryWithObject:(GTLRServiceControl_AllocateQuotaRequest *)object
                     serviceName:(NSString *)serviceName;
@@ -99,16 +96,19 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- *  Checks an operation with Google Service Control to decide whether
- *  the given operation should proceed. It should be called before the
- *  operation is executed.
+ *  Checks whether an operation on a service should be allowed to proceed
+ *  based on the configuration of the service and related policies. It must be
+ *  called before the operation is executed.
  *  If feasible, the client should cache the check results and reuse them for
- *  60 seconds. In case of server errors, the client can rely on the cached
- *  results for longer time.
+ *  60 seconds. In case of any server errors, the client should rely on the
+ *  cached results for much longer time to avoid outage.
+ *  WARNING: There is general 60s delay for the configuration and policy
+ *  propagation, therefore callers MUST NOT depend on the `Check` method having
+ *  the latest policy information.
  *  NOTE: the CheckRequest has the size limit of 64KB.
  *  This method requires the `servicemanagement.services.check` permission
  *  on the specified service. For more information, see
- *  [Google Cloud IAM](https://cloud.google.com/iam).
+ *  [Cloud IAM](https://cloud.google.com/iam).
  *
  *  Method: servicecontrol.services.check
  *
@@ -132,16 +132,19 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Fetches a @c GTLRServiceControl_CheckResponse.
  *
- *  Checks an operation with Google Service Control to decide whether
- *  the given operation should proceed. It should be called before the
- *  operation is executed.
+ *  Checks whether an operation on a service should be allowed to proceed
+ *  based on the configuration of the service and related policies. It must be
+ *  called before the operation is executed.
  *  If feasible, the client should cache the check results and reuse them for
- *  60 seconds. In case of server errors, the client can rely on the cached
- *  results for longer time.
+ *  60 seconds. In case of any server errors, the client should rely on the
+ *  cached results for much longer time to avoid outage.
+ *  WARNING: There is general 60s delay for the configuration and policy
+ *  propagation, therefore callers MUST NOT depend on the `Check` method having
+ *  the latest policy information.
  *  NOTE: the CheckRequest has the size limit of 64KB.
  *  This method requires the `servicemanagement.services.check` permission
  *  on the specified service. For more information, see
- *  [Google Cloud IAM](https://cloud.google.com/iam).
+ *  [Cloud IAM](https://cloud.google.com/iam).
  *
  *  @param object The @c GTLRServiceControl_CheckRequest to include in the
  *    query.
@@ -152,109 +155,9 @@ NS_ASSUME_NONNULL_BEGIN
  *    [google.api.Service](https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service)
  *    for the definition of a service name.
  *
- *  @returns GTLRServiceControlQuery_ServicesCheck
+ *  @return GTLRServiceControlQuery_ServicesCheck
  */
 + (instancetype)queryWithObject:(GTLRServiceControl_CheckRequest *)object
-                    serviceName:(NSString *)serviceName;
-
-@end
-
-/**
- *  Signals the quota controller that service ends the ongoing usage
- *  reconciliation.
- *  This method requires the `servicemanagement.services.quota`
- *  permission on the specified service. For more information, see
- *  [Google Cloud IAM](https://cloud.google.com/iam).
- *
- *  Method: servicecontrol.services.endReconciliation
- *
- *  Authorization scope(s):
- *    @c kGTLRAuthScopeServiceControl
- *    @c kGTLRAuthScopeServiceControlCloudPlatform
- */
-@interface GTLRServiceControlQuery_ServicesEndReconciliation : GTLRServiceControlQuery
-// Previous library name was
-//   +[GTLQueryServiceControl queryForServicesEndReconciliationWithObject:serviceName:]
-
-/**
- *  Name of the service as specified in the service configuration. For example,
- *  `"pubsub.googleapis.com"`.
- *  See google.api.Service for the definition of a service name.
- */
-@property(nonatomic, copy, nullable) NSString *serviceName;
-
-/**
- *  Fetches a @c GTLRServiceControl_EndReconciliationResponse.
- *
- *  Signals the quota controller that service ends the ongoing usage
- *  reconciliation.
- *  This method requires the `servicemanagement.services.quota`
- *  permission on the specified service. For more information, see
- *  [Google Cloud IAM](https://cloud.google.com/iam).
- *
- *  @param object The @c GTLRServiceControl_EndReconciliationRequest to include
- *    in the query.
- *  @param serviceName Name of the service as specified in the service
- *    configuration. For example,
- *    `"pubsub.googleapis.com"`.
- *    See google.api.Service for the definition of a service name.
- *
- *  @returns GTLRServiceControlQuery_ServicesEndReconciliation
- */
-+ (instancetype)queryWithObject:(GTLRServiceControl_EndReconciliationRequest *)object
-                    serviceName:(NSString *)serviceName;
-
-@end
-
-/**
- *  Releases previously allocated quota done through AllocateQuota method.
- *  This method requires the `servicemanagement.services.quota`
- *  permission on the specified service. For more information, see
- *  [Cloud IAM](https://cloud.google.com/iam).
- *  **NOTE:** The client **must** fail-open on server errors `INTERNAL`,
- *  `UNKNOWN`, `DEADLINE_EXCEEDED`, and `UNAVAILABLE`. To ensure system
- *  reliability, the server may inject these errors to prohibit any hard
- *  dependency on the quota functionality.
- *
- *  Method: servicecontrol.services.releaseQuota
- *
- *  Authorization scope(s):
- *    @c kGTLRAuthScopeServiceControl
- *    @c kGTLRAuthScopeServiceControlCloudPlatform
- */
-@interface GTLRServiceControlQuery_ServicesReleaseQuota : GTLRServiceControlQuery
-// Previous library name was
-//   +[GTLQueryServiceControl queryForServicesReleaseQuotaWithObject:serviceName:]
-
-/**
- *  Name of the service as specified in the service configuration. For example,
- *  `"pubsub.googleapis.com"`.
- *  See google.api.Service for the definition of a service name.
- */
-@property(nonatomic, copy, nullable) NSString *serviceName;
-
-/**
- *  Fetches a @c GTLRServiceControl_ReleaseQuotaResponse.
- *
- *  Releases previously allocated quota done through AllocateQuota method.
- *  This method requires the `servicemanagement.services.quota`
- *  permission on the specified service. For more information, see
- *  [Cloud IAM](https://cloud.google.com/iam).
- *  **NOTE:** The client **must** fail-open on server errors `INTERNAL`,
- *  `UNKNOWN`, `DEADLINE_EXCEEDED`, and `UNAVAILABLE`. To ensure system
- *  reliability, the server may inject these errors to prohibit any hard
- *  dependency on the quota functionality.
- *
- *  @param object The @c GTLRServiceControl_ReleaseQuotaRequest to include in
- *    the query.
- *  @param serviceName Name of the service as specified in the service
- *    configuration. For example,
- *    `"pubsub.googleapis.com"`.
- *    See google.api.Service for the definition of a service name.
- *
- *  @returns GTLRServiceControlQuery_ServicesReleaseQuota
- */
-+ (instancetype)queryWithObject:(GTLRServiceControl_ReleaseQuotaRequest *)object
                     serviceName:(NSString *)serviceName;
 
 @end
@@ -315,92 +218,9 @@ NS_ASSUME_NONNULL_BEGIN
  *    [google.api.Service](https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service)
  *    for the definition of a service name.
  *
- *  @returns GTLRServiceControlQuery_ServicesReport
+ *  @return GTLRServiceControlQuery_ServicesReport
  */
 + (instancetype)queryWithObject:(GTLRServiceControl_ReportRequest *)object
-                    serviceName:(NSString *)serviceName;
-
-@end
-
-/**
- *  Unlike rate quota, allocation quota does not get refilled periodically.
- *  So, it is possible that the quota usage as seen by the service differs from
- *  what the One Platform considers the usage is. This is expected to happen
- *  only rarely, but over time this can accumulate. Services can invoke
- *  StartReconciliation and EndReconciliation to correct this usage drift, as
- *  described below:
- *  1. Service sends StartReconciliation with a timestamp in future for each
- *  metric that needs to be reconciled. The timestamp being in future allows
- *  to account for in-flight AllocateQuota and ReleaseQuota requests for the
- *  same metric.
- *  2. One Platform records this timestamp and starts tracking subsequent
- *  AllocateQuota and ReleaseQuota requests until EndReconciliation is
- *  called.
- *  3. At or after the time specified in the StartReconciliation, service
- *  sends EndReconciliation with the usage that needs to be reconciled to.
- *  4. One Platform adjusts its own record of usage for that metric to the
- *  value specified in EndReconciliation by taking in to account any
- *  allocation or release between StartReconciliation and EndReconciliation.
- *  Signals the quota controller that the service wants to perform a usage
- *  reconciliation as specified in the request.
- *  This method requires the `servicemanagement.services.quota`
- *  permission on the specified service. For more information, see
- *  [Google Cloud IAM](https://cloud.google.com/iam).
- *
- *  Method: servicecontrol.services.startReconciliation
- *
- *  Authorization scope(s):
- *    @c kGTLRAuthScopeServiceControl
- *    @c kGTLRAuthScopeServiceControlCloudPlatform
- */
-@interface GTLRServiceControlQuery_ServicesStartReconciliation : GTLRServiceControlQuery
-// Previous library name was
-//   +[GTLQueryServiceControl queryForServicesStartReconciliationWithObject:serviceName:]
-
-/**
- *  Name of the service as specified in the service configuration. For example,
- *  `"pubsub.googleapis.com"`.
- *  See google.api.Service for the definition of a service name.
- */
-@property(nonatomic, copy, nullable) NSString *serviceName;
-
-/**
- *  Fetches a @c GTLRServiceControl_StartReconciliationResponse.
- *
- *  Unlike rate quota, allocation quota does not get refilled periodically.
- *  So, it is possible that the quota usage as seen by the service differs from
- *  what the One Platform considers the usage is. This is expected to happen
- *  only rarely, but over time this can accumulate. Services can invoke
- *  StartReconciliation and EndReconciliation to correct this usage drift, as
- *  described below:
- *  1. Service sends StartReconciliation with a timestamp in future for each
- *  metric that needs to be reconciled. The timestamp being in future allows
- *  to account for in-flight AllocateQuota and ReleaseQuota requests for the
- *  same metric.
- *  2. One Platform records this timestamp and starts tracking subsequent
- *  AllocateQuota and ReleaseQuota requests until EndReconciliation is
- *  called.
- *  3. At or after the time specified in the StartReconciliation, service
- *  sends EndReconciliation with the usage that needs to be reconciled to.
- *  4. One Platform adjusts its own record of usage for that metric to the
- *  value specified in EndReconciliation by taking in to account any
- *  allocation or release between StartReconciliation and EndReconciliation.
- *  Signals the quota controller that the service wants to perform a usage
- *  reconciliation as specified in the request.
- *  This method requires the `servicemanagement.services.quota`
- *  permission on the specified service. For more information, see
- *  [Google Cloud IAM](https://cloud.google.com/iam).
- *
- *  @param object The @c GTLRServiceControl_StartReconciliationRequest to
- *    include in the query.
- *  @param serviceName Name of the service as specified in the service
- *    configuration. For example,
- *    `"pubsub.googleapis.com"`.
- *    See google.api.Service for the definition of a service name.
- *
- *  @returns GTLRServiceControlQuery_ServicesStartReconciliation
- */
-+ (instancetype)queryWithObject:(GTLRServiceControl_StartReconciliationRequest *)object
                     serviceName:(NSString *)serviceName;
 
 @end

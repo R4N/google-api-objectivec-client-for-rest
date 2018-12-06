@@ -16,7 +16,12 @@ XCODEBUILD_ACTION="test"
 # Report then run the build
 RunXcodeBuild() {
   echo xcodebuild "$@"
-  xcodebuild "$@"
+  # If xcpretty is installed, use it to cut down on the output length.
+  if hash xcpretty >/dev/null 2>&1 ; then
+    set -o pipefail && xcodebuild "$@" | xcpretty
+  else
+    xcodebuild "$@"
+  fi
 }
 
 case "${BUILD_MODE}" in
@@ -37,7 +42,7 @@ case "${BUILD_MODE}" in
     CMD_BUILDER+=(
       -project Source/GTLRCore.xcodeproj
       -scheme "tvOS Framework and Tests"
-      -destination "platform=tvOS Simulator,name=Apple TV 1080p,OS=latest"
+      -destination "platform=tvOS Simulator,name=Apple TV,OS=latest"
     )
     ;;
   watchOSCore)
@@ -56,8 +61,9 @@ case "${BUILD_MODE}" in
     ;;
   Example_*)
     EXAMPLE_NAME="${BUILD_MODE/Example_/}"
+    (cd "Examples/${EXAMPLE_NAME}" && pod install)
     CMD_BUILDER+=(
-      -project "Examples/${EXAMPLE_NAME}/${EXAMPLE_NAME}.xcodeproj"
+      -workspace "Examples/${EXAMPLE_NAME}/${EXAMPLE_NAME}.xcworkspace"
       -scheme "${EXAMPLE_NAME}"
     )
     XCODEBUILD_ACTION="build"

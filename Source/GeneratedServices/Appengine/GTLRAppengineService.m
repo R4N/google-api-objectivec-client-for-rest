@@ -2,10 +2,9 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google App Engine Admin API (appengine/v1)
+//   App Engine Admin API (appengine/v1)
 // Description:
-//   The App Engine Admin API enables developers to provision and manage their
-//   App Engine applications.
+//   Provisions and manages developers' App Engine applications.
 // Documentation:
 //   https://cloud.google.com/appengine/docs/admin-api/
 
@@ -30,7 +29,7 @@ NSString * const kGTLRAuthScopeAppengineCloudPlatformReadOnly = @"https://www.go
     // From discovery.
     self.rootURLString = @"https://appengine.googleapis.com/";
     self.batchPath = @"batch";
-    self.prettyPrintQueryParameterNames = @[ @"prettyPrint", @"pp" ];
+    self.prettyPrintQueryParameterNames = @[ @"prettyPrint" ];
   }
   return self;
 }

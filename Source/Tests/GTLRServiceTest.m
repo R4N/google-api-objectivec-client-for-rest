@@ -3324,6 +3324,14 @@ static BOOL IsCurrentQueue(dispatch_queue_t targetQueue) {
   XCTAssertEqualObjects(result.URL.absoluteString, expectedURLString);
   XCTAssertEqualObjects(result.HTTPMethod, @"POST");
   XCTAssertEqualObjects(result.allHTTPHeaderFields, expectedHTTPHeaders);
+
+  // Add an APIKey Restriction
+  service.APIKeyRestrictionBundleID = @"foo.bar.baz";
+  expectedHTTPHeaders[kXIosBundleIdHeader] = @"foo.bar.baz";
+  result = [service requestForQuery:query];
+  XCTAssertEqualObjects(result.URL.absoluteString, expectedURLString);
+  XCTAssertEqualObjects(result.HTTPMethod, @"POST");
+  XCTAssertEqualObjects(result.allHTTPHeaderFields, expectedHTTPHeaders);
 }
 
 - (void)testRequestForQuery_MediaDownload {
@@ -3521,7 +3529,7 @@ UIBackgroundTaskIdentifier gTaskID = 1000;
   if (_shouldExpireTasks) {
     dispatch_async(dispatch_get_main_queue(), ^{
       handler();
-      _numberOfExpiredTasks++;
+      self->_numberOfExpiredTasks++;
     });
   }
   return taskID;

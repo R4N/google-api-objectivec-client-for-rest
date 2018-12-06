@@ -4,7 +4,7 @@
 // API:
 //   Google Slides API (slides/v1)
 // Description:
-//   An API for creating and editing Google Slides presentations.
+//   Reads and writes Google Slides presentations.
 // Documentation:
 //   https://developers.google.com/slides/
 
@@ -34,6 +34,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  Value "https://www.googleapis.com/auth/drive"
  */
 GTLR_EXTERN NSString * const kGTLRAuthScopeSlidesDrive;
+/**
+ *  Authorization scope: View and manage Google Drive files and folders that you
+ *  have opened or created with this app
+ *
+ *  Value "https://www.googleapis.com/auth/drive.file"
+ */
+GTLR_EXTERN NSString * const kGTLRAuthScopeSlidesDriveFile;
 /**
  *  Authorization scope: View the files in your Google Drive
  *
@@ -72,7 +79,7 @@ GTLR_EXTERN NSString * const kGTLRAuthScopeSlidesSpreadsheetsReadonly;
 /**
  *  Service for executing Google Slides API queries.
  *
- *  An API for creating and editing Google Slides presentations.
+ *  Reads and writes Google Slides presentations.
  */
 @interface GTLRSlidesService : GTLRService
 

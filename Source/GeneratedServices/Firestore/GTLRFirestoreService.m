@@ -2,7 +2,10 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Firestore API (firestore/v1beta1)
+//   Cloud Firestore API (firestore/v1)
+// Description:
+//   Accesses the NoSQL document database built for automatic scaling, high
+//   performance, and ease of application development.
 // Documentation:
 //   https://cloud.google.com/firestore
 
@@ -26,7 +29,7 @@ NSString * const kGTLRAuthScopeFirestoreDatastore     = @"https://www.googleapis
     // From discovery.
     self.rootURLString = @"https://firestore.googleapis.com/";
     self.batchPath = @"batch";
-    self.prettyPrintQueryParameterNames = @[ @"prettyPrint", @"pp" ];
+    self.prettyPrintQueryParameterNames = @[ @"prettyPrint" ];
   }
   return self;
 }

@@ -2,11 +2,11 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Apps Script API (script/v1)
+//   Apps Script API (script/v1)
 // Description:
-//   An API for managing and executing Google Apps Script projects.
+//   Manages and executes Google Apps Script projects.
 // Documentation:
-//   https://developers.google.com/apps-script/execution/rest/v1/scripts/run
+//   https://developers.google.com/apps-script/api/
 
 #import "GTLRScriptObjects.h"
 #import "GTLRScriptQuery.h"

@@ -2,10 +2,10 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Service Control API (servicecontrol/v1)
+//   Service Control API (servicecontrol/v1)
 // Description:
-//   Google Service Control provides control plane functionality to managed
-//   services, such as logging, monitoring, and status checks.
+//   Provides control plane functionality to managed services, such as logging,
+//   monitoring, and status checks.
 // Documentation:
 //   https://cloud.google.com/service-control/
 
@@ -22,8 +22,11 @@
 @class GTLRServiceControl_AllocateInfo;
 @class GTLRServiceControl_AuditLog_Metadata;
 @class GTLRServiceControl_AuditLog_Request;
+@class GTLRServiceControl_AuditLog_ResourceOriginalState;
 @class GTLRServiceControl_AuditLog_Response;
 @class GTLRServiceControl_AuditLog_ServiceData;
+@class GTLRServiceControl_Auth;
+@class GTLRServiceControl_Auth_Claims;
 @class GTLRServiceControl_AuthenticationInfo;
 @class GTLRServiceControl_AuthenticationInfo_ThirdPartyPrincipal;
 @class GTLRServiceControl_AuthorizationInfo;
@@ -33,11 +36,13 @@
 @class GTLRServiceControl_Distribution;
 @class GTLRServiceControl_ExplicitBuckets;
 @class GTLRServiceControl_ExponentialBuckets;
+@class GTLRServiceControl_HttpRequest;
 @class GTLRServiceControl_LinearBuckets;
 @class GTLRServiceControl_LogEntry;
 @class GTLRServiceControl_LogEntry_Labels;
 @class GTLRServiceControl_LogEntry_ProtoPayload;
 @class GTLRServiceControl_LogEntry_StructPayload;
+@class GTLRServiceControl_LogEntryOperation;
 @class GTLRServiceControl_MetricValue;
 @class GTLRServiceControl_MetricValue_Labels;
 @class GTLRServiceControl_MetricValueSet;
@@ -45,6 +50,8 @@
 @class GTLRServiceControl_Operation;
 @class GTLRServiceControl_Operation_Labels;
 @class GTLRServiceControl_Operation_UserLabels;
+@class GTLRServiceControl_Peer;
+@class GTLRServiceControl_Peer_Labels;
 @class GTLRServiceControl_QuotaError;
 @class GTLRServiceControl_QuotaInfo;
 @class GTLRServiceControl_QuotaInfo_QuotaConsumed;
@@ -53,8 +60,13 @@
 @class GTLRServiceControl_QuotaProperties;
 @class GTLRServiceControl_ReportError;
 @class GTLRServiceControl_ReportInfo;
+@class GTLRServiceControl_Request;
+@class GTLRServiceControl_Request_Headers;
 @class GTLRServiceControl_RequestMetadata;
+@class GTLRServiceControl_Resource;
+@class GTLRServiceControl_Resource_Labels;
 @class GTLRServiceControl_ResourceInfo;
+@class GTLRServiceControl_ResourceLocation;
 @class GTLRServiceControl_Status;
 @class GTLRServiceControl_Status_Details_Item;
 
@@ -134,6 +146,13 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_ClientAppBlocke
  */
 GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_CloudResourceManagerBackendUnavailable;
 /**
+ *  The input consumer info does not represent a valid consumer folder or
+ *  organization.
+ *
+ *  Value: "CONSUMER_INVALID"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_ConsumerInvalid;
+/**
  *  The consumer's request has been flagged as a DoS attack.
  *
  *  Value: "DENIAL_OF_SERVICE_DETECTED"
@@ -145,6 +164,12 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_DenialOfService
  *  Value: "ERROR_CODE_UNSPECIFIED"
  */
 GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_ErrorCodeUnspecified;
+/**
+ *  The credential in the request can not be verified.
+ *
+ *  Value: "INVALID_CREDENTIAL"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_InvalidCredential;
 /**
  *  The IP address of the consumer is invalid for the specific consumer
  *  project.
@@ -178,6 +203,18 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_LoasProjectLook
  */
 GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_LoasRoleInvalid;
 /**
+ *  Backend server for evaluating location policy is unavailable.
+ *
+ *  Value: "LOCATION_POLICY_BACKEND_UNAVAILABLE"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_LocationPolicyBackendUnavailable;
+/**
+ *  Request is not allowed as per location policies defined in Org Policy.
+ *
+ *  Value: "LOCATION_POLICY_VIOLATED"
+ */
+GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_LocationPolicyViolated;
+/**
  *  The backend server for looking up project id/number is unavailable.
  *
  *  Value: "NAMESPACE_LOOKUP_UNAVAILABLE"
@@ -190,8 +227,8 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_NamespaceLookup
  */
 GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_NoLoasProject;
 /**
- *  The consumer's project id was not found.
- *  Same as google.rpc.Code.NOT_FOUND.
+ *  The consumer's project id, network container, or resource container was
+ *  not found. Same as google.rpc.Code.NOT_FOUND.
  *
  *  Value: "NOT_FOUND"
  */
@@ -270,6 +307,18 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_SpatulaHeaderIn
  *  Value: "VISIBILITY_DENIED"
  */
 GTLR_EXTERN NSString * const kGTLRServiceControl_CheckError_Code_VisibilityDenied;
+
+// ----------------------------------------------------------------------------
+// GTLRServiceControl_ConsumerInfo.type
+
+/** Value: "CONSUMER_TYPE_UNSPECIFIED" */
+GTLR_EXTERN NSString * const kGTLRServiceControl_ConsumerInfo_Type_ConsumerTypeUnspecified;
+/** Value: "FOLDER" */
+GTLR_EXTERN NSString * const kGTLRServiceControl_ConsumerInfo_Type_Folder;
+/** Value: "ORGANIZATION" */
+GTLR_EXTERN NSString * const kGTLRServiceControl_ConsumerInfo_Type_Organization;
+/** Value: "PROJECT" */
+GTLR_EXTERN NSString * const kGTLRServiceControl_ConsumerInfo_Type_Project;
 
 // ----------------------------------------------------------------------------
 // GTLRServiceControl_LogEntry.severity
@@ -646,6 +695,9 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 /** Metadata about the operation. */
 @property(nonatomic, strong, nullable) GTLRServiceControl_RequestMetadata *requestMetadata;
 
+/** The resource location information. */
+@property(nonatomic, strong, nullable) GTLRServiceControl_ResourceLocation *resourceLocation;
+
 /**
  *  The resource or collection that is the target of the operation.
  *  The name is a scheme-less URI, not including the API service name.
@@ -654,6 +706,17 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  *  "shelves/SHELF_ID/books/BOOK_ID"
  */
 @property(nonatomic, copy, nullable) NSString *resourceName;
+
+/**
+ *  The resource's original state before mutation. Present only for
+ *  operations which have successfully modified the targeted resource(s).
+ *  In general, this field should contain all changed fields, except those
+ *  that are already been included in `request`, `response`, `metadata` or
+ *  `service_data` fields.
+ *  When the JSON object represented here has a proto equivalent,
+ *  the proto name will be indicated in the `\@type` property.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_AuditLog_ResourceOriginalState *resourceOriginalState;
 
 /**
  *  The operation response. This may not include all response elements,
@@ -715,6 +778,24 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 
 
 /**
+ *  The resource's original state before mutation. Present only for
+ *  operations which have successfully modified the targeted resource(s).
+ *  In general, this field should contain all changed fields, except those
+ *  that are already been included in `request`, `response`, `metadata` or
+ *  `service_data` fields.
+ *  When the JSON object represented here has a proto equivalent,
+ *  the proto name will be indicated in the `\@type` property.
+ *
+ *  @note This class is documented as having more properties of any valid JSON
+ *        type. Use @c -additionalJSONKeys and @c -additionalPropertyForName: to
+ *        get the list of properties and then fetch them; or @c
+ *        -additionalProperties to fetch them all at once.
+ */
+@interface GTLRServiceControl_AuditLog_ResourceOriginalState : GTLRObject
+@end
+
+
+/**
  *  The operation response. This may not include all response elements,
  *  such as those that are too large, privacy-sensitive, or duplicated
  *  elsewhere in the log record.
@@ -742,6 +823,100 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  *        -additionalProperties to fetch them all at once.
  */
 @interface GTLRServiceControl_AuditLog_ServiceData : GTLRObject
+@end
+
+
+/**
+ *  This message defines request authentication attributes. Terminology is
+ *  based on the JSON Web Token (JWT) standard, but the terms also
+ *  correlate to concepts in other standards.
+ */
+@interface GTLRServiceControl_Auth : GTLRObject
+
+/**
+ *  A list of access level resource names that allow resources to be
+ *  accessed by authenticated requester. It is part of Secure GCP processing
+ *  for the incoming request. An access level string has the format:
+ *  "//{api_service_name}/accessPolicies/{policy_id}/accessLevels/{short_name}"
+ *  Example:
+ *  "//accesscontextmanager.googleapis.com/accessPolicies/MY_POLICY_ID/accessLevels/MY_LEVEL"
+ */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *accessLevels;
+
+/**
+ *  The intended audience(s) for this authentication information. Reflects
+ *  the audience (`aud`) claim within a JWT. The audience
+ *  value(s) depends on the `issuer`, but typically include one or more of
+ *  the following pieces of information:
+ *  * The services intended to receive the credential such as
+ *  ["pubsub.googleapis.com", "storage.googleapis.com"]
+ *  * A set of service-based scopes. For example,
+ *  ["https://www.googleapis.com/auth/cloud-platform"]
+ *  * The client id of an app, such as the Firebase project id for JWTs
+ *  from Firebase Auth.
+ *  Consult the documentation for the credential issuer to determine the
+ *  information provided.
+ */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *audiences;
+
+/**
+ *  Structured claims presented with the credential. JWTs include
+ *  `{key: value}` pairs for standard and private claims. The following
+ *  is a subset of the standard required and optional claims that would
+ *  typically be presented for a Google-based JWT:
+ *  {'iss': 'accounts.google.com',
+ *  'sub': '113289723416554971153',
+ *  'aud': ['123456789012', 'pubsub.googleapis.com'],
+ *  'azp': '123456789012.apps.googleusercontent.com',
+ *  'email': 'jsmith\@example.com',
+ *  'iat': 1353601026,
+ *  'exp': 1353604926}
+ *  SAML assertions are similarly specified, but with an identity provider
+ *  dependent structure.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_Auth_Claims *claims;
+
+/**
+ *  The authorized presenter of the credential. Reflects the optional
+ *  Authorized Presenter (`azp`) claim within a JWT or the
+ *  OAuth client id. For example, a Google Cloud Platform client id looks
+ *  as follows: "123456789012.apps.googleusercontent.com".
+ */
+@property(nonatomic, copy, nullable) NSString *presenter;
+
+/**
+ *  The authenticated principal. Reflects the issuer (`iss`) and subject
+ *  (`sub`) claims within a JWT. The issuer and subject should be `/`
+ *  delimited, with `/` percent-encoded within the subject fragment. For
+ *  Google accounts, the principal format is:
+ *  "https://accounts.google.com/{id}"
+ */
+@property(nonatomic, copy, nullable) NSString *principal;
+
+@end
+
+
+/**
+ *  Structured claims presented with the credential. JWTs include
+ *  `{key: value}` pairs for standard and private claims. The following
+ *  is a subset of the standard required and optional claims that would
+ *  typically be presented for a Google-based JWT:
+ *  {'iss': 'accounts.google.com',
+ *  'sub': '113289723416554971153',
+ *  'aud': ['123456789012', 'pubsub.googleapis.com'],
+ *  'azp': '123456789012.apps.googleusercontent.com',
+ *  'email': 'jsmith\@example.com',
+ *  'iat': 1353601026,
+ *  'exp': 1353604926}
+ *  SAML assertions are similarly specified, but with an identity provider
+ *  dependent structure.
+ *
+ *  @note This class is documented as having more properties of any valid JSON
+ *        type. Use @c -additionalJSONKeys and @c -additionalPropertyForName: to
+ *        get the list of properties and then fetch them; or @c
+ *        -additionalProperties to fetch them all at once.
+ */
+@interface GTLRServiceControl_Auth_Claims : GTLRObject
 @end
 
 
@@ -812,6 +987,15 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  */
 @property(nonatomic, copy, nullable) NSString *resource;
 
+/**
+ *  Resource attributes used in IAM condition evaluation. This field contains
+ *  resource attributes like resource type and resource name.
+ *  To get the whole view of the attributes used in IAM
+ *  condition evaluation, the user must also look into
+ *  `AuditLog.request_metadata.request_attributes`.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_Resource *resourceAttributes;
+
 @end
 
 
@@ -850,11 +1034,17 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  *    @arg @c kGTLRServiceControl_CheckError_Code_CloudResourceManagerBackendUnavailable
  *        Cloud Resource Manager backend server is unavailable. (Value:
  *        "CLOUD_RESOURCE_MANAGER_BACKEND_UNAVAILABLE")
+ *    @arg @c kGTLRServiceControl_CheckError_Code_ConsumerInvalid The input
+ *        consumer info does not represent a valid consumer folder or
+ *        organization. (Value: "CONSUMER_INVALID")
  *    @arg @c kGTLRServiceControl_CheckError_Code_DenialOfServiceDetected The
  *        consumer's request has been flagged as a DoS attack. (Value:
  *        "DENIAL_OF_SERVICE_DETECTED")
  *    @arg @c kGTLRServiceControl_CheckError_Code_ErrorCodeUnspecified This is
  *        never used in `CheckResponse`. (Value: "ERROR_CODE_UNSPECIFIED")
+ *    @arg @c kGTLRServiceControl_CheckError_Code_InvalidCredential The
+ *        credential in the request can not be verified. (Value:
+ *        "INVALID_CREDENTIAL")
  *    @arg @c kGTLRServiceControl_CheckError_Code_IpAddressBlocked The IP
  *        address of the consumer is invalid for the specific consumer
  *        project. (Value: "IP_ADDRESS_BLOCKED")
@@ -869,14 +1059,20 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  *        "LOAS_PROJECT_LOOKUP_UNAVAILABLE")
  *    @arg @c kGTLRServiceControl_CheckError_Code_LoasRoleInvalid The consumer's
  *        LOAS role is invalid. (Value: "LOAS_ROLE_INVALID")
+ *    @arg @c kGTLRServiceControl_CheckError_Code_LocationPolicyBackendUnavailable
+ *        Backend server for evaluating location policy is unavailable. (Value:
+ *        "LOCATION_POLICY_BACKEND_UNAVAILABLE")
+ *    @arg @c kGTLRServiceControl_CheckError_Code_LocationPolicyViolated Request
+ *        is not allowed as per location policies defined in Org Policy. (Value:
+ *        "LOCATION_POLICY_VIOLATED")
  *    @arg @c kGTLRServiceControl_CheckError_Code_NamespaceLookupUnavailable The
  *        backend server for looking up project id/number is unavailable.
  *        (Value: "NAMESPACE_LOOKUP_UNAVAILABLE")
  *    @arg @c kGTLRServiceControl_CheckError_Code_NoLoasProject The consumer's
  *        LOAS role has no associated project. (Value: "NO_LOAS_PROJECT")
  *    @arg @c kGTLRServiceControl_CheckError_Code_NotFound The consumer's
- *        project id was not found.
- *        Same as google.rpc.Code.NOT_FOUND. (Value: "NOT_FOUND")
+ *        project id, network container, or resource container was
+ *        not found. Same as google.rpc.Code.NOT_FOUND. (Value: "NOT_FOUND")
  *    @arg @c kGTLRServiceControl_CheckError_Code_PermissionDenied The consumer
  *        doesn't have access to the specified resource.
  *        Same as google.rpc.Code.PERMISSION_DENIED. (Value:
@@ -919,6 +1115,15 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 
 /** Free-form text providing details on the error cause of the error. */
 @property(nonatomic, copy, nullable) NSString *detail;
+
+/**
+ *  Subject to whom this error applies. See the specific code enum for more
+ *  details on this field. For example:
+ *  - “project:<project-id or project-number>”
+ *  - “folder:<folder-id>”
+ *  - “organization:<organization-id>”
+ */
+@property(nonatomic, copy, nullable) NSString *subject;
 
 @end
 
@@ -1009,17 +1214,41 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 
 
 /**
- *  `ConsumerInfo` provides information about the consumer project.
+ *  `ConsumerInfo` provides information about the consumer.
  */
 @interface GTLRServiceControl_ConsumerInfo : GTLRObject
 
 /**
+ *  The consumer identity number, can be Google cloud project number, folder
+ *  number or organization number e.g. 1234567890. A value of 0 indicates no
+ *  consumer number is found.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *consumerNumber;
+
+/**
  *  The Google cloud project number, e.g. 1234567890. A value of 0 indicates
  *  no project number is found.
+ *  NOTE: This field is deprecated after Chemist support flexible consumer
+ *  id. New code should not depend on this field anymore.
  *
  *  Uses NSNumber of longLongValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *projectNumber;
+
+/**
+ *  type
+ *
+ *  Likely values:
+ *    @arg @c kGTLRServiceControl_ConsumerInfo_Type_ConsumerTypeUnspecified
+ *        Value "CONSUMER_TYPE_UNSPECIFIED"
+ *    @arg @c kGTLRServiceControl_ConsumerInfo_Type_Folder Value "FOLDER"
+ *    @arg @c kGTLRServiceControl_ConsumerInfo_Type_Organization Value
+ *        "ORGANIZATION"
+ *    @arg @c kGTLRServiceControl_ConsumerInfo_Type_Project Value "PROJECT"
+ */
+@property(nonatomic, copy, nullable) NSString *type;
 
 @end
 
@@ -1102,65 +1331,6 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 
 
 /**
- *  Request message for QuotaController.EndReconciliation.
- */
-@interface GTLRServiceControl_EndReconciliationRequest : GTLRObject
-
-/** Operation that describes the quota reconciliation. */
-@property(nonatomic, strong, nullable) GTLRServiceControl_QuotaOperation *reconciliationOperation;
-
-/**
- *  Specifies which version of service configuration should be used to process
- *  the request. If unspecified or no matching version can be found, the latest
- *  one will be used.
- */
-@property(nonatomic, copy, nullable) NSString *serviceConfigId;
-
-@end
-
-
-/**
- *  Response message for QuotaController.EndReconciliation.
- */
-@interface GTLRServiceControl_EndReconciliationResponse : GTLRObject
-
-/**
- *  The same operation_id value used in the EndReconciliationRequest. Used for
- *  logging and diagnostics purposes.
- */
-@property(nonatomic, copy, nullable) NSString *operationId;
-
-/**
- *  Metric values as tracked by One Platform before the adjustment was made.
- *  The following metrics will be included:
- *  1. Per quota metric total usage will be specified using the following gauge
- *  metric:
- *  "serviceruntime.googleapis.com/allocation/consumer/quota_used_count"
- *  2. Value for each quota limit associated with the metrics will be specified
- *  using the following gauge metric:
- *  "serviceruntime.googleapis.com/quota/limit"
- *  3. Delta value of the usage after the reconciliation for limits associated
- *  with the metrics will be specified using the following metric:
- *  "serviceruntime.googleapis.com/allocation/reconciliation_delta"
- *  The delta value is defined as:
- *  new_usage_from_client - existing_value_in_spanner.
- *  This metric is not defined in serviceruntime.yaml or in Cloud Monarch.
- *  This metric is meant for callers' use only. Since this metric is not
- *  defined in the monitoring backend, reporting on this metric will result in
- *  an error.
- */
-@property(nonatomic, strong, nullable) NSArray<GTLRServiceControl_MetricValueSet *> *quotaMetrics;
-
-/** Indicates the decision of the reconciliation end. */
-@property(nonatomic, strong, nullable) NSArray<GTLRServiceControl_QuotaError *> *reconciliationErrors;
-
-/** ID of the actual config used to process the request. */
-@property(nonatomic, copy, nullable) NSString *serviceConfigId;
-
-@end
-
-
-/**
  *  Describing buckets with arbitrary user-provided width.
  */
 @interface GTLRServiceControl_ExplicitBuckets : GTLRObject
@@ -1225,6 +1395,119 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 
 
 /**
+ *  A common proto for logging HTTP requests. Only contains semantics
+ *  defined by the HTTP specification. Product-specific logging
+ *  information MUST be defined in a separate message.
+ */
+@interface GTLRServiceControl_HttpRequest : GTLRObject
+
+/**
+ *  The number of HTTP response bytes inserted into cache. Set only when a
+ *  cache fill was attempted.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *cacheFillBytes;
+
+/**
+ *  Whether or not an entity was served from cache
+ *  (with or without validation).
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *cacheHit;
+
+/**
+ *  Whether or not a cache lookup was attempted.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *cacheLookup;
+
+/**
+ *  Whether or not the response was validated with the origin server before
+ *  being served from cache. This field is only meaningful if `cache_hit` is
+ *  True.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *cacheValidatedWithOriginServer;
+
+/**
+ *  The request processing latency on the server, from the time the request was
+ *  received until the response was sent.
+ */
+@property(nonatomic, strong, nullable) GTLRDuration *latency;
+
+/**
+ *  Protocol used for the request. Examples: "HTTP/1.1", "HTTP/2", "websocket"
+ */
+@property(nonatomic, copy, nullable) NSString *protocol;
+
+/**
+ *  The referer URL of the request, as defined in
+ *  [HTTP/1.1 Header Field
+ *  Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html).
+ */
+@property(nonatomic, copy, nullable) NSString *referer;
+
+/**
+ *  The IP address (IPv4 or IPv6) of the client that issued the HTTP
+ *  request. Examples: `"192.168.1.1"`, `"FE80::0202:B3FF:FE1E:8329"`.
+ */
+@property(nonatomic, copy, nullable) NSString *remoteIp;
+
+/** The request method. Examples: `"GET"`, `"HEAD"`, `"PUT"`, `"POST"`. */
+@property(nonatomic, copy, nullable) NSString *requestMethod;
+
+/**
+ *  The size of the HTTP request message in bytes, including the request
+ *  headers and the request body.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *requestSize;
+
+/**
+ *  The scheme (http, https), the host name, the path, and the query
+ *  portion of the URL that was requested.
+ *  Example: `"http://example.com/some/info?color=red"`.
+ */
+@property(nonatomic, copy, nullable) NSString *requestUrl;
+
+/**
+ *  The size of the HTTP response message sent back to the client, in bytes,
+ *  including the response headers and the response body.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *responseSize;
+
+/**
+ *  The IP address (IPv4 or IPv6) of the origin server that the request was
+ *  sent to.
+ */
+@property(nonatomic, copy, nullable) NSString *serverIp;
+
+/**
+ *  The response code indicating the status of the response.
+ *  Examples: 200, 404.
+ *
+ *  Uses NSNumber of intValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *status;
+
+/**
+ *  The user agent sent by the client. Example:
+ *  `"Mozilla/4.0 (compatible; MSIE 6.0; Windows 98; Q312461; .NET
+ *  CLR 1.0.3705)"`.
+ */
+@property(nonatomic, copy, nullable) NSString *userAgent;
+
+@end
+
+
+/**
  *  Describing buckets with constant width.
  */
 @interface GTLRServiceControl_LinearBuckets : GTLRObject
@@ -1266,6 +1549,12 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 @interface GTLRServiceControl_LogEntry : GTLRObject
 
 /**
+ *  Optional. Information about the HTTP request associated with this
+ *  log entry, if applicable.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_HttpRequest *httpRequest;
+
+/**
  *  A unique ID for the log entry used for deduplication. If omitted,
  *  the implementation will generate one based on operation_id.
  */
@@ -1282,6 +1571,12 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  *  `"book_log"`.
  */
 @property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Optional. Information about an operation associated with the log entry, if
+ *  applicable.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_LogEntryOperation *operation;
 
 /**
  *  The log entry payload, represented as a protocol buffer that is
@@ -1332,6 +1627,14 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  */
 @property(nonatomic, strong, nullable) GTLRDateTime *timestamp;
 
+/**
+ *  Optional. Resource name of the trace associated with the log entry, if any.
+ *  If this field contains a relative resource name, you can assume the name is
+ *  relative to `//tracing.googleapis.com`. Example:
+ *  `projects/my-projectid/traces/06796866738c859f2f19b7cfb3214824`
+ */
+@property(nonatomic, copy, nullable) NSString *trace;
+
 @end
 
 
@@ -1372,6 +1675,44 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  *        -additionalProperties to fetch them all at once.
  */
 @interface GTLRServiceControl_LogEntry_StructPayload : GTLRObject
+@end
+
+
+/**
+ *  Additional information about a potentially long-running operation with which
+ *  a log entry is associated.
+ */
+@interface GTLRServiceControl_LogEntryOperation : GTLRObject
+
+/**
+ *  Optional. Set this to True if this is the first log entry in the operation.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *first;
+
+/**
+ *  Optional. An arbitrary operation identifier. Log entries with the
+ *  same identifier are assumed to be part of the same operation.
+ *
+ *  identifier property maps to 'id' in JSON (to avoid Objective C's 'id').
+ */
+@property(nonatomic, copy, nullable) NSString *identifier;
+
+/**
+ *  Optional. Set this to True if this is the last log entry in the operation.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *last;
+
+/**
+ *  Optional. An arbitrary producer identifier. The combination of
+ *  `id` and `producer` must be globally unique. Examples for `producer`:
+ *  `"MyDivision.MyBigCompany.com"`, `"github.com/MyProject/MyApplication"`.
+ */
+@property(nonatomic, copy, nullable) NSString *producer;
+
 @end
 
 
@@ -1554,7 +1895,8 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  *  - `servicecontrol.googleapis.com/service_agent` describing the service
  *  used to handle the API request (e.g. ESP),
  *  - `servicecontrol.googleapis.com/platform` describing the platform
- *  where the API is served (e.g. GAE, GCE, GKE).
+ *  where the API is served, such as App Engine, Compute Engine, or
+ *  Kubernetes Engine.
  */
 @property(nonatomic, strong, nullable) GTLRServiceControl_Operation_Labels *labels;
 
@@ -1606,7 +1948,10 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  */
 @property(nonatomic, copy, nullable) NSString *resourceContainer;
 
-/** The resources that are involved in the operation. */
+/**
+ *  The resources that are involved in the operation.
+ *  The maximum supported number of entries in this field is 100.
+ */
 @property(nonatomic, strong, nullable) NSArray<GTLRServiceControl_ResourceInfo *> *resources;
 
 /** Required. Start time of the operation. */
@@ -1636,7 +1981,8 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  *  - `servicecontrol.googleapis.com/service_agent` describing the service
  *  used to handle the API request (e.g. ESP),
  *  - `servicecontrol.googleapis.com/platform` describing the platform
- *  where the API is served (e.g. GAE, GCE, GKE).
+ *  where the API is served, such as App Engine, Compute Engine, or
+ *  Kubernetes Engine.
  *
  *  @note This class is documented as having more properties of NSString. Use @c
  *        -additionalJSONKeys and @c -additionalPropertyForName: to get the list
@@ -1658,6 +2004,62 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  *        fetch them all at once.
  */
 @interface GTLRServiceControl_Operation_UserLabels : GTLRObject
+@end
+
+
+/**
+ *  This message defines attributes for a node that handles a network request.
+ *  The node can be either a service or an application that sends, forwards,
+ *  or receives the request. Service peers should fill in the `service`,
+ *  `principal`, and `labels` as appropriate.
+ */
+@interface GTLRServiceControl_Peer : GTLRObject
+
+/** The IP address of the peer. */
+@property(nonatomic, copy, nullable) NSString *ip;
+
+/** The labels associated with the peer. */
+@property(nonatomic, strong, nullable) GTLRServiceControl_Peer_Labels *labels;
+
+/**
+ *  The network port of the peer.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *port;
+
+/**
+ *  The identity of this peer. Similar to `Request.auth.principal`, but
+ *  relative to the peer instead of the request. For example, the
+ *  idenity associated with a load balancer that forwared the request.
+ */
+@property(nonatomic, copy, nullable) NSString *principal;
+
+/**
+ *  The CLDR country/region code associated with the above IP address.
+ *  If the IP address is private, the `region_code` should reflect the
+ *  physical location where this peer is running.
+ */
+@property(nonatomic, copy, nullable) NSString *regionCode;
+
+/**
+ *  The canonical service name of the peer.
+ *  NOTE: different systems may have different service naming schemes.
+ */
+@property(nonatomic, copy, nullable) NSString *service;
+
+@end
+
+
+/**
+ *  The labels associated with the peer.
+ *
+ *  @note This class is documented as having more properties of NSString. Use @c
+ *        -additionalJSONKeys and @c -additionalPropertyForName: to get the list
+ *        of properties and then fetch them; or @c -additionalProperties to
+ *        fetch them all at once.
+ */
+@interface GTLRServiceControl_Peer_Labels : GTLRObject
 @end
 
 
@@ -1922,59 +2324,6 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 
 
 /**
- *  Request message for the ReleaseQuota method.
- */
-@interface GTLRServiceControl_ReleaseQuotaRequest : GTLRObject
-
-/** Operation that describes the quota release. */
-@property(nonatomic, strong, nullable) GTLRServiceControl_QuotaOperation *releaseOperation;
-
-/**
- *  Specifies which version of service configuration should be used to process
- *  the request. If unspecified or no matching version can be found, the latest
- *  one will be used.
- */
-@property(nonatomic, copy, nullable) NSString *serviceConfigId;
-
-@end
-
-
-/**
- *  Response message for the ReleaseQuota method.
- */
-@interface GTLRServiceControl_ReleaseQuotaResponse : GTLRObject
-
-/**
- *  The same operation_id value used in the ReleaseQuotaRequest. Used for
- *  logging and diagnostics purposes.
- */
-@property(nonatomic, copy, nullable) NSString *operationId;
-
-/**
- *  Quota metrics to indicate the result of release. Depending on the
- *  request, one or more of the following metrics will be included:
- *  1. For rate quota, per quota group or per quota metric released amount
- *  will be specified using the following delta metric:
- *  "serviceruntime.googleapis.com/api/consumer/quota_refund_count"
- *  2. For allocation quota, per quota metric total usage will be specified
- *  using the following gauge metric:
- *  "serviceruntime.googleapis.com/allocation/consumer/quota_used_count"
- *  3. For allocation quota, value for each quota limit associated with
- *  the metrics will be specified using the following gauge metric:
- *  "serviceruntime.googleapis.com/quota/limit"
- */
-@property(nonatomic, strong, nullable) NSArray<GTLRServiceControl_MetricValueSet *> *quotaMetrics;
-
-/** Indicates the decision of the release. */
-@property(nonatomic, strong, nullable) NSArray<GTLRServiceControl_QuotaError *> *releaseErrors;
-
-/** ID of the actual config used to process the request. */
-@property(nonatomic, copy, nullable) NSString *serviceConfigId;
-
-@end
-
-
-/**
  *  Represents the processing error of one Operation in the request.
  */
 @interface GTLRServiceControl_ReportError : GTLRObject
@@ -2069,6 +2418,100 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 
 
 /**
+ *  This message defines attributes for an HTTP request. If the actual
+ *  request is not an HTTP request, the runtime system should try to map
+ *  the actual request to an equivalent HTTP request.
+ */
+@interface GTLRServiceControl_Request : GTLRObject
+
+/**
+ *  The request authentication. May be absent for unauthenticated requests.
+ *  Derived from the HTTP request `Authorization` header or equivalent.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_Auth *auth;
+
+/** The HTTP URL fragment. No URL decoding is performed. */
+@property(nonatomic, copy, nullable) NSString *fragment;
+
+/**
+ *  The HTTP request headers. If multiple headers share the same key, they
+ *  must be merged according to the HTTP spec. All header keys must be
+ *  lowercased, because HTTP header keys are case-insensitive.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_Request_Headers *headers;
+
+/** The HTTP request `Host` header value. */
+@property(nonatomic, copy, nullable) NSString *host;
+
+/**
+ *  The unique ID for a request, which can be propagated to downstream
+ *  systems. The ID should have low probability of collision
+ *  within a single day for a specific service.
+ *
+ *  identifier property maps to 'id' in JSON (to avoid Objective C's 'id').
+ */
+@property(nonatomic, copy, nullable) NSString *identifier;
+
+/** The HTTP request method, such as `GET`, `POST`. */
+@property(nonatomic, copy, nullable) NSString *method;
+
+/** The HTTP URL path. */
+@property(nonatomic, copy, nullable) NSString *path;
+
+/**
+ *  The network protocol used with the request, such as "http/1.1",
+ *  "spdy/3", "h2", "h2c", "webrtc", "tcp", "udp", "quic". See
+ *  https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids
+ *  for details.
+ */
+@property(nonatomic, copy, nullable) NSString *protocol;
+
+/**
+ *  The HTTP URL query in the format of `name1=value`&name2=value2`, as it
+ *  appears in the first line of the HTTP request. No decoding is performed.
+ */
+@property(nonatomic, copy, nullable) NSString *query;
+
+/**
+ *  A special parameter for request reason. It is used by security systems
+ *  to associate auditing information with a request.
+ */
+@property(nonatomic, copy, nullable) NSString *reason;
+
+/** The HTTP URL scheme, such as `http` and `https`. */
+@property(nonatomic, copy, nullable) NSString *scheme;
+
+/**
+ *  The HTTP request size in bytes. If unknown, it must be -1.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *size;
+
+/**
+ *  The timestamp when the `destination` service receives the first byte of
+ *  the request.
+ */
+@property(nonatomic, strong, nullable) GTLRDateTime *time;
+
+@end
+
+
+/**
+ *  The HTTP request headers. If multiple headers share the same key, they
+ *  must be merged according to the HTTP spec. All header keys must be
+ *  lowercased, because HTTP header keys are case-insensitive.
+ *
+ *  @note This class is documented as having more properties of NSString. Use @c
+ *        -additionalJSONKeys and @c -additionalPropertyForName: to get the list
+ *        of properties and then fetch them; or @c -additionalProperties to
+ *        fetch them all at once.
+ */
+@interface GTLRServiceControl_Request_Headers : GTLRObject
+@end
+
+
+/**
  *  Metadata about the request.
  */
 @interface GTLRServiceControl_RequestMetadata : GTLRObject
@@ -2111,6 +2554,81 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  */
 @property(nonatomic, copy, nullable) NSString *callerSuppliedUserAgent;
 
+/**
+ *  The destination of a network activity, such as accepting a TCP connection.
+ *  In a multi hop network activity, the destination represents the receiver of
+ *  the last hop. Only two fields are used in this message, Peer.port and
+ *  Peer.ip. These fields are optionally populated by those services utilizing
+ *  the IAM condition feature.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_Peer *destinationAttributes;
+
+/**
+ *  Request attributes used in IAM condition evaluation. This field contains
+ *  request attributes like request time and access levels associated with
+ *  the request.
+ *  To get the whole view of the attributes used in IAM
+ *  condition evaluation, the user must also look into
+ *  `AuditLog.authentication_info.resource_attributes`.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_Request *requestAttributes;
+
+@end
+
+
+/**
+ *  This message defines core attributes for a resource. A resource is an
+ *  addressable (named) entity provided by the destination service. For
+ *  example, a file stored on a network storage service.
+ */
+@interface GTLRServiceControl_Resource : GTLRObject
+
+/**
+ *  The labels or tags on the resource, such as AWS resource tags and
+ *  Kubernetes resource labels.
+ */
+@property(nonatomic, strong, nullable) GTLRServiceControl_Resource_Labels *labels;
+
+/**
+ *  The stable identifier (name) of a resource on the `service`. A resource
+ *  can be logically identified as "//{resource.service}/{resource.name}".
+ *  The differences between a resource name and a URI are:
+ *  * Resource name is a logical identifier, independent of network
+ *  protocol and API version. For example,
+ *  `//pubsub.googleapis.com/projects/123/topics/news-feed`.
+ *  * URI often includes protocol and version information, so it can
+ *  be used directly by applications. For example,
+ *  `https://pubsub.googleapis.com/v1/projects/123/topics/news-feed`.
+ *  See https://cloud.google.com/apis/design/resource_names for details.
+ */
+@property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  The name of the service that this resource belongs to, such as
+ *  `pubsub.googleapis.com`. The service may be different from the DNS
+ *  hostname that actually serves the request.
+ */
+@property(nonatomic, copy, nullable) NSString *service;
+
+/**
+ *  The type of the resource. The scheme is platform-specific because
+ *  different platforms define their resources differently.
+ */
+@property(nonatomic, copy, nullable) NSString *type;
+
+@end
+
+
+/**
+ *  The labels or tags on the resource, such as AWS resource tags and
+ *  Kubernetes resource labels.
+ *
+ *  @note This class is documented as having more properties of NSString. Use @c
+ *        -additionalJSONKeys and @c -additionalPropertyForName: to get the list
+ *        of properties and then fetch them; or @c -additionalProperties to
+ *        fetch them all at once.
+ */
+@interface GTLRServiceControl_Resource_Labels : GTLRObject
 @end
 
 
@@ -2128,6 +2646,13 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
  */
 @property(nonatomic, copy, nullable) NSString *resourceContainer;
 
+/**
+ *  The location of the resource. If not empty, the resource will be checked
+ *  against location policy. The value must be a valid zone, region or
+ *  multiregion. For example: "europe-west4" or "northamerica-northeast1-a"
+ */
+@property(nonatomic, copy, nullable) NSString *resourceLocation;
+
 /** Name of the resource. This is used for auditing purposes. */
 @property(nonatomic, copy, nullable) NSString *resourceName;
 
@@ -2135,51 +2660,27 @@ GTLR_EXTERN NSString * const kGTLRServiceControl_QuotaProperties_QuotaMode_Relea
 
 
 /**
- *  Request message for QuotaController.StartReconciliation.
+ *  Location information about a resource.
  */
-@interface GTLRServiceControl_StartReconciliationRequest : GTLRObject
-
-/** Operation that describes the quota reconciliation. */
-@property(nonatomic, strong, nullable) GTLRServiceControl_QuotaOperation *reconciliationOperation;
+@interface GTLRServiceControl_ResourceLocation : GTLRObject
 
 /**
- *  Specifies which version of service configuration should be used to process
- *  the request. If unspecified or no matching version can be found, the latest
- *  one will be used.
+ *  The locations of a resource after the execution of the operation.
+ *  For example:
+ *  "europe-west1-a"
+ *  "us-east1"
+ *  "nam3"
  */
-@property(nonatomic, copy, nullable) NSString *serviceConfigId;
-
-@end
-
+@property(nonatomic, strong, nullable) NSArray<NSString *> *currentLocations;
 
 /**
- *  Response message for QuotaController.StartReconciliation.
+ *  The locations of a resource prior to the execution of the operation.
+ *  For example:
+ *  "europe-west1-a"
+ *  "us-east1"
+ *  "nam3"
  */
-@interface GTLRServiceControl_StartReconciliationResponse : GTLRObject
-
-/**
- *  The same operation_id value used in the StartReconciliationRequest. Used
- *  for logging and diagnostics purposes.
- */
-@property(nonatomic, copy, nullable) NSString *operationId;
-
-/**
- *  Metric values as tracked by One Platform before the start of
- *  reconciliation. The following metrics will be included:
- *  1. Per quota metric total usage will be specified using the following gauge
- *  metric:
- *  "serviceruntime.googleapis.com/allocation/consumer/quota_used_count"
- *  2. Value for each quota limit associated with the metrics will be specified
- *  using the following gauge metric:
- *  "serviceruntime.googleapis.com/quota/limit"
- */
-@property(nonatomic, strong, nullable) NSArray<GTLRServiceControl_MetricValueSet *> *quotaMetrics;
-
-/** Indicates the decision of the reconciliation start. */
-@property(nonatomic, strong, nullable) NSArray<GTLRServiceControl_QuotaError *> *reconciliationErrors;
-
-/** ID of the actual config used to process the request. */
-@property(nonatomic, copy, nullable) NSString *serviceConfigId;
+@property(nonatomic, strong, nullable) NSArray<NSString *> *originalLocations;
 
 @end
 

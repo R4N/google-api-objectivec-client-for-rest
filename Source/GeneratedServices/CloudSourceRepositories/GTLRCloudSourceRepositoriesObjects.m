@@ -19,18 +19,22 @@ NSString * const kGTLRCloudSourceRepositories_AuditLogConfig_LogType_DataRead = 
 NSString * const kGTLRCloudSourceRepositories_AuditLogConfig_LogType_DataWrite = @"DATA_WRITE";
 NSString * const kGTLRCloudSourceRepositories_AuditLogConfig_LogType_LogTypeUnspecified = @"LOG_TYPE_UNSPECIFIED";
 
+// GTLRCloudSourceRepositories_PubsubConfig.messageFormat
+NSString * const kGTLRCloudSourceRepositories_PubsubConfig_MessageFormat_Json = @"JSON";
+NSString * const kGTLRCloudSourceRepositories_PubsubConfig_MessageFormat_MessageFormatUnspecified = @"MESSAGE_FORMAT_UNSPECIFIED";
+NSString * const kGTLRCloudSourceRepositories_PubsubConfig_MessageFormat_Protobuf = @"PROTOBUF";
+
 // ----------------------------------------------------------------------------
 //
 //   GTLRCloudSourceRepositories_AuditConfig
 //
 
 @implementation GTLRCloudSourceRepositories_AuditConfig
-@dynamic auditLogConfigs, exemptedMembers, service;
+@dynamic auditLogConfigs, service;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
-    @"auditLogConfigs" : [GTLRCloudSourceRepositories_AuditLogConfig class],
-    @"exemptedMembers" : [NSString class]
+    @"auditLogConfigs" : [GTLRCloudSourceRepositories_AuditLogConfig class]
   };
   return map;
 }
@@ -136,7 +140,7 @@ NSString * const kGTLRCloudSourceRepositories_AuditLogConfig_LogType_LogTypeUnsp
 //
 
 @implementation GTLRCloudSourceRepositories_Policy
-@dynamic auditConfigs, bindings, ETag, iamOwned, version;
+@dynamic auditConfigs, bindings, ETag, version;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"ETag" : @"etag" };
@@ -155,11 +159,59 @@ NSString * const kGTLRCloudSourceRepositories_AuditLogConfig_LogType_LogTypeUnsp
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRCloudSourceRepositories_ProjectConfig
+//
+
+@implementation GTLRCloudSourceRepositories_ProjectConfig
+@dynamic enablePrivateKeyCheck, name, pubsubConfigs;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRCloudSourceRepositories_ProjectConfig_PubsubConfigs
+//
+
+@implementation GTLRCloudSourceRepositories_ProjectConfig_PubsubConfigs
+
++ (Class)classForAdditionalProperties {
+  return [GTLRCloudSourceRepositories_PubsubConfig class];
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRCloudSourceRepositories_PubsubConfig
+//
+
+@implementation GTLRCloudSourceRepositories_PubsubConfig
+@dynamic messageFormat, serviceAccountEmail, topic;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRCloudSourceRepositories_Repo
 //
 
 @implementation GTLRCloudSourceRepositories_Repo
-@dynamic mirrorConfig, name, size, url;
+@dynamic mirrorConfig, name, pubsubConfigs, size, url;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRCloudSourceRepositories_Repo_PubsubConfigs
+//
+
+@implementation GTLRCloudSourceRepositories_Repo_PubsubConfigs
+
++ (Class)classForAdditionalProperties {
+  return [GTLRCloudSourceRepositories_PubsubConfig class];
+}
+
 @end
 
 
@@ -206,4 +258,24 @@ NSString * const kGTLRCloudSourceRepositories_AuditLogConfig_LogType_LogTypeUnsp
   return map;
 }
 
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRCloudSourceRepositories_UpdateProjectConfigRequest
+//
+
+@implementation GTLRCloudSourceRepositories_UpdateProjectConfigRequest
+@dynamic projectConfig, updateMask;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRCloudSourceRepositories_UpdateRepoRequest
+//
+
+@implementation GTLRCloudSourceRepositories_UpdateRepoRequest
+@dynamic repo, updateMask;
 @end

@@ -2,12 +2,11 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Cloud Tasks API (cloudtasks/v2beta2)
+//   Cloud Tasks API (cloudtasks/v2beta3)
 // Description:
-//   Manages the execution of large numbers of distributed requests. Cloud Tasks
-//   is in Alpha.
+//   Manages the execution of large numbers of distributed requests.
 // Documentation:
-//   https://cloud.google.com/cloud-tasks/
+//   https://cloud.google.com/tasks/
 
 #import "GTLRCloudTasksObjects.h"
 
@@ -22,39 +21,16 @@ NSString * const kGTLRCloudTasks_AppEngineHttpRequest_HttpMethod_HttpMethodUnspe
 NSString * const kGTLRCloudTasks_AppEngineHttpRequest_HttpMethod_Post = @"POST";
 NSString * const kGTLRCloudTasks_AppEngineHttpRequest_HttpMethod_Put = @"PUT";
 
-// GTLRCloudTasks_AppEngineTaskTarget.httpMethod
-NSString * const kGTLRCloudTasks_AppEngineTaskTarget_HttpMethod_Delete = @"DELETE";
-NSString * const kGTLRCloudTasks_AppEngineTaskTarget_HttpMethod_Get = @"GET";
-NSString * const kGTLRCloudTasks_AppEngineTaskTarget_HttpMethod_Head = @"HEAD";
-NSString * const kGTLRCloudTasks_AppEngineTaskTarget_HttpMethod_HttpMethodUnspecified = @"HTTP_METHOD_UNSPECIFIED";
-NSString * const kGTLRCloudTasks_AppEngineTaskTarget_HttpMethod_Post = @"POST";
-NSString * const kGTLRCloudTasks_AppEngineTaskTarget_HttpMethod_Put = @"PUT";
-
-// GTLRCloudTasks_CancelLeaseRequest.responseView
-NSString * const kGTLRCloudTasks_CancelLeaseRequest_ResponseView_Basic = @"BASIC";
-NSString * const kGTLRCloudTasks_CancelLeaseRequest_ResponseView_Full = @"FULL";
-NSString * const kGTLRCloudTasks_CancelLeaseRequest_ResponseView_ViewUnspecified = @"VIEW_UNSPECIFIED";
-
 // GTLRCloudTasks_CreateTaskRequest.responseView
 NSString * const kGTLRCloudTasks_CreateTaskRequest_ResponseView_Basic = @"BASIC";
 NSString * const kGTLRCloudTasks_CreateTaskRequest_ResponseView_Full = @"FULL";
 NSString * const kGTLRCloudTasks_CreateTaskRequest_ResponseView_ViewUnspecified = @"VIEW_UNSPECIFIED";
 
-// GTLRCloudTasks_PullTasksRequest.responseView
-NSString * const kGTLRCloudTasks_PullTasksRequest_ResponseView_Basic = @"BASIC";
-NSString * const kGTLRCloudTasks_PullTasksRequest_ResponseView_Full = @"FULL";
-NSString * const kGTLRCloudTasks_PullTasksRequest_ResponseView_ViewUnspecified = @"VIEW_UNSPECIFIED";
-
-// GTLRCloudTasks_Queue.queueState
-NSString * const kGTLRCloudTasks_Queue_QueueState_Disabled     = @"DISABLED";
-NSString * const kGTLRCloudTasks_Queue_QueueState_Paused       = @"PAUSED";
-NSString * const kGTLRCloudTasks_Queue_QueueState_QueueStateUnspecified = @"QUEUE_STATE_UNSPECIFIED";
-NSString * const kGTLRCloudTasks_Queue_QueueState_Running      = @"RUNNING";
-
-// GTLRCloudTasks_RenewLeaseRequest.responseView
-NSString * const kGTLRCloudTasks_RenewLeaseRequest_ResponseView_Basic = @"BASIC";
-NSString * const kGTLRCloudTasks_RenewLeaseRequest_ResponseView_Full = @"FULL";
-NSString * const kGTLRCloudTasks_RenewLeaseRequest_ResponseView_ViewUnspecified = @"VIEW_UNSPECIFIED";
+// GTLRCloudTasks_Queue.state
+NSString * const kGTLRCloudTasks_Queue_State_Disabled         = @"DISABLED";
+NSString * const kGTLRCloudTasks_Queue_State_Paused           = @"PAUSED";
+NSString * const kGTLRCloudTasks_Queue_State_Running          = @"RUNNING";
+NSString * const kGTLRCloudTasks_Queue_State_StateUnspecified = @"STATE_UNSPECIFIED";
 
 // GTLRCloudTasks_RunTaskRequest.responseView
 NSString * const kGTLRCloudTasks_RunTaskRequest_ResponseView_Basic = @"BASIC";
@@ -68,11 +44,11 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 
 // ----------------------------------------------------------------------------
 //
-//   GTLRCloudTasks_AcknowledgeTaskRequest
+//   GTLRCloudTasks_AppEngineHttpQueue
 //
 
-@implementation GTLRCloudTasks_AcknowledgeTaskRequest
-@dynamic scheduleTime;
+@implementation GTLRCloudTasks_AppEngineHttpQueue
+@dynamic appEngineRoutingOverride;
 @end
 
 
@@ -82,7 +58,7 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 //
 
 @implementation GTLRCloudTasks_AppEngineHttpRequest
-@dynamic appEngineRouting, headers, httpMethod, payload, relativeUrl;
+@dynamic appEngineRouting, body, headers, httpMethod, relativeUri;
 @end
 
 
@@ -102,26 +78,6 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 
 // ----------------------------------------------------------------------------
 //
-//   GTLRCloudTasks_AppEngineHttpTarget
-//
-
-@implementation GTLRCloudTasks_AppEngineHttpTarget
-@dynamic appEngineRoutingOverride;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_AppEngineQueueConfig
-//
-
-@implementation GTLRCloudTasks_AppEngineQueueConfig
-@dynamic appEngineRoutingOverride;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
 //   GTLRCloudTasks_AppEngineRouting
 //
 
@@ -132,34 +88,10 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 
 // ----------------------------------------------------------------------------
 //
-//   GTLRCloudTasks_AppEngineTaskTarget
+//   GTLRCloudTasks_Attempt
 //
 
-@implementation GTLRCloudTasks_AppEngineTaskTarget
-@dynamic appEngineRouting, headers, httpMethod, payload, relativeUrl;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_AppEngineTaskTarget_Headers
-//
-
-@implementation GTLRCloudTasks_AppEngineTaskTarget_Headers
-
-+ (Class)classForAdditionalProperties {
-  return [NSString class];
-}
-
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_AttemptStatus
-//
-
-@implementation GTLRCloudTasks_AttemptStatus
+@implementation GTLRCloudTasks_Attempt
 @dynamic dispatchTime, responseStatus, responseTime, scheduleTime;
 @end
 
@@ -170,7 +102,7 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 //
 
 @implementation GTLRCloudTasks_Binding
-@dynamic members, role;
+@dynamic condition, members, role;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -179,16 +111,6 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
   return map;
 }
 
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_CancelLeaseRequest
-//
-
-@implementation GTLRCloudTasks_CancelLeaseRequest
-@dynamic responseView, scheduleTime;
 @end
 
 
@@ -208,6 +130,21 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 //
 
 @implementation GTLRCloudTasks_Empty
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRCloudTasks_Expr
+//
+
+@implementation GTLRCloudTasks_Expr
+@dynamic descriptionProperty, expression, location, title;
+
++ (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
+  return @{ @"descriptionProperty" : @"description" };
+}
+
 @end
 
 
@@ -292,7 +229,7 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 //
 
 @implementation GTLRCloudTasks_Location
-@dynamic labels, locationId, metadata, name;
+@dynamic displayName, labels, locationId, metadata, name;
 @end
 
 
@@ -357,72 +294,6 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 
 // ----------------------------------------------------------------------------
 //
-//   GTLRCloudTasks_PullMessage
-//
-
-@implementation GTLRCloudTasks_PullMessage
-@dynamic payload, tag;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_PullQueueConfig
-//
-
-@implementation GTLRCloudTasks_PullQueueConfig
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_PullTarget
-//
-
-@implementation GTLRCloudTasks_PullTarget
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_PullTasksRequest
-//
-
-@implementation GTLRCloudTasks_PullTasksRequest
-@dynamic filter, leaseDuration, maxTasks, responseView;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_PullTasksResponse
-//
-
-@implementation GTLRCloudTasks_PullTasksResponse
-@dynamic tasks;
-
-+ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
-  NSDictionary<NSString *, Class> *map = @{
-    @"tasks" : [GTLRCloudTasks_Task class]
-  };
-  return map;
-}
-
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_PullTaskTarget
-//
-
-@implementation GTLRCloudTasks_PullTaskTarget
-@dynamic payload, tag;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
 //   GTLRCloudTasks_PurgeQueueRequest
 //
 
@@ -436,8 +307,7 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 //
 
 @implementation GTLRCloudTasks_Queue
-@dynamic appEngineHttpTarget, appEngineQueueConfig, name, pullQueueConfig,
-         pullTarget, purgeTime, queueState, rateLimits, retryConfig;
+@dynamic appEngineHttpQueue, name, purgeTime, rateLimits, retryConfig, state;
 @end
 
 
@@ -447,17 +317,7 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 //
 
 @implementation GTLRCloudTasks_RateLimits
-@dynamic maxBurstSize, maxConcurrentTasks, maxTasksDispatchedPerSecond;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_RenewLeaseRequest
-//
-
-@implementation GTLRCloudTasks_RenewLeaseRequest
-@dynamic leaseDuration, responseView, scheduleTime;
+@dynamic maxBurstSize, maxConcurrentDispatches, maxDispatchesPerSecond;
 @end
 
 
@@ -476,8 +336,7 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 //
 
 @implementation GTLRCloudTasks_RetryConfig
-@dynamic maxAttempts, maxBackoff, maxDoublings, maxRetryDuration, minBackoff,
-         unlimitedAttempts;
+@dynamic maxAttempts, maxBackoff, maxDoublings, maxRetryDuration, minBackoff;
 @end
 
 
@@ -539,19 +398,8 @@ NSString * const kGTLRCloudTasks_Task_View_ViewUnspecified = @"VIEW_UNSPECIFIED"
 //
 
 @implementation GTLRCloudTasks_Task
-@dynamic appEngineHttpRequest, appEngineTaskTarget, createTime, name,
-         pullMessage, pullTaskTarget, scheduleTime, taskStatus, view;
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudTasks_TaskStatus
-//
-
-@implementation GTLRCloudTasks_TaskStatus
-@dynamic attemptDispatchCount, attemptResponseCount, firstAttemptStatus,
-         lastAttemptStatus;
+@dynamic appEngineHttpRequest, createTime, dispatchCount, firstAttempt,
+         lastAttempt, name, responseCount, scheduleTime, view;
 @end
 
 

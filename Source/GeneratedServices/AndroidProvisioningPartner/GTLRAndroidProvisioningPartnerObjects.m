@@ -4,8 +4,8 @@
 // API:
 //   Android Device Provisioning Partner API (androiddeviceprovisioning/v1)
 // Description:
-//   Automates reseller integration into zero-touch enrollment by assigning
-//   devices to customers and creating device reports.
+//   Automates Android zero-touch enrollment for device resellers, customers,
+//   and EMMs.
 // Documentation:
 //   https://developers.google.com/zero-touch/
 
@@ -15,10 +15,18 @@
 // Constants
 
 // GTLRAndroidProvisioningPartner_ClaimDeviceRequest.sectionType
+NSString * const kGTLRAndroidProvisioningPartner_ClaimDeviceRequest_SectionType_SectionTypeSimLock = @"SECTION_TYPE_SIM_LOCK";
 NSString * const kGTLRAndroidProvisioningPartner_ClaimDeviceRequest_SectionType_SectionTypeUnspecified = @"SECTION_TYPE_UNSPECIFIED";
 NSString * const kGTLRAndroidProvisioningPartner_ClaimDeviceRequest_SectionType_SectionTypeZeroTouch = @"SECTION_TYPE_ZERO_TOUCH";
 
+// GTLRAndroidProvisioningPartner_Company.termsStatus
+NSString * const kGTLRAndroidProvisioningPartner_Company_TermsStatus_TermsStatusAccepted = @"TERMS_STATUS_ACCEPTED";
+NSString * const kGTLRAndroidProvisioningPartner_Company_TermsStatus_TermsStatusNotAccepted = @"TERMS_STATUS_NOT_ACCEPTED";
+NSString * const kGTLRAndroidProvisioningPartner_Company_TermsStatus_TermsStatusStale = @"TERMS_STATUS_STALE";
+NSString * const kGTLRAndroidProvisioningPartner_Company_TermsStatus_TermsStatusUnspecified = @"TERMS_STATUS_UNSPECIFIED";
+
 // GTLRAndroidProvisioningPartner_DeviceClaim.sectionType
+NSString * const kGTLRAndroidProvisioningPartner_DeviceClaim_SectionType_SectionTypeSimLock = @"SECTION_TYPE_SIM_LOCK";
 NSString * const kGTLRAndroidProvisioningPartner_DeviceClaim_SectionType_SectionTypeUnspecified = @"SECTION_TYPE_UNSPECIFIED";
 NSString * const kGTLRAndroidProvisioningPartner_DeviceClaim_SectionType_SectionTypeZeroTouch = @"SECTION_TYPE_ZERO_TOUCH";
 
@@ -29,14 +37,17 @@ NSString * const kGTLRAndroidProvisioningPartner_DevicesLongRunningOperationMeta
 NSString * const kGTLRAndroidProvisioningPartner_DevicesLongRunningOperationMetadata_ProcessingStatus_BatchProcessStatusUnspecified = @"BATCH_PROCESS_STATUS_UNSPECIFIED";
 
 // GTLRAndroidProvisioningPartner_FindDevicesByOwnerRequest.sectionType
+NSString * const kGTLRAndroidProvisioningPartner_FindDevicesByOwnerRequest_SectionType_SectionTypeSimLock = @"SECTION_TYPE_SIM_LOCK";
 NSString * const kGTLRAndroidProvisioningPartner_FindDevicesByOwnerRequest_SectionType_SectionTypeUnspecified = @"SECTION_TYPE_UNSPECIFIED";
 NSString * const kGTLRAndroidProvisioningPartner_FindDevicesByOwnerRequest_SectionType_SectionTypeZeroTouch = @"SECTION_TYPE_ZERO_TOUCH";
 
 // GTLRAndroidProvisioningPartner_PartnerClaim.sectionType
+NSString * const kGTLRAndroidProvisioningPartner_PartnerClaim_SectionType_SectionTypeSimLock = @"SECTION_TYPE_SIM_LOCK";
 NSString * const kGTLRAndroidProvisioningPartner_PartnerClaim_SectionType_SectionTypeUnspecified = @"SECTION_TYPE_UNSPECIFIED";
 NSString * const kGTLRAndroidProvisioningPartner_PartnerClaim_SectionType_SectionTypeZeroTouch = @"SECTION_TYPE_ZERO_TOUCH";
 
 // GTLRAndroidProvisioningPartner_PartnerUnclaim.sectionType
+NSString * const kGTLRAndroidProvisioningPartner_PartnerUnclaim_SectionType_SectionTypeSimLock = @"SECTION_TYPE_SIM_LOCK";
 NSString * const kGTLRAndroidProvisioningPartner_PartnerUnclaim_SectionType_SectionTypeUnspecified = @"SECTION_TYPE_UNSPECIFIED";
 NSString * const kGTLRAndroidProvisioningPartner_PartnerUnclaim_SectionType_SectionTypeZeroTouch = @"SECTION_TYPE_ZERO_TOUCH";
 
@@ -51,6 +62,7 @@ NSString * const kGTLRAndroidProvisioningPartner_PerDeviceStatusInBatch_Status_S
 NSString * const kGTLRAndroidProvisioningPartner_PerDeviceStatusInBatch_Status_SingleDeviceStatusUnspecified = @"SINGLE_DEVICE_STATUS_UNSPECIFIED";
 
 // GTLRAndroidProvisioningPartner_UnclaimDeviceRequest.sectionType
+NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionType_SectionTypeSimLock = @"SECTION_TYPE_SIM_LOCK";
 NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionType_SectionTypeUnspecified = @"SECTION_TYPE_UNSPECIFIED";
 NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionType_SectionTypeZeroTouch = @"SECTION_TYPE_ZERO_TOUCH";
 
@@ -98,7 +110,7 @@ NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionTyp
 //
 
 @implementation GTLRAndroidProvisioningPartner_Company
-@dynamic adminEmails, companyId, companyName, name, ownerEmails;
+@dynamic adminEmails, companyId, companyName, name, ownerEmails, termsStatus;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -113,11 +125,133 @@ NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionTyp
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRAndroidProvisioningPartner_Configuration
+//
+
+@implementation GTLRAndroidProvisioningPartner_Configuration
+@dynamic companyName, configurationId, configurationName, contactEmail,
+         contactPhone, customMessage, dpcExtras, dpcResourcePath, isDefault,
+         name;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRAndroidProvisioningPartner_CreateCustomerRequest
 //
 
 @implementation GTLRAndroidProvisioningPartner_CreateCustomerRequest
 @dynamic customer;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_CustomerApplyConfigurationRequest
+//
+
+@implementation GTLRAndroidProvisioningPartner_CustomerApplyConfigurationRequest
+@dynamic configuration, device;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_CustomerListConfigurationsResponse
+//
+
+@implementation GTLRAndroidProvisioningPartner_CustomerListConfigurationsResponse
+@dynamic configurations;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"configurations" : [GTLRAndroidProvisioningPartner_Configuration class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_CustomerListCustomersResponse
+//
+
+@implementation GTLRAndroidProvisioningPartner_CustomerListCustomersResponse
+@dynamic customers, nextPageToken;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"customers" : [GTLRAndroidProvisioningPartner_Company class]
+  };
+  return map;
+}
+
++ (NSString *)collectionItemsKey {
+  return @"customers";
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_CustomerListDevicesResponse
+//
+
+@implementation GTLRAndroidProvisioningPartner_CustomerListDevicesResponse
+@dynamic devices, nextPageToken;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"devices" : [GTLRAndroidProvisioningPartner_Device class]
+  };
+  return map;
+}
+
++ (NSString *)collectionItemsKey {
+  return @"devices";
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_CustomerListDpcsResponse
+//
+
+@implementation GTLRAndroidProvisioningPartner_CustomerListDpcsResponse
+@dynamic dpcs;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"dpcs" : [GTLRAndroidProvisioningPartner_Dpc class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_CustomerRemoveConfigurationRequest
+//
+
+@implementation GTLRAndroidProvisioningPartner_CustomerRemoveConfigurationRequest
+@dynamic device;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_CustomerUnclaimDeviceRequest
+//
+
+@implementation GTLRAndroidProvisioningPartner_CustomerUnclaimDeviceRequest
+@dynamic device;
 @end
 
 
@@ -146,7 +280,7 @@ NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionTyp
 //
 
 @implementation GTLRAndroidProvisioningPartner_DeviceClaim
-@dynamic ownerCompanyId, sectionType;
+@dynamic ownerCompanyId, resellerId, sectionType;
 @end
 
 
@@ -156,7 +290,7 @@ NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionTyp
 //
 
 @implementation GTLRAndroidProvisioningPartner_DeviceIdentifier
-@dynamic imei, manufacturer, meid, serialNumber;
+@dynamic imei, manufacturer, meid, model, serialNumber;
 @end
 
 
@@ -181,6 +315,16 @@ NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionTyp
   return [NSString class];
 }
 
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_DeviceReference
+//
+
+@implementation GTLRAndroidProvisioningPartner_DeviceReference
+@dynamic deviceId, deviceIdentifier;
 @end
 
 
@@ -214,6 +358,16 @@ NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionTyp
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRAndroidProvisioningPartner_Dpc
+//
+
+@implementation GTLRAndroidProvisioningPartner_Dpc
+@dynamic dpcName, name, packageName;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRAndroidProvisioningPartner_Empty
 //
 
@@ -237,7 +391,7 @@ NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionTyp
 //
 
 @implementation GTLRAndroidProvisioningPartner_FindDevicesByDeviceIdentifierResponse
-@dynamic devices, nextPageToken;
+@dynamic devices, nextPageToken, totalSize;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -277,7 +431,7 @@ NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionTyp
 //
 
 @implementation GTLRAndroidProvisioningPartner_FindDevicesByOwnerResponse
-@dynamic devices, nextPageToken;
+@dynamic devices, nextPageToken, totalSize;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -299,13 +453,61 @@ NSString * const kGTLRAndroidProvisioningPartner_UnclaimDeviceRequest_SectionTyp
 //
 
 @implementation GTLRAndroidProvisioningPartner_ListCustomersResponse
-@dynamic customers;
+@dynamic customers, nextPageToken, totalSize;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
     @"customers" : [GTLRAndroidProvisioningPartner_Company class]
   };
   return map;
+}
+
++ (NSString *)collectionItemsKey {
+  return @"customers";
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_ListVendorCustomersResponse
+//
+
+@implementation GTLRAndroidProvisioningPartner_ListVendorCustomersResponse
+@dynamic customers, nextPageToken, totalSize;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"customers" : [GTLRAndroidProvisioningPartner_Company class]
+  };
+  return map;
+}
+
++ (NSString *)collectionItemsKey {
+  return @"customers";
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidProvisioningPartner_ListVendorsResponse
+//
+
+@implementation GTLRAndroidProvisioningPartner_ListVendorsResponse
+@dynamic nextPageToken, totalSize, vendors;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"vendors" : [GTLRAndroidProvisioningPartner_Company class]
+  };
+  return map;
+}
+
++ (NSString *)collectionItemsKey {
+  return @"vendors";
 }
 
 @end

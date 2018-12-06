@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud OS Login API (oslogin/v1alpha)
+//   Cloud OS Login API (oslogin/v1)
 // Description:
 //   Manages OS login configuration for Google account users.
 // Documentation:
@@ -29,6 +29,32 @@
 #pragma clang diagnostic ignored "-Wdocumentation"
 
 NS_ASSUME_NONNULL_BEGIN
+
+// ----------------------------------------------------------------------------
+// Constants - For some of the classes' properties below.
+
+// ----------------------------------------------------------------------------
+// GTLRCloudOSLogin_PosixAccount.operatingSystemType
+
+/**
+ *  Linux user account information.
+ *
+ *  Value: "LINUX"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudOSLogin_PosixAccount_OperatingSystemType_Linux;
+/**
+ *  The operating system type associated with the user account information is
+ *  unspecified.
+ *
+ *  Value: "OPERATING_SYSTEM_TYPE_UNSPECIFIED"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudOSLogin_PosixAccount_OperatingSystemType_OperatingSystemTypeUnspecified;
+/**
+ *  Windows user account information.
+ *
+ *  Value: "WINDOWS"
+ */
+GTLR_EXTERN NSString * const kGTLRCloudOSLogin_PosixAccount_OperatingSystemType_Windows;
 
 /**
  *  A generic empty message that you can re-use to avoid defining duplicated
@@ -60,21 +86,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface GTLRCloudOSLogin_LoginProfile : GTLRObject
 
-/** A unique user ID for identifying the user. */
+/** A unique user ID. */
 @property(nonatomic, copy, nullable) NSString *name;
 
-/** The list of POSIX accounts associated with the Directory API user. */
+/** The list of POSIX accounts associated with the user. */
 @property(nonatomic, strong, nullable) NSArray<GTLRCloudOSLogin_PosixAccount *> *posixAccounts;
 
 /** A map from SSH public key fingerprint to the associated key object. */
 @property(nonatomic, strong, nullable) GTLRCloudOSLogin_LoginProfile_SshPublicKeys *sshPublicKeys;
-
-/**
- *  Indicates if the user is suspended.
- *
- *  Uses NSNumber of boolValue.
- */
-@property(nonatomic, strong, nullable) NSNumber *suspended;
 
 @end
 
@@ -111,6 +130,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** The path to the home directory for this account. */
 @property(nonatomic, copy, nullable) NSString *homeDirectory;
+
+/**
+ *  The operating system type where this account applies.
+ *
+ *  Likely values:
+ *    @arg @c kGTLRCloudOSLogin_PosixAccount_OperatingSystemType_Linux Linux
+ *        user account information. (Value: "LINUX")
+ *    @arg @c kGTLRCloudOSLogin_PosixAccount_OperatingSystemType_OperatingSystemTypeUnspecified
+ *        The operating system type associated with the user account information
+ *        is
+ *        unspecified. (Value: "OPERATING_SYSTEM_TYPE_UNSPECIFIED")
+ *    @arg @c kGTLRCloudOSLogin_PosixAccount_OperatingSystemType_Windows Windows
+ *        user account information. (Value: "WINDOWS")
+ */
+@property(nonatomic, copy, nullable) NSString *operatingSystemType;
 
 /**
  *  Only one POSIX account can be marked as primary.

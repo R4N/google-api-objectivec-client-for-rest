@@ -2,12 +2,11 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Cloud Tasks API (cloudtasks/v2beta2)
+//   Cloud Tasks API (cloudtasks/v2beta3)
 // Description:
-//   Manages the execution of large numbers of distributed requests. Cloud Tasks
-//   is in Alpha.
+//   Manages the execution of large numbers of distributed requests.
 // Documentation:
-//   https://cloud.google.com/cloud-tasks/
+//   https://cloud.google.com/tasks/
 
 #import "GTLRCloudTasksObjects.h"
 #import "GTLRCloudTasksQuery.h"

@@ -2,11 +2,11 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Speech API (speech/v1)
+//   Cloud Speech API (speech/v1)
 // Description:
 //   Converts audio to text by applying powerful neural network models.
 // Documentation:
-//   https://cloud.google.com/speech/
+//   https://cloud.google.com/speech-to-text/docs/quickstart-protocol
 
 #import "GTLRSpeechObjects.h"
 
@@ -25,15 +25,6 @@ NSString * const kGTLRSpeech_RecognitionConfig_Encoding_SpeexWithHeaderByte = @"
 
 // ----------------------------------------------------------------------------
 //
-//   GTLRSpeech_CancelOperationRequest
-//
-
-@implementation GTLRSpeech_CancelOperationRequest
-@end
-
-
-// ----------------------------------------------------------------------------
-//
 //   GTLRSpeech_Context
 //
 
@@ -47,15 +38,6 @@ NSString * const kGTLRSpeech_RecognitionConfig_Encoding_SpeexWithHeaderByte = @"
   return map;
 }
 
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRSpeech_Empty
-//
-
-@implementation GTLRSpeech_Empty
 @end
 
 
@@ -163,8 +145,9 @@ NSString * const kGTLRSpeech_RecognitionConfig_Encoding_SpeexWithHeaderByte = @"
 //
 
 @implementation GTLRSpeech_RecognitionConfig
-@dynamic enableWordTimeOffsets, encoding, languageCode, maxAlternatives,
-         profanityFilter, sampleRateHertz, speechContexts;
+@dynamic enableAutomaticPunctuation, enableWordTimeOffsets, encoding,
+         languageCode, maxAlternatives, model, profanityFilter, sampleRateHertz,
+         speechContexts, useEnhanced;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -182,7 +165,7 @@ NSString * const kGTLRSpeech_RecognitionConfig_Encoding_SpeexWithHeaderByte = @"
 //
 
 @implementation GTLRSpeech_RecognitionResult
-@dynamic alternatives, channelTag;
+@dynamic alternatives;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -260,5 +243,5 @@ NSString * const kGTLRSpeech_RecognitionConfig_Encoding_SpeexWithHeaderByte = @"
 //
 
 @implementation GTLRSpeech_WordInfo
-@dynamic endTime, startTime, word;
+@dynamic endTime, speakerTag, startTime, word;
 @end

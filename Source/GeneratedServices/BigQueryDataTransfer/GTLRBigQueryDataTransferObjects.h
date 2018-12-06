@@ -144,7 +144,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_DataSourceParameter_Type_
  */
 GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_DataSourceParameter_Type_PlusPage;
 /**
- *  Record parameter.
+ *  Deprecated. This field has no effect.
  *
  *  Value: "RECORD"
  */
@@ -191,7 +191,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferConfig_State_Pend
  */
 GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferConfig_State_Running;
 /**
- *  Data transfer completed successsfully.
+ *  Data transfer completed successfully.
  *
  *  Value: "SUCCEEDED"
  */
@@ -260,7 +260,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Pending
  */
 GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Running;
 /**
- *  Data transfer completed successsfully.
+ *  Data transfer completed successfully.
  *
  *  Value: "SUCCEEDED"
  */
@@ -321,10 +321,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  */
 @property(nonatomic, copy, nullable) NSString *authorizationType;
 
-/**
- *  Data source client id which should be used to receive refresh token.
- *  When not supplied, no offline credentials are populated for data transfer.
- */
+/** Data source client id which should be used to receive refresh token. */
 @property(nonatomic, copy, nullable) NSString *clientId;
 
 /**
@@ -390,20 +387,19 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  */
 @property(nonatomic, strong, nullable) NSNumber *manualRunsDisabled;
 
-/** The minimum interval between two consecutive scheduled runs. */
+/** The minimum interval for scheduler to schedule runs. */
 @property(nonatomic, strong, nullable) GTLRDuration *minimumScheduleInterval;
 
-/** Data source resource name. */
+/** Output only. Data source resource name. */
 @property(nonatomic, copy, nullable) NSString *name;
 
 /** Data source parameters. */
 @property(nonatomic, strong, nullable) NSArray<GTLRBigQueryDataTransfer_DataSourceParameter *> *parameters;
 
 /**
- *  Api auth scopes for which refresh token needs to be obtained. Only valid
- *  when `client_id` is specified. Ignored otherwise. These are scopes needed
- *  by a data source to prepare data and ingest them into BigQuery,
- *  e.g., https://www.googleapis.com/auth/bigquery
+ *  Api auth scopes for which refresh token needs to be obtained. These are
+ *  scopes needed by a data source to prepare data and ingest them into
+ *  BigQuery, e.g., https://www.googleapis.com/auth/bigquery
  */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *scopes;
 
@@ -417,17 +413,14 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
 @property(nonatomic, strong, nullable) NSNumber *supportsCustomSchedule;
 
 /**
- *  Indicates whether the data source supports multiple transfers
- *  to different BigQuery targets.
+ *  Deprecated. This field has no effect.
  *
  *  Uses NSNumber of boolValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *supportsMultipleTransfers;
 
 /**
- *  Transfer type. Currently supports only batch transfers,
- *  which are transfers that use the BigQuery batch APIs (load or
- *  query) to ingest the data.
+ *  Deprecated. This field has no effect.
  *
  *  Likely values:
  *    @arg @c kGTLRBigQueryDataTransfer_DataSource_TransferType_Batch Batch data
@@ -443,7 +436,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
 
 /**
  *  The number of seconds to wait for an update from the data source
- *  before BigQuery marks the transfer as failed.
+ *  before the Data Transfer Service marks the transfer as FAILED.
  *
  *  Uses NSNumber of intValue.
  */
@@ -475,7 +468,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
 /** Parameter display name in the user interface. */
 @property(nonatomic, copy, nullable) NSString *displayName;
 
-/** When parameter is a record, describes child fields. */
+/** Deprecated. This field has no effect. */
 @property(nonatomic, strong, nullable) NSArray<GTLRBigQueryDataTransfer_DataSourceParameter *> *fields;
 
 /**
@@ -503,15 +496,14 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
 @property(nonatomic, copy, nullable) NSString *paramId;
 
 /**
- *  If set to true, schema should be taken from the parent with the same
- *  parameter_id. Only applicable when parameter type is RECORD.
+ *  Deprecated. This field has no effect.
  *
  *  Uses NSNumber of boolValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *recurse;
 
 /**
- *  Can parameter have multiple values.
+ *  Deprecated. This field has no effect.
  *
  *  Uses NSNumber of boolValue.
  */
@@ -537,8 +529,8 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  *        Will be serialized to json as string. (Value: "INTEGER")
  *    @arg @c kGTLRBigQueryDataTransfer_DataSourceParameter_Type_PlusPage Page
  *        ID for a Google+ Page. (Value: "PLUS_PAGE")
- *    @arg @c kGTLRBigQueryDataTransfer_DataSourceParameter_Type_Record Record
- *        parameter. (Value: "RECORD")
+ *    @arg @c kGTLRBigQueryDataTransfer_DataSourceParameter_Type_Record
+ *        Deprecated. This field has no effect. (Value: "RECORD")
  *    @arg @c kGTLRBigQueryDataTransfer_DataSourceParameter_Type_String String
  *        parameter. (Value: "STRING")
  *    @arg @c kGTLRBigQueryDataTransfer_DataSourceParameter_Type_TypeUnspecified
@@ -718,6 +710,12 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  *  A resource that represents Google Cloud Platform location.
  */
 @interface GTLRBigQueryDataTransfer_Location : GTLRObject
+
+/**
+ *  The friendly name for this location, typically a nearby city name.
+ *  For example, "Tokyo".
+ */
+@property(nonatomic, copy, nullable) NSString *displayName;
 
 /**
  *  Cross-service attributes for the location. For example
@@ -926,11 +924,12 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
 
 /**
  *  The resource name of the transfer config.
- *  Transfer config names have the form
- *  `projects/{project_id}/transferConfigs/{config_id}`.
- *  Where `config_id` is usually a uuid, even though it is not
- *  guaranteed or required. The name is ignored when creating a transfer
- *  config.
+ *  Transfer config names have the form of
+ *  `projects/{project_id}/location/{region}/transferConfigs/{config_id}`.
+ *  The name is automatically generated based on the config_id specified in
+ *  CreateTransferConfigRequest along with project_id and region. If config_id
+ *  is not provided, usually a uuid, even though it is not guaranteed or
+ *  required, will be generated for config_id.
  */
 @property(nonatomic, copy, nullable) NSString *name;
 
@@ -970,7 +969,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  *    @arg @c kGTLRBigQueryDataTransfer_TransferConfig_State_Running Data
  *        transfer is in progress. (Value: "RUNNING")
  *    @arg @c kGTLRBigQueryDataTransfer_TransferConfig_State_Succeeded Data
- *        transfer completed successsfully. (Value: "SUCCEEDED")
+ *        transfer completed successfully. (Value: "SUCCEEDED")
  *    @arg @c kGTLRBigQueryDataTransfer_TransferConfig_State_TransferStateUnspecified
  *        State placeholder. (Value: "TRANSFER_STATE_UNSPECIFIED")
  */
@@ -985,6 +984,8 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  *  Output only. Unique ID of the user on whose behalf transfer is done.
  *  Applicable only to data sources that do not support service accounts.
  *  When set to 0, the data source service account credentials are used.
+ *  May be negative. Note, that this identifier is not stable.
+ *  It may change over time even for the same user.
  *
  *  Uses NSNumber of longLongValue.
  */
@@ -1036,14 +1037,13 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
 
 /**
  *  Represents a data transfer run.
- *  Next id: 23
  */
 @interface GTLRBigQueryDataTransfer_TransferRun : GTLRObject
 
 /** Output only. Data source id. */
 @property(nonatomic, copy, nullable) NSString *dataSourceId;
 
-/** The BigQuery target dataset id. */
+/** Output only. The BigQuery target dataset id. */
 @property(nonatomic, copy, nullable) NSString *destinationDatasetId;
 
 /**
@@ -1063,7 +1063,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  */
 @property(nonatomic, copy, nullable) NSString *name;
 
-/** Data transfer specific parameters. */
+/** Output only. Data transfer specific parameters. */
 @property(nonatomic, strong, nullable) GTLRBigQueryDataTransfer_TransferRun_Params *params;
 
 /**
@@ -1077,7 +1077,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  *  created as part of a regular schedule. For batch transfer runs that are
  *  scheduled manually, this is empty.
  *  NOTE: the system might choose to delay the schedule depending on the
- *  current load, so `schedule_time` doesn't always matches this.
+ *  current load, so `schedule_time` doesn't always match this.
  */
 @property(nonatomic, copy, nullable) NSString *schedule;
 
@@ -1104,7 +1104,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  *    @arg @c kGTLRBigQueryDataTransfer_TransferRun_State_Running Data transfer
  *        is in progress. (Value: "RUNNING")
  *    @arg @c kGTLRBigQueryDataTransfer_TransferRun_State_Succeeded Data
- *        transfer completed successsfully. (Value: "SUCCEEDED")
+ *        transfer completed successfully. (Value: "SUCCEEDED")
  *    @arg @c kGTLRBigQueryDataTransfer_TransferRun_State_TransferStateUnspecified
  *        State placeholder. (Value: "TRANSFER_STATE_UNSPECIFIED")
  */
@@ -1117,7 +1117,8 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
  *  Output only. Unique ID of the user on whose behalf transfer is done.
  *  Applicable only to data sources that do not support service accounts.
  *  When set to 0, the data source service account credentials are used.
- *  May be negative.
+ *  May be negative. Note, that this identifier is not stable.
+ *  It may change over time even for the same user.
  *
  *  Uses NSNumber of longLongValue.
  */
@@ -1127,7 +1128,7 @@ GTLR_EXTERN NSString * const kGTLRBigQueryDataTransfer_TransferRun_State_Transfe
 
 
 /**
- *  Data transfer specific parameters.
+ *  Output only. Data transfer specific parameters.
  *
  *  @note This class is documented as having more properties of any valid JSON
  *        type. Use @c -additionalJSONKeys and @c -additionalPropertyForName: to

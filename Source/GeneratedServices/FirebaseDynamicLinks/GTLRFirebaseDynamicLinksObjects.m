@@ -26,6 +26,7 @@ NSString * const kGTLRFirebaseDynamicLinks_DynamicLinkEventStat_Platform_Android
 NSString * const kGTLRFirebaseDynamicLinks_DynamicLinkEventStat_Platform_Desktop = @"DESKTOP";
 NSString * const kGTLRFirebaseDynamicLinks_DynamicLinkEventStat_Platform_DynamicLinkPlatformUnspecified = @"DYNAMIC_LINK_PLATFORM_UNSPECIFIED";
 NSString * const kGTLRFirebaseDynamicLinks_DynamicLinkEventStat_Platform_Ios = @"IOS";
+NSString * const kGTLRFirebaseDynamicLinks_DynamicLinkEventStat_Platform_Other = @"OTHER";
 
 // GTLRFirebaseDynamicLinks_DynamicLinkWarning.warningCode
 NSString * const kGTLRFirebaseDynamicLinks_DynamicLinkWarning_WarningCode_BadAdParam = @"BAD_AD_PARAM";
@@ -75,7 +76,23 @@ NSString * const kGTLRFirebaseDynamicLinks_GetIosPostInstallAttributionResponse_
 NSString * const kGTLRFirebaseDynamicLinks_GetIosPostInstallAttributionResponse_AttributionConfidence_UnknownAttributionConfidence = @"UNKNOWN_ATTRIBUTION_CONFIDENCE";
 NSString * const kGTLRFirebaseDynamicLinks_GetIosPostInstallAttributionResponse_AttributionConfidence_Weak = @"WEAK";
 
+// GTLRFirebaseDynamicLinks_GetIosPostInstallAttributionResponse.requestIpVersion
+NSString * const kGTLRFirebaseDynamicLinks_GetIosPostInstallAttributionResponse_RequestIpVersion_IpV4 = @"IP_V4";
+NSString * const kGTLRFirebaseDynamicLinks_GetIosPostInstallAttributionResponse_RequestIpVersion_IpV6 = @"IP_V6";
+NSString * const kGTLRFirebaseDynamicLinks_GetIosPostInstallAttributionResponse_RequestIpVersion_UnknownIpVersion = @"UNKNOWN_IP_VERSION";
+
+// GTLRFirebaseDynamicLinks_ManagedShortLink.flaggedAttribute
+NSString * const kGTLRFirebaseDynamicLinks_ManagedShortLink_FlaggedAttribute_Spam = @"SPAM";
+NSString * const kGTLRFirebaseDynamicLinks_ManagedShortLink_FlaggedAttribute_UnspecifiedAttribute = @"UNSPECIFIED_ATTRIBUTE";
+
+// GTLRFirebaseDynamicLinks_ManagedShortLink.visibility
+NSString * const kGTLRFirebaseDynamicLinks_ManagedShortLink_Visibility_Archived = @"ARCHIVED";
+NSString * const kGTLRFirebaseDynamicLinks_ManagedShortLink_Visibility_NeverShown = @"NEVER_SHOWN";
+NSString * const kGTLRFirebaseDynamicLinks_ManagedShortLink_Visibility_Unarchived = @"UNARCHIVED";
+NSString * const kGTLRFirebaseDynamicLinks_ManagedShortLink_Visibility_UnspecifiedVisibility = @"UNSPECIFIED_VISIBILITY";
+
 // GTLRFirebaseDynamicLinks_Suffix.option
+NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_Custom = @"CUSTOM";
 NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_OptionUnspecified = @"OPTION_UNSPECIFIED";
 NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_Short = @"SHORT";
 NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_Unguessable = @"UNGUESSABLE";
@@ -103,11 +120,39 @@ NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_Unguessable = @"UNGUESS
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRFirebaseDynamicLinks_CreateManagedShortLinkRequest
+//
+
+@implementation GTLRFirebaseDynamicLinks_CreateManagedShortLinkRequest
+@dynamic dynamicLinkInfo, longDynamicLink, name, sdkVersion, suffix;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRFirebaseDynamicLinks_CreateManagedShortLinkResponse
+//
+
+@implementation GTLRFirebaseDynamicLinks_CreateManagedShortLinkResponse
+@dynamic managedShortLink, previewLink, warning;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"warning" : [GTLRFirebaseDynamicLinks_DynamicLinkWarning class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRFirebaseDynamicLinks_CreateShortDynamicLinkRequest
 //
 
 @implementation GTLRFirebaseDynamicLinks_CreateShortDynamicLinkRequest
-@dynamic dynamicLinkInfo, longDynamicLink, suffix;
+@dynamic dynamicLinkInfo, longDynamicLink, sdkVersion, suffix;
 @end
 
 
@@ -145,8 +190,9 @@ NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_Unguessable = @"UNGUESS
 //
 
 @implementation GTLRFirebaseDynamicLinks_DeviceInfo
-@dynamic deviceModelName, languageCode, languageCodeRaw, screenResolutionHeight,
-         screenResolutionWidth, timezone;
+@dynamic deviceModelName, languageCode, languageCodeFromWebview,
+         languageCodeRaw, screenResolutionHeight, screenResolutionWidth,
+         timezone;
 @end
 
 
@@ -166,8 +212,8 @@ NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_Unguessable = @"UNGUESS
 //
 
 @implementation GTLRFirebaseDynamicLinks_DynamicLinkInfo
-@dynamic analyticsInfo, androidInfo, desktopInfo, dynamicLinkDomain, iosInfo,
-         link, navigationInfo, socialMetaTagInfo;
+@dynamic analyticsInfo, androidInfo, desktopInfo, domainUriPrefix,
+         dynamicLinkDomain, iosInfo, link, navigationInfo, socialMetaTagInfo;
 @end
 
 
@@ -218,8 +264,29 @@ NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_Unguessable = @"UNGUESS
 @implementation GTLRFirebaseDynamicLinks_GetIosPostInstallAttributionResponse
 @dynamic appMinimumVersion, attributionConfidence, deepLink,
          externalBrowserDestinationLink, fallbackLink, invitationId,
-         isStrongMatchExecutable, matchMessage, requestedLink, resolvedLink,
-         utmCampaign, utmMedium, utmSource;
+         isStrongMatchExecutable, matchMessage, requestedLink, requestIpVersion,
+         resolvedLink, utmCampaign, utmMedium, utmSource;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRFirebaseDynamicLinks_GetIosReopenAttributionRequest
+//
+
+@implementation GTLRFirebaseDynamicLinks_GetIosReopenAttributionRequest
+@dynamic bundleId, requestedLink, sdkVersion;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRFirebaseDynamicLinks_GetIosReopenAttributionResponse
+//
+
+@implementation GTLRFirebaseDynamicLinks_GetIosReopenAttributionResponse
+@dynamic deepLink, invitationId, resolvedLink, utmCampaign, utmMedium,
+         utmSource;
 @end
 
 
@@ -256,6 +323,24 @@ NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_Unguessable = @"UNGUESS
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRFirebaseDynamicLinks_ManagedShortLink
+//
+
+@implementation GTLRFirebaseDynamicLinks_ManagedShortLink
+@dynamic creationTime, flaggedAttribute, info, link, linkName, visibility;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"flaggedAttribute" : [NSString class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRFirebaseDynamicLinks_NavigationInfo
 //
 
@@ -280,5 +365,5 @@ NSString * const kGTLRFirebaseDynamicLinks_Suffix_Option_Unguessable = @"UNGUESS
 //
 
 @implementation GTLRFirebaseDynamicLinks_Suffix
-@dynamic option;
+@dynamic customSuffix, option;
 @end

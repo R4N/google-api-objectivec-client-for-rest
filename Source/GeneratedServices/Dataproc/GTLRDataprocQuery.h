@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud Dataproc API (dataproc/v1)
+//   Cloud Dataproc API (dataproc/v1)
 // Description:
 //   Manages Hadoop-based clusters and jobs on Google Cloud Platform.
 // Documentation:
@@ -21,8 +21,13 @@
 @class GTLRDataproc_CancelJobRequest;
 @class GTLRDataproc_Cluster;
 @class GTLRDataproc_DiagnoseClusterRequest;
+@class GTLRDataproc_GetIamPolicyRequest;
+@class GTLRDataproc_InstantiateWorkflowTemplateRequest;
 @class GTLRDataproc_Job;
+@class GTLRDataproc_SetIamPolicyRequest;
 @class GTLRDataproc_SubmitJobRequest;
+@class GTLRDataproc_TestIamPermissionsRequest;
+@class GTLRDataproc_WorkflowTemplate;
 
 // Generated comments include content from the discovery document; avoid them
 // causing warnings since clang's checks are some what arbitrary.
@@ -59,6 +64,443 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
 @end
 
 /**
+ *  Creates new workflow template.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.create
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesCreate : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesCreateWithObject:parent:]
+
+/**
+ *  Required. The "resource name" of the region, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}
+ */
+@property(nonatomic, copy, nullable) NSString *parent;
+
+/**
+ *  Fetches a @c GTLRDataproc_WorkflowTemplate.
+ *
+ *  Creates new workflow template.
+ *
+ *  @param object The @c GTLRDataproc_WorkflowTemplate to include in the query.
+ *  @param parent Required. The "resource name" of the region, as described in
+ *    https://cloud.google.com/apis/design/resource_names of the form
+ *    projects/{project_id}/regions/{region}
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesCreate
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_WorkflowTemplate *)object
+                         parent:(NSString *)parent;
+
+@end
+
+/**
+ *  Deletes a workflow template. It does not cancel in-progress workflows.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.delete
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesDelete : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesDeleteWithname:]
+
+/**
+ *  Required. The "resource name" of the workflow template, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ */
+@property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Optional. The version of workflow template to delete. If specified, will
+ *  only delete the template if the current server version matches specified
+ *  version.
+ */
+@property(nonatomic, assign) NSInteger version;
+
+/**
+ *  Fetches a @c GTLRDataproc_Empty.
+ *
+ *  Deletes a workflow template. It does not cancel in-progress workflows.
+ *
+ *  @param name Required. The "resource name" of the workflow template, as
+ *    described in https://cloud.google.com/apis/design/resource_names of the
+ *    form
+ *    projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesDelete
+ */
++ (instancetype)queryWithName:(NSString *)name;
+
+@end
+
+/**
+ *  Retrieves the latest workflow template.Can retrieve previously instantiated
+ *  template by specifying optional version parameter.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.get
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesGet : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesGetWithname:]
+
+/**
+ *  Required. The "resource name" of the workflow template, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ */
+@property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Optional. The version of workflow template to retrieve. Only previously
+ *  instatiated versions can be retrieved.If unspecified, retrieves the current
+ *  version.
+ */
+@property(nonatomic, assign) NSInteger version;
+
+/**
+ *  Fetches a @c GTLRDataproc_WorkflowTemplate.
+ *
+ *  Retrieves the latest workflow template.Can retrieve previously instantiated
+ *  template by specifying optional version parameter.
+ *
+ *  @param name Required. The "resource name" of the workflow template, as
+ *    described in https://cloud.google.com/apis/design/resource_names of the
+ *    form
+ *    projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesGet
+ */
++ (instancetype)queryWithName:(NSString *)name;
+
+@end
+
+/**
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.getIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesGetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesGetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being requested. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  @param object The @c GTLRDataproc_GetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesGetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_GetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Instantiates a template and begins execution.The returned Operation can be
+ *  used to track execution of workflow by polling operations.get. The Operation
+ *  will complete when entire workflow is finished.The running workflow can be
+ *  aborted via operations.cancel. This will cause any inflight jobs to be
+ *  cancelled and workflow-owned clusters to be deleted.The Operation.metadata
+ *  will be WorkflowMetadata.On successful completion, Operation.response will
+ *  be Empty.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.instantiate
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesInstantiate : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesInstantiateWithObject:name:]
+
+/**
+ *  Required. The "resource name" of the workflow template, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ */
+@property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Fetches a @c GTLRDataproc_Operation.
+ *
+ *  Instantiates a template and begins execution.The returned Operation can be
+ *  used to track execution of workflow by polling operations.get. The Operation
+ *  will complete when entire workflow is finished.The running workflow can be
+ *  aborted via operations.cancel. This will cause any inflight jobs to be
+ *  cancelled and workflow-owned clusters to be deleted.The Operation.metadata
+ *  will be WorkflowMetadata.On successful completion, Operation.response will
+ *  be Empty.
+ *
+ *  @param object The @c GTLRDataproc_InstantiateWorkflowTemplateRequest to
+ *    include in the query.
+ *  @param name Required. The "resource name" of the workflow template, as
+ *    described in https://cloud.google.com/apis/design/resource_names of the
+ *    form
+ *    projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesInstantiate
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_InstantiateWorkflowTemplateRequest *)object
+                           name:(NSString *)name;
+
+@end
+
+/**
+ *  Instantiates a template and begins execution.This method is equivalent to
+ *  executing the sequence CreateWorkflowTemplate, InstantiateWorkflowTemplate,
+ *  DeleteWorkflowTemplate.The returned Operation can be used to track execution
+ *  of workflow by polling operations.get. The Operation will complete when
+ *  entire workflow is finished.The running workflow can be aborted via
+ *  operations.cancel. This will cause any inflight jobs to be cancelled and
+ *  workflow-owned clusters to be deleted.The Operation.metadata will be
+ *  WorkflowMetadata.On successful completion, Operation.response will be Empty.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.instantiateInline
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesInstantiateInline : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesInstantiateInlineWithObject:parent:]
+
+/**
+ *  Required. The "resource name" of the workflow template region, as described
+ *  in https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}
+ */
+@property(nonatomic, copy, nullable) NSString *parent;
+
+/**
+ *  Optional. A tag that prevents multiple concurrent workflow instances with
+ *  the same tag from running. This mitigates risk of concurrent instances
+ *  started due to retries.It is recommended to always set this value to a UUID
+ *  (https://en.wikipedia.org/wiki/Universally_unique_identifier).The tag must
+ *  contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
+ *  (-). The maximum length is 40 characters.
+ */
+@property(nonatomic, copy, nullable) NSString *requestId;
+
+/**
+ *  Fetches a @c GTLRDataproc_Operation.
+ *
+ *  Instantiates a template and begins execution.This method is equivalent to
+ *  executing the sequence CreateWorkflowTemplate, InstantiateWorkflowTemplate,
+ *  DeleteWorkflowTemplate.The returned Operation can be used to track execution
+ *  of workflow by polling operations.get. The Operation will complete when
+ *  entire workflow is finished.The running workflow can be aborted via
+ *  operations.cancel. This will cause any inflight jobs to be cancelled and
+ *  workflow-owned clusters to be deleted.The Operation.metadata will be
+ *  WorkflowMetadata.On successful completion, Operation.response will be Empty.
+ *
+ *  @param object The @c GTLRDataproc_WorkflowTemplate to include in the query.
+ *  @param parent Required. The "resource name" of the workflow template region,
+ *    as described in https://cloud.google.com/apis/design/resource_names of the
+ *    form projects/{project_id}/regions/{region}
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesInstantiateInline
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_WorkflowTemplate *)object
+                         parent:(NSString *)parent;
+
+@end
+
+/**
+ *  Lists workflows that match the specified filter in the request.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.list
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesList : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesListWithparent:]
+
+/** Optional. The maximum number of results to return in each response. */
+@property(nonatomic, assign) NSInteger pageSize;
+
+/**
+ *  Optional. The page token, returned by a previous call, to request the next
+ *  page of results.
+ */
+@property(nonatomic, copy, nullable) NSString *pageToken;
+
+/**
+ *  Required. The "resource name" of the region, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}
+ */
+@property(nonatomic, copy, nullable) NSString *parent;
+
+/**
+ *  Fetches a @c GTLRDataproc_ListWorkflowTemplatesResponse.
+ *
+ *  Lists workflows that match the specified filter in the request.
+ *
+ *  @param parent Required. The "resource name" of the region, as described in
+ *    https://cloud.google.com/apis/design/resource_names of the form
+ *    projects/{project_id}/regions/{region}
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesList
+ *
+ *  @note Automatic pagination will be done when @c shouldFetchNextPages is
+ *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
+ *        information.
+ */
++ (instancetype)queryWithParent:(NSString *)parent;
+
+@end
+
+/**
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.setIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesSetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesSetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being specified. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  @param object The @c GTLRDataproc_SetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    specified. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesSetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_SetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.testIamPermissions
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesTestIamPermissions : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesTestIamPermissionsWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy detail is being requested. See
+ *  the operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_TestIamPermissionsResponse.
+ *
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  @param object The @c GTLRDataproc_TestIamPermissionsRequest to include in
+ *    the query.
+ *  @param resource REQUIRED: The resource for which the policy detail is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesTestIamPermissions
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_TestIamPermissionsRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Updates (replaces) workflow template. The updated template must contain
+ *  version that matches the current server version.
+ *
+ *  Method: dataproc.projects.locations.workflowTemplates.update
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesUpdate : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsLocationsWorkflowTemplatesUpdateWithObject:name:]
+
+/**
+ *  Output only. The "resource name" of the template, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ */
+@property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Fetches a @c GTLRDataproc_WorkflowTemplate.
+ *
+ *  Updates (replaces) workflow template. The updated template must contain
+ *  version that matches the current server version.
+ *
+ *  @param object The @c GTLRDataproc_WorkflowTemplate to include in the query.
+ *  @param name Output only. The "resource name" of the template, as described
+ *    in https://cloud.google.com/apis/design/resource_names of the form
+ *    projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ *
+ *  @return GTLRDataprocQuery_ProjectsLocationsWorkflowTemplatesUpdate
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_WorkflowTemplate *)object
+                           name:(NSString *)name;
+
+@end
+
+/**
  *  Creates a cluster in a project.
  *
  *  Method: dataproc.projects.regions.clusters.create
@@ -80,6 +522,17 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
 @property(nonatomic, copy, nullable) NSString *region;
 
 /**
+ *  Optional. A unique id used to identify the request. If the server receives
+ *  two CreateClusterRequest requests with the same id, then the second request
+ *  will be ignored and the first google.longrunning.Operation created and
+ *  stored in the backend is returned.It is recommended to always set this value
+ *  to a UUID (https://en.wikipedia.org/wiki/Universally_unique_identifier).The
+ *  id must contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and
+ *  hyphens (-). The maximum length is 40 characters.
+ */
+@property(nonatomic, copy, nullable) NSString *requestId;
+
+/**
  *  Fetches a @c GTLRDataproc_Operation.
  *
  *  Creates a cluster in a project.
@@ -90,7 +543,7 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *  @param region Required. The Cloud Dataproc region in which to handle the
  *    request.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsClustersCreate
+ *  @return GTLRDataprocQuery_ProjectsRegionsClustersCreate
  */
 + (instancetype)queryWithObject:(GTLRDataproc_Cluster *)object
                       projectId:(NSString *)projectId
@@ -114,6 +567,12 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
 @property(nonatomic, copy, nullable) NSString *clusterName;
 
 /**
+ *  Optional. Specifying the cluster_uuid means the RPC should fail (with error
+ *  NOT_FOUND) if cluster with specified UUID does not exist.
+ */
+@property(nonatomic, copy, nullable) NSString *clusterUuid;
+
+/**
  *  Required. The ID of the Google Cloud Platform project that the cluster
  *  belongs to.
  */
@@ -121,6 +580,17 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
 
 /** Required. The Cloud Dataproc region in which to handle the request. */
 @property(nonatomic, copy, nullable) NSString *region;
+
+/**
+ *  Optional. A unique id used to identify the request. If the server receives
+ *  two DeleteClusterRequest requests with the same id, then the second request
+ *  will be ignored and the first google.longrunning.Operation created and
+ *  stored in the backend is returned.It is recommended to always set this value
+ *  to a UUID (https://en.wikipedia.org/wiki/Universally_unique_identifier).The
+ *  id must contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and
+ *  hyphens (-). The maximum length is 40 characters.
+ */
+@property(nonatomic, copy, nullable) NSString *requestId;
 
 /**
  *  Fetches a @c GTLRDataproc_Operation.
@@ -133,7 +603,7 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *    request.
  *  @param clusterName Required. The cluster name.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsClustersDelete
+ *  @return GTLRDataprocQuery_ProjectsRegionsClustersDelete
  */
 + (instancetype)queryWithProjectId:(NSString *)projectId
                             region:(NSString *)region
@@ -180,7 +650,7 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *    request.
  *  @param clusterName Required. The cluster name.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsClustersDiagnose
+ *  @return GTLRDataprocQuery_ProjectsRegionsClustersDiagnose
  */
 + (instancetype)queryWithObject:(GTLRDataproc_DiagnoseClusterRequest *)object
                       projectId:(NSString *)projectId
@@ -224,11 +694,49 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *    request.
  *  @param clusterName Required. The cluster name.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsClustersGet
+ *  @return GTLRDataprocQuery_ProjectsRegionsClustersGet
  */
 + (instancetype)queryWithProjectId:(NSString *)projectId
                             region:(NSString *)region
                        clusterName:(NSString *)clusterName;
+
+@end
+
+/**
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  Method: dataproc.projects.regions.clusters.getIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsClustersGetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsClustersGetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being requested. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  @param object The @c GTLRDataproc_GetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsClustersGetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_GetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
 
 @end
 
@@ -284,7 +792,7 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *  @param region Required. The Cloud Dataproc region in which to handle the
  *    request.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsClustersList
+ *  @return GTLRDataprocQuery_ProjectsRegionsClustersList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -311,6 +819,16 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
 @property(nonatomic, copy, nullable) NSString *clusterName;
 
 /**
+ *  Optional. Timeout for graceful YARN decomissioning. Graceful decommissioning
+ *  allows removing nodes from the cluster without interrupting jobs in
+ *  progress. Timeout specifies how long to wait for jobs in progress to finish
+ *  before forcefully removing nodes (and potentially interrupting jobs).
+ *  Default timeout is 0 (for forceful decommission), and the maximum allowed
+ *  timeout is 1 day.Only supported on Dataproc image versions 1.2 and higher.
+ */
+@property(nonatomic, strong, nullable) GTLRDuration *gracefulDecommissionTimeout;
+
+/**
  *  Required. The ID of the Google Cloud Platform project the cluster belongs
  *  to.
  */
@@ -318,6 +836,17 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
 
 /** Required. The Cloud Dataproc region in which to handle the request. */
 @property(nonatomic, copy, nullable) NSString *region;
+
+/**
+ *  Optional. A unique id used to identify the request. If the server receives
+ *  two UpdateClusterRequest requests with the same id, then the second request
+ *  will be ignored and the first google.longrunning.Operation created and
+ *  stored in the backend is returned.It is recommended to always set this value
+ *  to a UUID (https://en.wikipedia.org/wiki/Universally_unique_identifier).The
+ *  id must contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and
+ *  hyphens (-). The maximum length is 40 characters.
+ */
+@property(nonatomic, copy, nullable) NSString *requestId;
 
 /**
  *  Required. Specifies the path, relative to Cluster, of the field to update.
@@ -368,12 +897,94 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *    request.
  *  @param clusterName Required. The cluster name.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsClustersPatch
+ *  @return GTLRDataprocQuery_ProjectsRegionsClustersPatch
  */
 + (instancetype)queryWithObject:(GTLRDataproc_Cluster *)object
                       projectId:(NSString *)projectId
                          region:(NSString *)region
                     clusterName:(NSString *)clusterName;
+
+@end
+
+/**
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  Method: dataproc.projects.regions.clusters.setIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsClustersSetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsClustersSetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being specified. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  @param object The @c GTLRDataproc_SetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    specified. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsClustersSetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_SetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  Method: dataproc.projects.regions.clusters.testIamPermissions
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsClustersTestIamPermissions : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsClustersTestIamPermissionsWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy detail is being requested. See
+ *  the operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_TestIamPermissionsResponse.
+ *
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  @param object The @c GTLRDataproc_TestIamPermissionsRequest to include in
+ *    the query.
+ *  @param resource REQUIRED: The resource for which the policy detail is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsClustersTestIamPermissions
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_TestIamPermissionsRequest *)object
+                       resource:(NSString *)resource;
 
 @end
 
@@ -415,7 +1026,7 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *    request.
  *  @param jobId Required. The job ID.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsJobsCancel
+ *  @return GTLRDataprocQuery_ProjectsRegionsJobsCancel
  */
 + (instancetype)queryWithObject:(GTLRDataproc_CancelJobRequest *)object
                       projectId:(NSString *)projectId
@@ -461,7 +1072,7 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *    request.
  *  @param jobId Required. The job ID.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsJobsDelete
+ *  @return GTLRDataprocQuery_ProjectsRegionsJobsDelete
  */
 + (instancetype)queryWithProjectId:(NSString *)projectId
                             region:(NSString *)region
@@ -504,11 +1115,49 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *    request.
  *  @param jobId Required. The job ID.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsJobsGet
+ *  @return GTLRDataprocQuery_ProjectsRegionsJobsGet
  */
 + (instancetype)queryWithProjectId:(NSString *)projectId
                             region:(NSString *)region
                              jobId:(NSString *)jobId;
+
+@end
+
+/**
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  Method: dataproc.projects.regions.jobs.getIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsJobsGetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsJobsGetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being requested. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  @param object The @c GTLRDataproc_GetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsJobsGetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_GetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
 
 @end
 
@@ -580,7 +1229,7 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *  @param region Required. The Cloud Dataproc region in which to handle the
  *    request.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsJobsList
+ *  @return GTLRDataprocQuery_ProjectsRegionsJobsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
@@ -639,12 +1288,50 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *    request.
  *  @param jobId Required. The job ID.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsJobsPatch
+ *  @return GTLRDataprocQuery_ProjectsRegionsJobsPatch
  */
 + (instancetype)queryWithObject:(GTLRDataproc_Job *)object
                       projectId:(NSString *)projectId
                          region:(NSString *)region
                           jobId:(NSString *)jobId;
+
+@end
+
+/**
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  Method: dataproc.projects.regions.jobs.setIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsJobsSetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsJobsSetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being specified. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  @param object The @c GTLRDataproc_SetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    specified. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsJobsSetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_SetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
 
 @end
 
@@ -680,11 +1367,55 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *  @param region Required. The Cloud Dataproc region in which to handle the
  *    request.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsJobsSubmit
+ *  @return GTLRDataprocQuery_ProjectsRegionsJobsSubmit
  */
 + (instancetype)queryWithObject:(GTLRDataproc_SubmitJobRequest *)object
                       projectId:(NSString *)projectId
                          region:(NSString *)region;
+
+@end
+
+/**
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  Method: dataproc.projects.regions.jobs.testIamPermissions
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsJobsTestIamPermissions : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsJobsTestIamPermissionsWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy detail is being requested. See
+ *  the operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_TestIamPermissionsResponse.
+ *
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  @param object The @c GTLRDataproc_TestIamPermissionsRequest to include in
+ *    the query.
+ *  @param resource REQUIRED: The resource for which the policy detail is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsJobsTestIamPermissions
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_TestIamPermissionsRequest *)object
+                       resource:(NSString *)resource;
 
 @end
 
@@ -726,7 +1457,7 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *
  *  @param name The name of the operation resource to be cancelled.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsOperationsCancel
+ *  @return GTLRDataprocQuery_ProjectsRegionsOperationsCancel
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -760,7 +1491,7 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *
  *  @param name The name of the operation resource to be deleted.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsOperationsDelete
+ *  @return GTLRDataprocQuery_ProjectsRegionsOperationsDelete
  */
 + (instancetype)queryWithName:(NSString *)name;
 
@@ -792,9 +1523,47 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *
  *  @param name The name of the operation resource.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsOperationsGet
+ *  @return GTLRDataprocQuery_ProjectsRegionsOperationsGet
  */
 + (instancetype)queryWithName:(NSString *)name;
+
+@end
+
+/**
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  Method: dataproc.projects.regions.operations.getIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsOperationsGetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsOperationsGetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being requested. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  @param object The @c GTLRDataproc_GetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsOperationsGetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_GetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
 
 @end
 
@@ -845,13 +1614,532 @@ GTLR_EXTERN NSString * const kGTLRDataprocJobStateMatcherNonActive;
  *
  *  @param name The name of the operation's parent resource.
  *
- *  @returns GTLRDataprocQuery_ProjectsRegionsOperationsList
+ *  @return GTLRDataprocQuery_ProjectsRegionsOperationsList
  *
  *  @note Automatic pagination will be done when @c shouldFetchNextPages is
  *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
  *        information.
  */
 + (instancetype)queryWithName:(NSString *)name;
+
+@end
+
+/**
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  Method: dataproc.projects.regions.operations.setIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsOperationsSetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsOperationsSetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being specified. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  @param object The @c GTLRDataproc_SetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    specified. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsOperationsSetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_SetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  Method: dataproc.projects.regions.operations.testIamPermissions
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsOperationsTestIamPermissions : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsOperationsTestIamPermissionsWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy detail is being requested. See
+ *  the operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_TestIamPermissionsResponse.
+ *
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  @param object The @c GTLRDataproc_TestIamPermissionsRequest to include in
+ *    the query.
+ *  @param resource REQUIRED: The resource for which the policy detail is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsOperationsTestIamPermissions
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_TestIamPermissionsRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Creates new workflow template.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.create
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesCreate : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesCreateWithObject:parent:]
+
+/**
+ *  Required. The "resource name" of the region, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}
+ */
+@property(nonatomic, copy, nullable) NSString *parent;
+
+/**
+ *  Fetches a @c GTLRDataproc_WorkflowTemplate.
+ *
+ *  Creates new workflow template.
+ *
+ *  @param object The @c GTLRDataproc_WorkflowTemplate to include in the query.
+ *  @param parent Required. The "resource name" of the region, as described in
+ *    https://cloud.google.com/apis/design/resource_names of the form
+ *    projects/{project_id}/regions/{region}
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesCreate
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_WorkflowTemplate *)object
+                         parent:(NSString *)parent;
+
+@end
+
+/**
+ *  Deletes a workflow template. It does not cancel in-progress workflows.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.delete
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesDelete : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesDeleteWithname:]
+
+/**
+ *  Required. The "resource name" of the workflow template, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ */
+@property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Optional. The version of workflow template to delete. If specified, will
+ *  only delete the template if the current server version matches specified
+ *  version.
+ */
+@property(nonatomic, assign) NSInteger version;
+
+/**
+ *  Fetches a @c GTLRDataproc_Empty.
+ *
+ *  Deletes a workflow template. It does not cancel in-progress workflows.
+ *
+ *  @param name Required. The "resource name" of the workflow template, as
+ *    described in https://cloud.google.com/apis/design/resource_names of the
+ *    form
+ *    projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesDelete
+ */
++ (instancetype)queryWithName:(NSString *)name;
+
+@end
+
+/**
+ *  Retrieves the latest workflow template.Can retrieve previously instantiated
+ *  template by specifying optional version parameter.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.get
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesGet : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesGetWithname:]
+
+/**
+ *  Required. The "resource name" of the workflow template, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ */
+@property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Optional. The version of workflow template to retrieve. Only previously
+ *  instatiated versions can be retrieved.If unspecified, retrieves the current
+ *  version.
+ */
+@property(nonatomic, assign) NSInteger version;
+
+/**
+ *  Fetches a @c GTLRDataproc_WorkflowTemplate.
+ *
+ *  Retrieves the latest workflow template.Can retrieve previously instantiated
+ *  template by specifying optional version parameter.
+ *
+ *  @param name Required. The "resource name" of the workflow template, as
+ *    described in https://cloud.google.com/apis/design/resource_names of the
+ *    form
+ *    projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesGet
+ */
++ (instancetype)queryWithName:(NSString *)name;
+
+@end
+
+/**
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.getIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesGetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesGetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being requested. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Gets the access control policy for a resource. Returns an empty policy if
+ *  the resource exists and does not have a policy set.
+ *
+ *  @param object The @c GTLRDataproc_GetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesGetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_GetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Instantiates a template and begins execution.The returned Operation can be
+ *  used to track execution of workflow by polling operations.get. The Operation
+ *  will complete when entire workflow is finished.The running workflow can be
+ *  aborted via operations.cancel. This will cause any inflight jobs to be
+ *  cancelled and workflow-owned clusters to be deleted.The Operation.metadata
+ *  will be WorkflowMetadata.On successful completion, Operation.response will
+ *  be Empty.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.instantiate
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesInstantiate : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesInstantiateWithObject:name:]
+
+/**
+ *  Required. The "resource name" of the workflow template, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ */
+@property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Fetches a @c GTLRDataproc_Operation.
+ *
+ *  Instantiates a template and begins execution.The returned Operation can be
+ *  used to track execution of workflow by polling operations.get. The Operation
+ *  will complete when entire workflow is finished.The running workflow can be
+ *  aborted via operations.cancel. This will cause any inflight jobs to be
+ *  cancelled and workflow-owned clusters to be deleted.The Operation.metadata
+ *  will be WorkflowMetadata.On successful completion, Operation.response will
+ *  be Empty.
+ *
+ *  @param object The @c GTLRDataproc_InstantiateWorkflowTemplateRequest to
+ *    include in the query.
+ *  @param name Required. The "resource name" of the workflow template, as
+ *    described in https://cloud.google.com/apis/design/resource_names of the
+ *    form
+ *    projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesInstantiate
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_InstantiateWorkflowTemplateRequest *)object
+                           name:(NSString *)name;
+
+@end
+
+/**
+ *  Instantiates a template and begins execution.This method is equivalent to
+ *  executing the sequence CreateWorkflowTemplate, InstantiateWorkflowTemplate,
+ *  DeleteWorkflowTemplate.The returned Operation can be used to track execution
+ *  of workflow by polling operations.get. The Operation will complete when
+ *  entire workflow is finished.The running workflow can be aborted via
+ *  operations.cancel. This will cause any inflight jobs to be cancelled and
+ *  workflow-owned clusters to be deleted.The Operation.metadata will be
+ *  WorkflowMetadata.On successful completion, Operation.response will be Empty.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.instantiateInline
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesInstantiateInline : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesInstantiateInlineWithObject:parent:]
+
+/**
+ *  Required. The "resource name" of the workflow template region, as described
+ *  in https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}
+ */
+@property(nonatomic, copy, nullable) NSString *parent;
+
+/**
+ *  Optional. A tag that prevents multiple concurrent workflow instances with
+ *  the same tag from running. This mitigates risk of concurrent instances
+ *  started due to retries.It is recommended to always set this value to a UUID
+ *  (https://en.wikipedia.org/wiki/Universally_unique_identifier).The tag must
+ *  contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
+ *  (-). The maximum length is 40 characters.
+ */
+@property(nonatomic, copy, nullable) NSString *requestId;
+
+/**
+ *  Fetches a @c GTLRDataproc_Operation.
+ *
+ *  Instantiates a template and begins execution.This method is equivalent to
+ *  executing the sequence CreateWorkflowTemplate, InstantiateWorkflowTemplate,
+ *  DeleteWorkflowTemplate.The returned Operation can be used to track execution
+ *  of workflow by polling operations.get. The Operation will complete when
+ *  entire workflow is finished.The running workflow can be aborted via
+ *  operations.cancel. This will cause any inflight jobs to be cancelled and
+ *  workflow-owned clusters to be deleted.The Operation.metadata will be
+ *  WorkflowMetadata.On successful completion, Operation.response will be Empty.
+ *
+ *  @param object The @c GTLRDataproc_WorkflowTemplate to include in the query.
+ *  @param parent Required. The "resource name" of the workflow template region,
+ *    as described in https://cloud.google.com/apis/design/resource_names of the
+ *    form projects/{project_id}/regions/{region}
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesInstantiateInline
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_WorkflowTemplate *)object
+                         parent:(NSString *)parent;
+
+@end
+
+/**
+ *  Lists workflows that match the specified filter in the request.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.list
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesList : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesListWithparent:]
+
+/** Optional. The maximum number of results to return in each response. */
+@property(nonatomic, assign) NSInteger pageSize;
+
+/**
+ *  Optional. The page token, returned by a previous call, to request the next
+ *  page of results.
+ */
+@property(nonatomic, copy, nullable) NSString *pageToken;
+
+/**
+ *  Required. The "resource name" of the region, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}
+ */
+@property(nonatomic, copy, nullable) NSString *parent;
+
+/**
+ *  Fetches a @c GTLRDataproc_ListWorkflowTemplatesResponse.
+ *
+ *  Lists workflows that match the specified filter in the request.
+ *
+ *  @param parent Required. The "resource name" of the region, as described in
+ *    https://cloud.google.com/apis/design/resource_names of the form
+ *    projects/{project_id}/regions/{region}
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesList
+ *
+ *  @note Automatic pagination will be done when @c shouldFetchNextPages is
+ *        enabled. See @c shouldFetchNextPages on @c GTLRService for more
+ *        information.
+ */
++ (instancetype)queryWithParent:(NSString *)parent;
+
+@end
+
+/**
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.setIamPolicy
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesSetIamPolicy : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesSetIamPolicyWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy is being specified. See the
+ *  operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_Policy.
+ *
+ *  Sets the access control policy on the specified resource. Replaces any
+ *  existing policy.
+ *
+ *  @param object The @c GTLRDataproc_SetIamPolicyRequest to include in the
+ *    query.
+ *  @param resource REQUIRED: The resource for which the policy is being
+ *    specified. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesSetIamPolicy
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_SetIamPolicyRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.testIamPermissions
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesTestIamPermissions : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesTestIamPermissionsWithObject:resource:]
+
+/**
+ *  REQUIRED: The resource for which the policy detail is being requested. See
+ *  the operation documentation for the appropriate value for this field.
+ */
+@property(nonatomic, copy, nullable) NSString *resource;
+
+/**
+ *  Fetches a @c GTLRDataproc_TestIamPermissionsResponse.
+ *
+ *  Returns permissions that a caller has on the specified resource. If the
+ *  resource does not exist, this will return an empty set of permissions, not a
+ *  NOT_FOUND error.Note: This operation is designed to be used for building
+ *  permission-aware UIs and command-line tools, not for authorization checking.
+ *  This operation may "fail open" without warning.
+ *
+ *  @param object The @c GTLRDataproc_TestIamPermissionsRequest to include in
+ *    the query.
+ *  @param resource REQUIRED: The resource for which the policy detail is being
+ *    requested. See the operation documentation for the appropriate value for
+ *    this field.
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesTestIamPermissions
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_TestIamPermissionsRequest *)object
+                       resource:(NSString *)resource;
+
+@end
+
+/**
+ *  Updates (replaces) workflow template. The updated template must contain
+ *  version that matches the current server version.
+ *
+ *  Method: dataproc.projects.regions.workflowTemplates.update
+ *
+ *  Authorization scope(s):
+ *    @c kGTLRAuthScopeDataprocCloudPlatform
+ */
+@interface GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesUpdate : GTLRDataprocQuery
+// Previous library name was
+//   +[GTLQueryDataproc queryForProjectsRegionsWorkflowTemplatesUpdateWithObject:name:]
+
+/**
+ *  Output only. The "resource name" of the template, as described in
+ *  https://cloud.google.com/apis/design/resource_names of the form
+ *  projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ */
+@property(nonatomic, copy, nullable) NSString *name;
+
+/**
+ *  Fetches a @c GTLRDataproc_WorkflowTemplate.
+ *
+ *  Updates (replaces) workflow template. The updated template must contain
+ *  version that matches the current server version.
+ *
+ *  @param object The @c GTLRDataproc_WorkflowTemplate to include in the query.
+ *  @param name Output only. The "resource name" of the template, as described
+ *    in https://cloud.google.com/apis/design/resource_names of the form
+ *    projects/{project_id}/regions/{region}/workflowTemplates/{template_id}
+ *
+ *  @return GTLRDataprocQuery_ProjectsRegionsWorkflowTemplatesUpdate
+ */
++ (instancetype)queryWithObject:(GTLRDataproc_WorkflowTemplate *)object
+                           name:(NSString *)name;
 
 @end
 

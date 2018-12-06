@@ -19,6 +19,10 @@
 #endif
 
 @class GTLRAndroidEnterprise_Administrator;
+@class GTLRAndroidEnterprise_AdministratorWebTokenSpecPlaySearch;
+@class GTLRAndroidEnterprise_AdministratorWebTokenSpecPrivateApps;
+@class GTLRAndroidEnterprise_AdministratorWebTokenSpecStoreBuilder;
+@class GTLRAndroidEnterprise_AdministratorWebTokenSpecWebApps;
 @class GTLRAndroidEnterprise_AppRestrictionsSchemaChangeEvent;
 @class GTLRAndroidEnterprise_AppRestrictionsSchemaRestriction;
 @class GTLRAndroidEnterprise_AppRestrictionsSchemaRestrictionRestrictionValue;
@@ -33,6 +37,7 @@
 @class GTLRAndroidEnterprise_Install;
 @class GTLRAndroidEnterprise_InstallFailureEvent;
 @class GTLRAndroidEnterprise_LocalizedText;
+@class GTLRAndroidEnterprise_MaintenanceWindow;
 @class GTLRAndroidEnterprise_ManagedConfiguration;
 @class GTLRAndroidEnterprise_ManagedConfigurationsSettings;
 @class GTLRAndroidEnterprise_ManagedProperty;
@@ -41,16 +46,19 @@
 @class GTLRAndroidEnterprise_NewPermissionsEvent;
 @class GTLRAndroidEnterprise_Notification;
 @class GTLRAndroidEnterprise_PageInfo;
+@class GTLRAndroidEnterprise_Policy;
 @class GTLRAndroidEnterprise_Product;
 @class GTLRAndroidEnterprise_ProductApprovalEvent;
 @class GTLRAndroidEnterprise_ProductAvailabilityChangeEvent;
 @class GTLRAndroidEnterprise_ProductPermission;
+@class GTLRAndroidEnterprise_ProductPolicy;
 @class GTLRAndroidEnterprise_ProductSigningCertificate;
 @class GTLRAndroidEnterprise_ProductVisibility;
 @class GTLRAndroidEnterprise_ServiceAccountKey;
 @class GTLRAndroidEnterprise_StoreCluster;
 @class GTLRAndroidEnterprise_StorePage;
 @class GTLRAndroidEnterprise_TokenPagination;
+@class GTLRAndroidEnterprise_TrackInfo;
 @class GTLRAndroidEnterprise_User;
 @class GTLRAndroidEnterprise_VariableSet;
 
@@ -111,19 +119,93 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, copy, nullable) NSString *parent;
 
-/**
- *  The list of permissions the admin is granted within the iframe. The admin
- *  will only be allowed to view an iframe if they have all of the permissions
- *  associated with it. The only valid value is "approveApps" that will allow
- *  the admin to access the iframe in "approve" mode.
- */
+/** Deprecated. Use PlaySearch.approveApps. */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *permission;
+
+/** Options for displaying the managed Play Search apps page. */
+@property(nonatomic, strong, nullable) GTLRAndroidEnterprise_AdministratorWebTokenSpecPlaySearch *playSearch;
+
+/** Options for displaying the Private Apps page. */
+@property(nonatomic, strong, nullable) GTLRAndroidEnterprise_AdministratorWebTokenSpecPrivateApps *privateApps;
+
+/** Options for displaying the Organize apps page. */
+@property(nonatomic, strong, nullable) GTLRAndroidEnterprise_AdministratorWebTokenSpecStoreBuilder *storeBuilder;
+
+/** Options for displaying the Web Apps page. */
+@property(nonatomic, strong, nullable) GTLRAndroidEnterprise_AdministratorWebTokenSpecWebApps *webApps;
 
 @end
 
 
 /**
- *  The Android Device Policy configuration of an enterprise.
+ *  GTLRAndroidEnterprise_AdministratorWebTokenSpecPlaySearch
+ */
+@interface GTLRAndroidEnterprise_AdministratorWebTokenSpecPlaySearch : GTLRObject
+
+/**
+ *  Allow access to the iframe in approve mode. Default is false.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *approveApps;
+
+/**
+ *  Whether the managed Play Search apps page is displayed. Default is true.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *enabled;
+
+@end
+
+
+/**
+ *  GTLRAndroidEnterprise_AdministratorWebTokenSpecPrivateApps
+ */
+@interface GTLRAndroidEnterprise_AdministratorWebTokenSpecPrivateApps : GTLRObject
+
+/**
+ *  Whether the Private Apps page is displayed. Default is true.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *enabled;
+
+@end
+
+
+/**
+ *  GTLRAndroidEnterprise_AdministratorWebTokenSpecStoreBuilder
+ */
+@interface GTLRAndroidEnterprise_AdministratorWebTokenSpecStoreBuilder : GTLRObject
+
+/**
+ *  Whether the Organize apps page is displayed. Default is true.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *enabled;
+
+@end
+
+
+/**
+ *  GTLRAndroidEnterprise_AdministratorWebTokenSpecWebApps
+ */
+@interface GTLRAndroidEnterprise_AdministratorWebTokenSpecWebApps : GTLRObject
+
+/**
+ *  Whether the Web Apps page is displayed. Default is true.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *enabled;
+
+@end
+
+
+/**
+ *  Deprecated and unused.
  */
 @interface GTLRAndroidEnterprise_AndroidDevicePolicyConfig : GTLRObject
 
@@ -133,11 +215,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, copy, nullable) NSString *kind;
 
-/**
- *  The state of Android Device Policy. "enabled" indicates that Android Device
- *  Policy is enabled for the enterprise and the EMM is allowed to manage
- *  devices with Android Device Policy, while "disabled" means that it cannot.
- */
+/** Deprecated and unused. */
 @property(nonatomic, copy, nullable) NSString *state;
 
 @end
@@ -312,10 +390,21 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GTLRAndroidEnterprise_AppVersion : GTLRObject
 
 /**
- *  The track that this app was published in. For example if track is "alpha",
- *  this is an alpha version of the app.
+ *  True if this version is a production APK.
+ *
+ *  Uses NSNumber of boolValue.
  */
+@property(nonatomic, strong, nullable) NSNumber *isProduction;
+
+/** Deprecated, use trackId instead. */
 @property(nonatomic, copy, nullable) NSString *track;
+
+/**
+ *  Track ids that the app version is published in. Replaces the track field
+ *  (deprecated), but doesn't include the production track (see isProduction
+ *  instead).
+ */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *trackId;
 
 /**
  *  Unique increasing identifier for the app version.
@@ -382,8 +471,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  A Devices resource represents a mobile device managed by the EMM and
  *  belonging to a specific enterprise user.
- *  This collection cannot be modified via the API. It is automatically
- *  populated as devices are set up to be managed.
  */
 @interface GTLRAndroidEnterprise_Device : GTLRObject
 
@@ -414,6 +501,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  but the profile is itself not owned by a DPC.
  */
 @property(nonatomic, copy, nullable) NSString *managementType;
+
+/** The policy enforced on the device. */
+@property(nonatomic, strong, nullable) GTLRAndroidEnterprise_Policy *policy;
 
 @end
 
@@ -854,6 +944,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
+ *  Maintenance window for managed Google Play Accounts. This allows Play store
+ *  to update the apps on the foreground in the designated window.
+ */
+@interface GTLRAndroidEnterprise_MaintenanceWindow : GTLRObject
+
+/**
+ *  Duration of the maintenance window, in milliseconds. The duration must be
+ *  between 30 minutes and 24 hours (inclusive).
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *durationMs;
+
+/**
+ *  Start time of the maintenance window, in milliseconds after midnight on the
+ *  device. Windows can span midnight.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *startTimeAfterMidnightMs;
+
+@end
+
+
+/**
  *  A managed configuration resource contains the set of managed properties
  *  defined by the app developer in the app's managed configurations schema, as
  *  well as any configuration variables defined for the user.
@@ -931,6 +1046,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  "androidenterprise#managedConfigurationsSettings".
  */
 @property(nonatomic, copy, nullable) NSString *kind;
+
+/**
+ *  The last updated time of the managed configuration settings in milliseconds
+ *  since 1970-01-01T00:00:00Z.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *lastUpdatedTimestampMillis;
 
 /** The set of managed properties for this configuration. */
 @property(nonatomic, strong, nullable) NSArray<GTLRAndroidEnterprise_ManagedProperty *> *managedProperty;
@@ -1036,6 +1159,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** The Android ID of the device. This field will always be present. */
 @property(nonatomic, copy, nullable) NSString *deviceId;
+
+/** Policy app on the device. */
+@property(nonatomic, copy, nullable) NSString *dpcPackageName;
 
 /**
  *  Identifies the extent to which the device is controlled by an Android EMM in
@@ -1215,6 +1341,43 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
+ *  The device policy for a given managed device.
+ */
+@interface GTLRAndroidEnterprise_Policy : GTLRObject
+
+/**
+ *  The auto-update policy for apps installed on the device. "choiceToTheUser"
+ *  allows the device's user to configure the app update policy. "always"
+ *  enables auto updates. "never" disables auto updates. "wifiOnly" enables auto
+ *  updates only when the device is connected to wifi.
+ */
+@property(nonatomic, copy, nullable) NSString *autoUpdatePolicy;
+
+/**
+ *  The maintenance window defining when apps running in the foreground should
+ *  be updated.
+ */
+@property(nonatomic, strong, nullable) GTLRAndroidEnterprise_MaintenanceWindow *maintenanceWindow;
+
+/**
+ *  The availability granted to the device for the specified products. "all"
+ *  gives the device access to all products, regardless of approval status.
+ *  "all" does not enable automatic visibility of "alpha" or "beta" tracks.
+ *  "whitelist" grants the device access the products specified in
+ *  productPolicy[]. Only products that are approved or products that were
+ *  previously approved (products with revoked approval) by the enterprise can
+ *  be whitelisted. If no value is provided, the availability set at the user
+ *  level is applied by default.
+ */
+@property(nonatomic, copy, nullable) NSString *productAvailabilityPolicy;
+
+/** The list of product policies. */
+@property(nonatomic, strong, nullable) NSArray<GTLRAndroidEnterprise_ProductPolicy *> *productPolicy;
+
+@end
+
+
+/**
  *  A Products resource represents an app in the Google Play store that is
  *  available to at least some users in the enterprise. (Some apps are
  *  restricted to a single enterprise, and no information about them is made
@@ -1225,14 +1388,33 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface GTLRAndroidEnterprise_Product : GTLRObject
 
+/** The tracks visible to the enterprise. */
+@property(nonatomic, strong, nullable) NSArray<GTLRAndroidEnterprise_TrackInfo *> *appTracks;
+
 /** App versions currently available for this product. */
 @property(nonatomic, strong, nullable) NSArray<GTLRAndroidEnterprise_AppVersion *> *appVersion;
 
 /** The name of the author of the product (for example, the app developer). */
 @property(nonatomic, copy, nullable) NSString *authorName;
 
-/** The tracks that are visible to the enterprise. */
+/** The countries which this app is available in. */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *availableCountries;
+
+/** Deprecated, use appTracks instead. */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *availableTracks;
+
+/** The app category (e.g. RACING, SOCIAL, etc.) */
+@property(nonatomic, copy, nullable) NSString *category;
+
+/** The content rating for this app. */
+@property(nonatomic, copy, nullable) NSString *contentRating;
+
+/**
+ *  The localized promotional description, if available.
+ *
+ *  Remapped to 'descriptionProperty' to avoid NSObject's 'description'.
+ */
+@property(nonatomic, copy, nullable) NSString *descriptionProperty;
 
 /** A link to the (consumer) Google Play details page for the product. */
 @property(nonatomic, copy, nullable) NSString *detailsUrl;
@@ -1260,6 +1442,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy, nullable) NSString *kind;
 
 /**
+ *  The approximate time (within 7 days) the app was last published, expressed
+ *  in milliseconds since epoch.
+ *
+ *  Uses NSNumber of longLongValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *lastUpdatedTimestampMillis;
+
+/**
+ *  The minimum Android SDK necessary to run the app.
+ *
+ *  Uses NSNumber of intValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *minAndroidSdkVersion;
+
+/** A list of permissions required by the app. */
+@property(nonatomic, strong, nullable) NSArray<GTLRAndroidEnterprise_ProductPermission *> *permissions;
+
+/**
  *  A string of the form app:<package name>. For example,
  *  app:com.google.android.gm represents the Gmail app.
  */
@@ -1272,12 +1472,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, copy, nullable) NSString *productPricing;
 
+/** A description of the recent changes made to the app. */
+@property(nonatomic, copy, nullable) NSString *recentChanges;
+
 /**
  *  Deprecated.
  *
  *  Uses NSNumber of boolValue.
  */
 @property(nonatomic, strong, nullable) NSNumber *requiresContainerApp;
+
+/** A list of screenshot links representing the app. */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *screenshotUrls;
 
 /** The certificate used to sign this product. */
 @property(nonatomic, strong, nullable) GTLRAndroidEnterprise_ProductSigningCertificate *signingCertificate;
@@ -1375,6 +1581,27 @@ NS_ASSUME_NONNULL_BEGIN
  *  "app:com.google.android.gm".
  */
 @property(nonatomic, copy, nullable) NSString *productId;
+
+@end
+
+
+/**
+ *  The policy for a product.
+ */
+@interface GTLRAndroidEnterprise_ProductPolicy : GTLRObject
+
+/** The ID of the product. For example, "app:com.google.android.gm". */
+@property(nonatomic, copy, nullable) NSString *productId;
+
+/**
+ *  Grants the device visibility to the specified product release track(s),
+ *  identified by trackIds. The list of release tracks of a product can be
+ *  obtained by calling Products.Get.
+ */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *trackIds;
+
+/** Deprecated. Use trackIds instead. */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *tracks;
 
 @end
 
@@ -1524,21 +1751,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy, nullable) NSString *productId;
 
 /**
- *  Grants visibility to the specified track(s) of the product to the user. The
- *  track available to the user is based on the following order of preference:
- *  alpha, beta, production. For example, if an app has a prod version, a beta
- *  version and an alpha version and the enterprise has been granted visibility
- *  to both the alpha and beta tracks, if tracks is {"beta", "production"} the
- *  user will be able to install the app and they will get the beta version of
- *  the app. If there are no app versions in the specified track adding the
- *  "alpha" and "beta" values to the list of tracks will have no effect. Note
- *  that the enterprise requires access to alpha and/or beta tracks before users
- *  can be granted visibility to apps in those tracks.
- *  The allowed sets are: {} (considered equivalent to {"production"})
- *  {"production"} {"beta", "production"} {"alpha", "beta", "production"} The
- *  order of elements is not relevant. Any other set of tracks will be rejected
- *  with an error.
+ *  Grants the user visibility to the specified product track(s), identified by
+ *  trackIds.
  */
+@property(nonatomic, strong, nullable) NSArray<NSString *> *trackIds;
+
+/** Deprecated. Use trackIds instead. */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *tracks;
 
 @end
@@ -1777,11 +1995,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Ordered list of pages a user should be able to reach from this page. The
- *  pages must exist, must not be this page, and once a link is created the page
- *  linked to cannot be deleted until all links to it are removed. It is
- *  recommended that the basic pages are created first, before adding the links
- *  between pages.
- *  No attempt is made to verify that all pages are reachable from the homepage.
+ *  list can't include this page. It is recommended that the basic pages are
+ *  created first, before adding the links between pages.
+ *  The API doesn't verify that the pages exist or the pages are reachable.
  */
 @property(nonatomic, strong, nullable) NSArray<NSString *> *link;
 
@@ -1802,6 +2018,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, copy, nullable) NSString *nextPageToken;
 @property(nonatomic, copy, nullable) NSString *previousPageToken;
+
+@end
+
+
+/**
+ *  Id to name association of a track.
+ */
+@interface GTLRAndroidEnterprise_TrackInfo : GTLRObject
+
+/**
+ *  A modifiable name for a track. This is the visible name in the play
+ *  developer console.
+ */
+@property(nonatomic, copy, nullable) NSString *trackAlias;
+
+/**
+ *  Unmodifiable, unique track identifier. This identifier is the releaseTrackId
+ *  in the url of the play developer console page that displays the track
+ *  information.
+ */
+@property(nonatomic, copy, nullable) NSString *trackId;
 
 @end
 

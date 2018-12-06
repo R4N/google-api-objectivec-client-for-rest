@@ -36,7 +36,8 @@
 //
 
 @implementation GTLRAndroidEnterprise_AdministratorWebTokenSpec
-@dynamic kind, parent, permission;
+@dynamic kind, parent, permission, playSearch, privateApps, storeBuilder,
+         webApps;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -45,6 +46,46 @@
   return map;
 }
 
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidEnterprise_AdministratorWebTokenSpecPlaySearch
+//
+
+@implementation GTLRAndroidEnterprise_AdministratorWebTokenSpecPlaySearch
+@dynamic approveApps, enabled;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidEnterprise_AdministratorWebTokenSpecPrivateApps
+//
+
+@implementation GTLRAndroidEnterprise_AdministratorWebTokenSpecPrivateApps
+@dynamic enabled;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidEnterprise_AdministratorWebTokenSpecStoreBuilder
+//
+
+@implementation GTLRAndroidEnterprise_AdministratorWebTokenSpecStoreBuilder
+@dynamic enabled;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidEnterprise_AdministratorWebTokenSpecWebApps
+//
+
+@implementation GTLRAndroidEnterprise_AdministratorWebTokenSpecWebApps
+@dynamic enabled;
 @end
 
 
@@ -155,7 +196,15 @@
 //
 
 @implementation GTLRAndroidEnterprise_AppVersion
-@dynamic track, versionCode, versionString;
+@dynamic isProduction, track, trackId, versionCode, versionString;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"trackId" : [NSString class]
+  };
+  return map;
+}
+
 @end
 
 
@@ -193,7 +242,7 @@
 //
 
 @implementation GTLRAndroidEnterprise_Device
-@dynamic androidId, kind, managementType;
+@dynamic androidId, kind, managementType, policy;
 @end
 
 
@@ -410,6 +459,16 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRAndroidEnterprise_MaintenanceWindow
+//
+
+@implementation GTLRAndroidEnterprise_MaintenanceWindow
+@dynamic durationMs, startTimeAfterMidnightMs;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRAndroidEnterprise_ManagedConfiguration
 //
 
@@ -468,7 +527,7 @@
 //
 
 @implementation GTLRAndroidEnterprise_ManagedConfigurationsSettings
-@dynamic kind, managedProperty, mcmId, name;
+@dynamic kind, lastUpdatedTimestampMillis, managedProperty, mcmId, name;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
@@ -542,7 +601,7 @@
 //
 
 @implementation GTLRAndroidEnterprise_NewDeviceEvent
-@dynamic deviceId, managementType, userId;
+@dynamic deviceId, dpcPackageName, managementType, userId;
 @end
 
 
@@ -623,19 +682,48 @@
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRAndroidEnterprise_Policy
+//
+
+@implementation GTLRAndroidEnterprise_Policy
+@dynamic autoUpdatePolicy, maintenanceWindow, productAvailabilityPolicy,
+         productPolicy;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"productPolicy" : [GTLRAndroidEnterprise_ProductPolicy class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRAndroidEnterprise_Product
 //
 
 @implementation GTLRAndroidEnterprise_Product
-@dynamic appVersion, authorName, availableTracks, detailsUrl,
-         distributionChannel, iconUrl, kind, productId, productPricing,
-         requiresContainerApp, signingCertificate, smallIconUrl, title,
-         workDetailsUrl;
+@dynamic appTracks, appVersion, authorName, availableCountries, availableTracks,
+         category, contentRating, descriptionProperty, detailsUrl,
+         distributionChannel, iconUrl, kind, lastUpdatedTimestampMillis,
+         minAndroidSdkVersion, permissions, productId, productPricing,
+         recentChanges, requiresContainerApp, screenshotUrls,
+         signingCertificate, smallIconUrl, title, workDetailsUrl;
+
++ (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
+  return @{ @"descriptionProperty" : @"description" };
+}
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
+    @"appTracks" : [GTLRAndroidEnterprise_TrackInfo class],
     @"appVersion" : [GTLRAndroidEnterprise_AppVersion class],
-    @"availableTracks" : [NSString class]
+    @"availableCountries" : [NSString class],
+    @"availableTracks" : [NSString class],
+    @"permissions" : [GTLRAndroidEnterprise_ProductPermission class],
+    @"screenshotUrls" : [NSString class]
   };
   return map;
 }
@@ -684,6 +772,25 @@
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
     @"permission" : [GTLRAndroidEnterprise_ProductPermission class]
+  };
+  return map;
+}
+
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidEnterprise_ProductPolicy
+//
+
+@implementation GTLRAndroidEnterprise_ProductPolicy
+@dynamic productId, trackIds, tracks;
+
++ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
+  NSDictionary<NSString *, Class> *map = @{
+    @"trackIds" : [NSString class],
+    @"tracks" : [NSString class]
   };
   return map;
 }
@@ -764,10 +871,11 @@
 //
 
 @implementation GTLRAndroidEnterprise_ProductVisibility
-@dynamic productId, tracks;
+@dynamic productId, trackIds, tracks;
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
+    @"trackIds" : [NSString class],
     @"tracks" : [NSString class]
   };
   return map;
@@ -928,6 +1036,16 @@
 
 @implementation GTLRAndroidEnterprise_TokenPagination
 @dynamic nextPageToken, previousPageToken;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRAndroidEnterprise_TrackInfo
+//
+
+@implementation GTLRAndroidEnterprise_TrackInfo
+@dynamic trackAlias, trackId;
 @end
 
 

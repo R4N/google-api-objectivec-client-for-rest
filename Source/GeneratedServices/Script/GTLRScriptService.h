@@ -2,11 +2,11 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Apps Script API (script/v1)
+//   Apps Script API (script/v1)
 // Description:
-//   An API for managing and executing Google Apps Script projects.
+//   Manages and executes Google Apps Script projects.
 // Documentation:
-//   https://developers.google.com/apps-script/execution/rest/v1/scripts/run
+//   https://developers.google.com/apps-script/api/
 
 #if GTLR_BUILT_AS_FRAMEWORK
   #import "GTLR/GTLRService.h"
@@ -48,6 +48,12 @@ GTLR_EXTERN NSString * const kGTLRAuthScopeScriptAdminDirectoryUser;
  *  Value "https://www.google.com/calendar/feeds"
  */
 GTLR_EXTERN NSString * const kGTLRAuthScopeScriptCalendarFeeds;
+/**
+ *  Authorization scope: View and manage your Google Docs documents
+ *
+ *  Value "https://www.googleapis.com/auth/documents"
+ */
+GTLR_EXTERN NSString * const kGTLRAuthScopeScriptDocuments;
 /**
  *  Authorization scope: View and manage the files in your Google Drive
  *
@@ -103,9 +109,9 @@ GTLR_EXTERN NSString * const kGTLRAuthScopeScriptUserinfoEmail;
 //
 
 /**
- *  Service for executing Google Apps Script API queries.
+ *  Service for executing Apps Script API queries.
  *
- *  An API for managing and executing Google Apps Script projects.
+ *  Manages and executes Google Apps Script projects.
  */
 @interface GTLRScriptService : GTLRService
 

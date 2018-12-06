@@ -2,12 +2,11 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Cloud Tasks API (cloudtasks/v2beta2)
+//   Cloud Tasks API (cloudtasks/v2beta3)
 // Description:
-//   Manages the execution of large numbers of distributed requests. Cloud Tasks
-//   is in Alpha.
+//   Manages the execution of large numbers of distributed requests.
 // Documentation:
-//   https://cloud.google.com/cloud-tasks/
+//   https://cloud.google.com/tasks/
 
 #import "GTLRCloudTasksQuery.h"
 
@@ -37,7 +36,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
 
 + (instancetype)queryWithName:(NSString *)name {
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}";
+  NSString *pathURITemplate = @"v2beta3/{+name}";
   GTLRCloudTasksQuery_ProjectsLocationsGet *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:nil
@@ -56,7 +55,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
 
 + (instancetype)queryWithName:(NSString *)name {
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}/locations";
+  NSString *pathURITemplate = @"v2beta3/{+name}/locations";
   GTLRCloudTasksQuery_ProjectsLocationsList *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:nil
@@ -80,7 +79,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"parent" ];
-  NSString *pathURITemplate = @"v2beta2/{+parent}/queues";
+  NSString *pathURITemplate = @"v2beta3/{+parent}/queues";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesCreate *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"
@@ -100,7 +99,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
 
 + (instancetype)queryWithName:(NSString *)name {
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}";
+  NSString *pathURITemplate = @"v2beta3/{+name}";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesDelete *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"DELETE"
@@ -119,7 +118,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
 
 + (instancetype)queryWithName:(NSString *)name {
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}";
+  NSString *pathURITemplate = @"v2beta3/{+name}";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesGet *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:nil
@@ -143,7 +142,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"resource" ];
-  NSString *pathURITemplate = @"v2beta2/{+resource}:getIamPolicy";
+  NSString *pathURITemplate = @"v2beta3/{+resource}:getIamPolicy";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesGetIamPolicy *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"
@@ -163,7 +162,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
 
 + (instancetype)queryWithParent:(NSString *)parent {
   NSArray *pathParams = @[ @"parent" ];
-  NSString *pathURITemplate = @"v2beta2/{+parent}/queues";
+  NSString *pathURITemplate = @"v2beta3/{+parent}/queues";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesList *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:nil
@@ -187,7 +186,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}";
+  NSString *pathURITemplate = @"v2beta3/{+name}";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesPatch *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"PATCH"
@@ -212,7 +211,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}:pause";
+  NSString *pathURITemplate = @"v2beta3/{+name}:pause";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesPause *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"
@@ -237,7 +236,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}:purge";
+  NSString *pathURITemplate = @"v2beta3/{+name}:purge";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesPurge *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"
@@ -262,7 +261,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}:resume";
+  NSString *pathURITemplate = @"v2beta3/{+name}:resume";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesResume *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"
@@ -287,7 +286,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"resource" ];
-  NSString *pathURITemplate = @"v2beta2/{+resource}:setIamPolicy";
+  NSString *pathURITemplate = @"v2beta3/{+resource}:setIamPolicy";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesSetIamPolicy *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"
@@ -296,56 +295,6 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
   query.resource = resource;
   query.expectedObjectClass = [GTLRCloudTasks_Policy class];
   query.loggingName = @"cloudtasks.projects.locations.queues.setIamPolicy";
-  return query;
-}
-
-@end
-
-@implementation GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksAcknowledge
-
-@dynamic name;
-
-+ (instancetype)queryWithObject:(GTLRCloudTasks_AcknowledgeTaskRequest *)object
-                           name:(NSString *)name {
-  if (object == nil) {
-    GTLR_DEBUG_ASSERT(object != nil, @"Got a nil object");
-    return nil;
-  }
-  NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}:acknowledge";
-  GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksAcknowledge *query =
-    [[self alloc] initWithPathURITemplate:pathURITemplate
-                               HTTPMethod:@"POST"
-                       pathParameterNames:pathParams];
-  query.bodyObject = object;
-  query.name = name;
-  query.expectedObjectClass = [GTLRCloudTasks_Empty class];
-  query.loggingName = @"cloudtasks.projects.locations.queues.tasks.acknowledge";
-  return query;
-}
-
-@end
-
-@implementation GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksCancelLease
-
-@dynamic name;
-
-+ (instancetype)queryWithObject:(GTLRCloudTasks_CancelLeaseRequest *)object
-                           name:(NSString *)name {
-  if (object == nil) {
-    GTLR_DEBUG_ASSERT(object != nil, @"Got a nil object");
-    return nil;
-  }
-  NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}:cancelLease";
-  GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksCancelLease *query =
-    [[self alloc] initWithPathURITemplate:pathURITemplate
-                               HTTPMethod:@"POST"
-                       pathParameterNames:pathParams];
-  query.bodyObject = object;
-  query.name = name;
-  query.expectedObjectClass = [GTLRCloudTasks_Task class];
-  query.loggingName = @"cloudtasks.projects.locations.queues.tasks.cancelLease";
   return query;
 }
 
@@ -362,7 +311,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"parent" ];
-  NSString *pathURITemplate = @"v2beta2/{+parent}/tasks";
+  NSString *pathURITemplate = @"v2beta3/{+parent}/tasks";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksCreate *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"
@@ -382,7 +331,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
 
 + (instancetype)queryWithName:(NSString *)name {
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}";
+  NSString *pathURITemplate = @"v2beta3/{+name}";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksDelete *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"DELETE"
@@ -401,7 +350,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
 
 + (instancetype)queryWithName:(NSString *)name {
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}";
+  NSString *pathURITemplate = @"v2beta3/{+name}";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksGet *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:nil
@@ -416,11 +365,11 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
 
 @implementation GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksList
 
-@dynamic orderBy, pageSize, pageToken, parent, responseView;
+@dynamic pageSize, pageToken, parent, responseView;
 
 + (instancetype)queryWithParent:(NSString *)parent {
   NSArray *pathParams = @[ @"parent" ];
-  NSString *pathURITemplate = @"v2beta2/{+parent}/tasks";
+  NSString *pathURITemplate = @"v2beta3/{+parent}/tasks";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksList *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:nil
@@ -428,56 +377,6 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
   query.parent = parent;
   query.expectedObjectClass = [GTLRCloudTasks_ListTasksResponse class];
   query.loggingName = @"cloudtasks.projects.locations.queues.tasks.list";
-  return query;
-}
-
-@end
-
-@implementation GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksPull
-
-@dynamic name;
-
-+ (instancetype)queryWithObject:(GTLRCloudTasks_PullTasksRequest *)object
-                           name:(NSString *)name {
-  if (object == nil) {
-    GTLR_DEBUG_ASSERT(object != nil, @"Got a nil object");
-    return nil;
-  }
-  NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}/tasks:pull";
-  GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksPull *query =
-    [[self alloc] initWithPathURITemplate:pathURITemplate
-                               HTTPMethod:@"POST"
-                       pathParameterNames:pathParams];
-  query.bodyObject = object;
-  query.name = name;
-  query.expectedObjectClass = [GTLRCloudTasks_PullTasksResponse class];
-  query.loggingName = @"cloudtasks.projects.locations.queues.tasks.pull";
-  return query;
-}
-
-@end
-
-@implementation GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksRenewLease
-
-@dynamic name;
-
-+ (instancetype)queryWithObject:(GTLRCloudTasks_RenewLeaseRequest *)object
-                           name:(NSString *)name {
-  if (object == nil) {
-    GTLR_DEBUG_ASSERT(object != nil, @"Got a nil object");
-    return nil;
-  }
-  NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}:renewLease";
-  GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksRenewLease *query =
-    [[self alloc] initWithPathURITemplate:pathURITemplate
-                               HTTPMethod:@"POST"
-                       pathParameterNames:pathParams];
-  query.bodyObject = object;
-  query.name = name;
-  query.expectedObjectClass = [GTLRCloudTasks_Task class];
-  query.loggingName = @"cloudtasks.projects.locations.queues.tasks.renewLease";
   return query;
 }
 
@@ -494,7 +393,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"name" ];
-  NSString *pathURITemplate = @"v2beta2/{+name}:run";
+  NSString *pathURITemplate = @"v2beta3/{+name}:run";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesTasksRun *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"
@@ -519,7 +418,7 @@ NSString * const kGTLRCloudTasksResponseViewViewUnspecified = @"VIEW_UNSPECIFIED
     return nil;
   }
   NSArray *pathParams = @[ @"resource" ];
-  NSString *pathURITemplate = @"v2beta2/{+resource}:testIamPermissions";
+  NSString *pathURITemplate = @"v2beta3/{+resource}:testIamPermissions";
   GTLRCloudTasksQuery_ProjectsLocationsQueuesTestIamPermissions *query =
     [[self alloc] initWithPathURITemplate:pathURITemplate
                                HTTPMethod:@"POST"

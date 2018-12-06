@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 // API:
-//   Google Cloud IoT API (cloudiot/v1)
+//   Cloud IoT API (cloudiot/v1)
 // Description:
 //   Registers and manages IoT (Internet of Things) devices that connect to the
 //   Google Cloud Platform.
@@ -14,11 +14,19 @@
 // ----------------------------------------------------------------------------
 // Constants
 
-// GTLRCloudIot_AuditLogConfig.logType
-NSString * const kGTLRCloudIot_AuditLogConfig_LogType_AdminRead = @"ADMIN_READ";
-NSString * const kGTLRCloudIot_AuditLogConfig_LogType_DataRead = @"DATA_READ";
-NSString * const kGTLRCloudIot_AuditLogConfig_LogType_DataWrite = @"DATA_WRITE";
-NSString * const kGTLRCloudIot_AuditLogConfig_LogType_LogTypeUnspecified = @"LOG_TYPE_UNSPECIFIED";
+// GTLRCloudIot_Device.logLevel
+NSString * const kGTLRCloudIot_Device_LogLevel_Debug           = @"DEBUG";
+NSString * const kGTLRCloudIot_Device_LogLevel_Error           = @"ERROR";
+NSString * const kGTLRCloudIot_Device_LogLevel_Info            = @"INFO";
+NSString * const kGTLRCloudIot_Device_LogLevel_LogLevelUnspecified = @"LOG_LEVEL_UNSPECIFIED";
+NSString * const kGTLRCloudIot_Device_LogLevel_None            = @"NONE";
+
+// GTLRCloudIot_DeviceRegistry.logLevel
+NSString * const kGTLRCloudIot_DeviceRegistry_LogLevel_Debug   = @"DEBUG";
+NSString * const kGTLRCloudIot_DeviceRegistry_LogLevel_Error   = @"ERROR";
+NSString * const kGTLRCloudIot_DeviceRegistry_LogLevel_Info    = @"INFO";
+NSString * const kGTLRCloudIot_DeviceRegistry_LogLevel_LogLevelUnspecified = @"LOG_LEVEL_UNSPECIFIED";
+NSString * const kGTLRCloudIot_DeviceRegistry_LogLevel_None    = @"NONE";
 
 // GTLRCloudIot_HttpConfig.httpEnabledState
 NSString * const kGTLRCloudIot_HttpConfig_HttpEnabledState_HttpDisabled = @"HTTP_DISABLED";
@@ -40,43 +48,6 @@ NSString * const kGTLRCloudIot_PublicKeyCredential_Format_Es256X509Pem = @"ES256
 NSString * const kGTLRCloudIot_PublicKeyCredential_Format_RsaPem = @"RSA_PEM";
 NSString * const kGTLRCloudIot_PublicKeyCredential_Format_RsaX509Pem = @"RSA_X509_PEM";
 NSString * const kGTLRCloudIot_PublicKeyCredential_Format_UnspecifiedPublicKeyFormat = @"UNSPECIFIED_PUBLIC_KEY_FORMAT";
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudIot_AuditConfig
-//
-
-@implementation GTLRCloudIot_AuditConfig
-@dynamic auditLogConfigs, exemptedMembers, service;
-
-+ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
-  NSDictionary<NSString *, Class> *map = @{
-    @"auditLogConfigs" : [GTLRCloudIot_AuditLogConfig class],
-    @"exemptedMembers" : [NSString class]
-  };
-  return map;
-}
-
-@end
-
-
-// ----------------------------------------------------------------------------
-//
-//   GTLRCloudIot_AuditLogConfig
-//
-
-@implementation GTLRCloudIot_AuditLogConfig
-@dynamic exemptedMembers, logType;
-
-+ (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
-  NSDictionary<NSString *, Class> *map = @{
-    @"exemptedMembers" : [NSString class]
-  };
-  return map;
-}
-
-@end
-
 
 // ----------------------------------------------------------------------------
 //
@@ -104,7 +75,8 @@ NSString * const kGTLRCloudIot_PublicKeyCredential_Format_UnspecifiedPublicKeyFo
 @implementation GTLRCloudIot_Device
 @dynamic blocked, config, credentials, identifier, lastConfigAckTime,
          lastConfigSendTime, lastErrorStatus, lastErrorTime, lastEventTime,
-         lastHeartbeatTime, lastStateTime, metadata, name, numId, state;
+         lastHeartbeatTime, lastStateTime, logLevel, metadata, name, numId,
+         state;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"identifier" : @"id" };
@@ -161,7 +133,7 @@ NSString * const kGTLRCloudIot_PublicKeyCredential_Format_UnspecifiedPublicKeyFo
 
 @implementation GTLRCloudIot_DeviceRegistry
 @dynamic credentials, eventNotificationConfigs, httpConfig, identifier,
-         mqttConfig, name, stateNotificationConfig;
+         logLevel, mqttConfig, name, stateNotificationConfig;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"identifier" : @"id" };
@@ -203,7 +175,7 @@ NSString * const kGTLRCloudIot_PublicKeyCredential_Format_UnspecifiedPublicKeyFo
 //
 
 @implementation GTLRCloudIot_EventNotificationConfig
-@dynamic pubsubTopicName;
+@dynamic pubsubTopicName, subfolderMatches;
 @end
 
 
@@ -347,7 +319,7 @@ NSString * const kGTLRCloudIot_PublicKeyCredential_Format_UnspecifiedPublicKeyFo
 //
 
 @implementation GTLRCloudIot_Policy
-@dynamic auditConfigs, bindings, ETag, iamOwned, version;
+@dynamic bindings, ETag, version;
 
 + (NSDictionary<NSString *, NSString *> *)propertyToJSONKeyMap {
   return @{ @"ETag" : @"etag" };
@@ -355,7 +327,6 @@ NSString * const kGTLRCloudIot_PublicKeyCredential_Format_UnspecifiedPublicKeyFo
 
 + (NSDictionary<NSString *, Class> *)arrayPropertyToClassMap {
   NSDictionary<NSString *, Class> *map = @{
-    @"auditConfigs" : [GTLRCloudIot_AuditConfig class],
     @"bindings" : [GTLRCloudIot_Binding class]
   };
   return map;
@@ -396,11 +367,30 @@ NSString * const kGTLRCloudIot_PublicKeyCredential_Format_UnspecifiedPublicKeyFo
 
 // ----------------------------------------------------------------------------
 //
+//   GTLRCloudIot_SendCommandToDeviceRequest
+//
+
+@implementation GTLRCloudIot_SendCommandToDeviceRequest
+@dynamic binaryData, subfolder;
+@end
+
+
+// ----------------------------------------------------------------------------
+//
+//   GTLRCloudIot_SendCommandToDeviceResponse
+//
+
+@implementation GTLRCloudIot_SendCommandToDeviceResponse
+@end
+
+
+// ----------------------------------------------------------------------------
+//
 //   GTLRCloudIot_SetIamPolicyRequest
 //
 
 @implementation GTLRCloudIot_SetIamPolicyRequest
-@dynamic policy, updateMask;
+@dynamic policy;
 @end
 
 
